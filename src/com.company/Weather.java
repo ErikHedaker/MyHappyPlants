@@ -50,11 +50,11 @@ public class Weather extends MyLocation {
     }
 
     public int getHumidity() {
-        return currentWeather.get(15).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
+        return currentWeather.get(5).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
     }
 
     public int getCelsius() {
-        return currentWeather.get(10).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
+        return currentWeather.get(0).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
     }
 
 
