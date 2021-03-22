@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="JWiki">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/JWiki.jar!/" />
+      <root url="jar://$PROJECT_DIR$/APIs/JWiki.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/Desktop/JWiki.jar!/" />
+      <root url="jar://$PROJECT_DIR$/APIs/JWiki.jar!/" />
     </SOURCES>
   </library>
 </component>
