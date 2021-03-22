@@ -1,3 +1,3 @@
 # MyHappyPlants (Team 24)
 
-Hej :)
+Pull Request!
