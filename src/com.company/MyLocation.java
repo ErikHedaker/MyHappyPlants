@@ -25,13 +25,7 @@ public class MyLocation {
      * @throws IOException
      */
     private void connect() throws IOException {
-        URL myIp = new URL("http://checkip.amazonaws.com");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                myIp.openStream()));
-
-        String ipv4 = in.readLine();
-
-        URL url = new URL("http://www.geoplugin.net/json.gp?ip=" + ipv4);
+        URL url = new URL("http://www.geoplugin.net/json.gp?ip=localhost");
         request = url.openConnection();
         request.connect();
     }
