@@ -1,0 +1,86 @@
+package com.company;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+/**
+ * A class that allows you to collect online information from wikipedia using JWiki API.
+ * @version 1.0
+ * @author Viktor Johansson
+ */
+public class JWiki {
+
+    private String displayTitle, imageURL, text = "";
+    private final String BASE_URL = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+
+    /**
+     * Sends information requests to wikipedia with the specified subject
+     * and registers some article parts into variables.
+     *
+     * @param subject The subject you want information about.
+     */
+    public JWiki(String subject) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + subject)
+                .get()
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            String data = response.body().string();
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(data);
+
+            displayTitle = (String) jsonObject.get("displaytitle");
+
+            JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
+            imageURL = (String) jsonObjectOriginalImage.get("source");
+
+            text = (String) jsonObject.get("extract");
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Display title of the article.
+     *
+     * @return displayTitle
+     */
+    public String getDisplayTitle() {
+        String s = displayTitle.replaceAll("<i>", "").replaceAll("</i>", "");
+        return s;
+    }
+
+    /**
+     * Constructs image from the selected article.
+     *
+     * @return icon
+     */
+    public ImageIcon getImage() throws IOException {
+        URL url = new URL(imageURL);
+        BufferedImage c = ImageIO.read(url);
+        return new ImageIcon(c);
+    }
+
+    /**
+     * This gives you the body text from the article.
+     *
+     * @return text
+     */
+    public String getText() {
+        return text;
+    }
+}
