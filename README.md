@@ -18,4 +18,4 @@ för ägare av växten. Ifall användaren sedan klickar på "Lägg till" knappen
 sida där man kan specificera information om växten (t.ex. storlek, miljö). Detta bidrar till att programmet sedan kan räkna ut när 
 det kan vara rimligt att vattna växten. Därefter klickar du på "Spara" knappen, och växten lägger sig på listan i startsidan. 
 
-Länk Github: https://github.com/ErikHedaker/MyHappyPlants
+Länk Github: https://github.com/ErikHedaker/MyHappyPlants.git
