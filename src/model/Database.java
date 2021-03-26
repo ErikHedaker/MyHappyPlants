@@ -4,15 +4,8 @@ import java.sql.*;
 
 public class Database
 {
-    public static void main(String[] args) {
-        try
-        {
-            Class.forName("org.postgresql.Driver");
-        }
-        catch( ClassNotFoundException e )
-        {
-            e.printStackTrace();
-        }
+    public static void main(String[] args)
+    {
         String connectionURL = "jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass";
         try( Connection connection = DriverManager.getConnection( connectionURL );
              Statement statement = connection.createStatement() )
