@@ -23,6 +23,7 @@ public class JWiki {
     private String displayTitle, imageURL, text = "";
     private final String BASE_URL = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
+    private boolean hasImage;
     /**
      * Sends information requests to wikipedia with the specified subject
      * and registers some article parts into variables.
@@ -45,8 +46,13 @@ public class JWiki {
 
             displayTitle = (String) jsonObject.get("displaytitle");
 
-            JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
-            imageURL = (String) jsonObjectOriginalImage.get("source");
+            if (jsonObject.get("originalimage") == null) {
+                hasImage = false;
+            } else {
+                hasImage = true;
+                JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
+                imageURL = (String) jsonObjectOriginalImage.get("source");
+            }
 
             text = (String) jsonObject.get("extract");
         } catch (IOException | ParseException e) {
@@ -60,8 +66,8 @@ public class JWiki {
      * @return displayTitle
      */
     public String getDisplayTitle() {
-        String s = displayTitle.replaceAll("<i>", "").replaceAll("</i>", "");
-        return s;
+        String title = displayTitle.replaceAll("<i>", "").replaceAll("</i>", "");
+        return title;
     }
 
     /**
@@ -70,9 +76,14 @@ public class JWiki {
      * @return icon
      */
     public ImageIcon getImage() throws IOException {
-        URL url = new URL(imageURL);
-        BufferedImage c = ImageIO.read(url);
-        return new ImageIcon(c);
+
+        if (hasImage) {
+            URL url = new URL(imageURL);
+            BufferedImage c = ImageIO.read(url);
+            return new ImageIcon(c);
+        } else {
+            return new ImageIcon("./images/plant.jpg");
+        }
     }
 
     /**

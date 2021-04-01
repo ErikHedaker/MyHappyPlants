@@ -16,7 +16,6 @@ public class PlantPanel extends JPanel {
     public PlantPanel(Plant plant) {
         this.plant = plant;
         setLayout(new GridLayout(2,1,0,0));
-
         JLabel label = new JLabel(Utilities.centerText("Watering Status", 0));
         label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
@@ -47,7 +46,7 @@ public class PlantPanel extends JPanel {
             graphics2D.drawRoundRect(120, 45, x, 20, 15, 15);
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
-            icon = new ImageIcon("files/icon.jpg");
+            icon = new ImageIcon("./images/logo-happy.png");
         }
         graphics2D.drawImage(icon.getImage(), 05, 05, 105, 100, null);
 

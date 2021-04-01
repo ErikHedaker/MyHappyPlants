@@ -4,6 +4,7 @@ import model.Database;
 import model.JWiki;
 import model.Plant;
 import model.Profile;
+import view.MainFrame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,12 +21,13 @@ public class Controller {
     public static Controller getInstance() {
         if (controller == null) {
             controller = new Controller();
+            new MainFrame();
         }
         return controller;
     }
 
     public ArrayList<Plant> getPlantList() {
-        Profile profile = database.getProfileByName( "Erik" );
+        Profile profile = database.getProfileByName("Erik");
         ArrayList<Plant> plants = profile.getPlants();
         for (Plant plant : plants) {
             JWiki wiki = new JWiki(plant.getNameWiki());
