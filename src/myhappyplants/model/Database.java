@@ -1,4 +1,4 @@
-package model;
+package myhappyplants.model;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class Database
 {
-    private final static String connectionURL =
+    private final String connectionURL =
         "jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass";
 
-    public static ArrayList<String> GetAllProfileNames()
+    public ArrayList<String> getAllProfileNames()
     {
         final String SQL = "SELECT name FROM profile";
         ArrayList<String> names = new ArrayList<>(  );
@@ -31,7 +31,7 @@ public class Database
         return names;
     }
 
-    public static ArrayList<Plant> GetPlantsForProfile( String name )
+    public ArrayList<Plant> getPlantsForProfile( String name )
     {
         final String SQL =
             "SELECT * " +
@@ -56,7 +56,7 @@ public class Database
                     plant.setNameAlias( resultSet.getString( "name_alias" ) );
                     plant.setNameWiki( resultSet.getString( "name_wiki" ) );
                     plant.setHoursBetweenWatering( resultSet.getInt( "hours_between_watering" ) );
-                    plant.setWateringHappenedLast( resultSet.getObject( "recent", LocalDateTime.class ) );
+                    plant.setLastTimeWatered( resultSet.getObject( "recent", LocalDateTime.class ) );
                     plants.add( plant );
                 }
 
@@ -74,9 +74,9 @@ public class Database
         return plants;
     }
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
-        Profile profile = new Profile("Erik", GetPlantsForProfile( "Erik" ));
+        Profile profile = new Profile("Erik", getPlantsForProfile( "Erik" ));
         System.out.println( profile );
-    }
+    }*/
 }

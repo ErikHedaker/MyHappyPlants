@@ -1,4 +1,4 @@
-package com.company;
+package myhappyplants.model;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

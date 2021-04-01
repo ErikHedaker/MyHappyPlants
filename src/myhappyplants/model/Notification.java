@@ -1,4 +1,4 @@
-package com.company;
+package myhappyplants.model;
 
 import javax.swing.*;
 import java.awt.*;

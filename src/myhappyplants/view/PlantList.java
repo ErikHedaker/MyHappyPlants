@@ -1,4 +1,7 @@
-package com.company;
+package myhappyplants.view;
+
+import myhappyplants.model.Plant;
+import myhappyplants.view.panels.PlantPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +20,7 @@ public class PlantList implements PropertyChangeListener {
             JPanel panel = new JPanel(new GridLayout(2,1,0,0));
 
             panel.setBackground(Color.white);
-            JLabel label = new JLabel(plant.getDaysLeft() != 0 ? " Happy " + plant.getName() : " Sad " + plant.getName());
+            JLabel label = new JLabel((plant.getHoursBetweenWatering() != 0 ? " Happy " : " Sad ") + plant.getNameAlias());
             label.setFont(new Font("Times New Roman", Font.BOLD + Font.HANGING_BASELINE, 30));
             panel.add(label);
 

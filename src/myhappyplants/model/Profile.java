@@ -1,4 +1,4 @@
-package model;
+package myhappyplants.model;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,10 @@ public class Profile
     public void setPlants( ArrayList<Plant> plants )
     {
         this.plants = plants;
+    }
+
+    public ArrayList<Plant> getPlants() {
+        return plants;
     }
 
     @Override
