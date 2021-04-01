@@ -17,7 +17,7 @@ public class Main {
 
         JPanel panel = new JPanel(new BorderLayout());
 
-        Profile profile = new Profile("Erik", database.getPlantsForProfile( "Erik" ));
+        Profile profile = database.getProfileByName( "Erik" );
 
         new PlantList(profile.getPlants(), panel);
 

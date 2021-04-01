@@ -30,15 +30,48 @@ public class Database
 
         return names;
     }
-
-    public ArrayList<Plant> getPlantsForProfile( String name )
+    public Profile getProfileByName( String name )
     {
         final String SQL =
-            "SELECT * " +
+            "SELECT id, name " +
+            "FROM profile " +
+            "WHERE profile.name = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setString( 1, name );
+
+            try( ResultSet resultSet = preparedStatement.executeQuery( ) )
+            {
+                if( resultSet.next() )
+                {
+                    return new Profile(
+                            resultSet.getString( "name" ),
+                            getPlantsByProfileName( resultSet.getString( "name" ) )
+                    );
+                }
+            }
+            catch( SQLException e )
+            {
+                e.printStackTrace( );
+            }
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+
+        return null;
+    }
+    public ArrayList<Plant> getPlantsByProfileName( String name )
+    {
+        final String SQL =
+            "SELECT name_alias, name_wiki, hours_between_watering, last_time_watered " +
             "FROM plant " +
             "JOIN profile " +
             "ON profile.id = plant.profile_id " +
-            "JOIN RecentWatering() AS recent_watering " +
+            "LEFT JOIN RecentWatering() AS recent_watering " +
             "ON plant.id = recent_watering.plant_id " +
             "WHERE profile.name = ?";
         ArrayList<Plant> plants = new ArrayList<>(  );
@@ -56,7 +89,7 @@ public class Database
                     plant.setNameAlias( resultSet.getString( "name_alias" ) );
                     plant.setNameWiki( resultSet.getString( "name_wiki" ) );
                     plant.setHoursBetweenWatering( resultSet.getInt( "hours_between_watering" ) );
-                    plant.setLastTimeWatered( resultSet.getObject( "recent", LocalDateTime.class ) );
+                    plant.setLastTimeWatered( resultSet.getObject( "last_time_watered", LocalDateTime.class ) );
                     plants.add( plant );
                 }
 
@@ -73,10 +106,52 @@ public class Database
 
         return plants;
     }
-
-    /*public static void main(String[] args)
+    public void insertPlant( Plant plant, String name )
     {
-        Profile profile = new Profile("Erik", getPlantsForProfile( "Erik" ));
+        final String SQL =
+            "INSERT INTO plant (name_alias, name_wiki, profile_id, hours_between_watering)" +
+            "SELECT ?, ?, profile.id, ? " +
+            "FROM profile " +
+            "WHERE profile.name = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setString( 1, plant.getNameAlias() );
+            preparedStatement.setString( 2, plant.getNameWiki() );
+            preparedStatement.setInt( 3, plant.getHoursBetweenWatering() );
+            preparedStatement.setString( 4, name );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+    public void insertProfile( String name )
+    {
+        final String SQL =
+            "INSERT INTO profile (name)" +
+            "VALUES (?)";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setString( 1, name );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+
+    public static void main(String[] args)
+    {
+        // Används för att testa databas metoder utan GUI
+
+        Database database = new Database();
+        Profile profile = database.getProfileByName( "Erik" );
         System.out.println( profile );
-    }*/
+    }
 }
