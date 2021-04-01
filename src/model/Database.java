@@ -109,6 +109,23 @@ public class Database
 
         return plants;
     }
+    public void waterPlant( int id )
+    {
+        final String SQL =
+            "INSERT INTO watering (plant_id)" +
+            "VALUES (?)";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, id );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
     public void insertPlant( Plant plant, int profileID )
     {
         final String SQL =
@@ -121,7 +138,7 @@ public class Database
             preparedStatement.setString( 1, plant.getNameAlias() );
             preparedStatement.setString( 2, plant.getNameWiki() );
             preparedStatement.setInt( 3, profileID );
-            preparedStatement.setInt( 3, plant.getHoursBetweenWatering() );
+            preparedStatement.setInt( 4, plant.getHoursBetweenWatering() );
             preparedStatement.executeUpdate();
         }
         catch( SQLException e )
