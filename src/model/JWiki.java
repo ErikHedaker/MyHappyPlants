@@ -1,4 +1,4 @@
-package myhappyplants.model;
+package model;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;

@@ -1,4 +1,4 @@
-package myhappyplants.model;
+package model;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
-package myhappyplants.controller;
+package controller;
 
-import myhappyplants.model.Database;
+import model.Database;
 
 public class Controller {
 
