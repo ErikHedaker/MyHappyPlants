@@ -22,7 +22,6 @@ public class Main {
 
         new PlantList(profile.getPlants(), panel);
 
-
         frame.add(panel);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
