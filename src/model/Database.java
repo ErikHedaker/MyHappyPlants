@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Database
@@ -33,26 +34,36 @@ public class Database
     public static ArrayList<Plant> GetPlantsForProfile( String name )
     {
         final String SQL =
-                "SELECT * " +
-                "FROM plant " +
-                "JOIN profile " +
-                "ON profile.id=plant.profile_id " +
-                "WHERE profile.name='" + name + "'";
+            "SELECT * " +
+            "FROM plant " +
+            "JOIN profile " +
+            "ON profile.id = plant.profile_id " +
+            "JOIN RecentWatering() AS recent_watering " +
+            "ON plant.id = recent_watering.plant_id " +
+            "WHERE profile.name = ?";
         ArrayList<Plant> plants = new ArrayList<>(  );
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
-             Statement statement = connection.createStatement( );
-             ResultSet resultSet = statement.executeQuery( SQL ) )
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
         {
-            while( resultSet.next() )
+            preparedStatement.setString( 1, name );
+
+            try( ResultSet resultSet = preparedStatement.executeQuery( ) )
             {
-                Plant plant = new Plant();
-                plant.setNameAlias( resultSet.getString( "name" ) );
-                plant.setNameCommon( resultSet.getString( "name_common" ) );
-                plant.setNameScientific( resultSet.getString( "name_scientific" ) );
-                plant.setWikipediaLink( resultSet.getString( "wikipedia_link" ) );
-                plant.setDescription( resultSet.getString( "description" ) );
-                plants.add( plant );
+                while( resultSet.next() )
+                {
+                    Plant plant = new Plant();
+                    plant.setNameAlias( resultSet.getString( "name_alias" ) );
+                    plant.setNameWiki( resultSet.getString( "name_wiki" ) );
+                    plant.setHoursBetweenWatering( resultSet.getInt( "hours_between_watering" ) );
+                    plant.setWateringHappenedLast( resultSet.getObject( "recent", LocalDateTime.class ) );
+                    plants.add( plant );
+                }
+
+            }
+            catch( SQLException e )
+            {
+                e.printStackTrace( );
             }
         }
         catch( SQLException e )

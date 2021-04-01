@@ -4,50 +4,23 @@ import java.time.LocalDateTime;
 
 public class Plant
 {
-    int id;
-    String nameAlias;
-    String nameCommon;
-    String nameScientific;
-    String wikipediaLink;
-    String description;
-    Long intervalBetweenWatering;
-    LocalDateTime wateringHappenedLast;
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
+    private String nameAlias;
+    private String nameWiki;
+    private int hoursBetweenWatering;
+    private LocalDateTime wateringHappenedLast;
 
     public void setNameAlias( String nameAlias )
     {
         this.nameAlias = nameAlias;
     }
-
-    public void setNameCommon( String nameCommon )
+    public void setNameWiki( String nameWiki )
     {
-        this.nameCommon = nameCommon;
+        this.nameWiki = nameWiki;
     }
-
-    public void setNameScientific( String nameScientific )
+    public void setHoursBetweenWatering( int hoursBetweenWatering )
     {
-        this.nameScientific = nameScientific;
+        this.hoursBetweenWatering = hoursBetweenWatering;
     }
-
-    public void setWikipediaLink( String wikipediaLink )
-    {
-        this.wikipediaLink = wikipediaLink;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    public void setIntervalBetweenWatering( Long intervalBetweenWatering )
-    {
-        this.intervalBetweenWatering = intervalBetweenWatering;
-    }
-
     public void setWateringHappenedLast( LocalDateTime wateringHappenedLast )
     {
         this.wateringHappenedLast = wateringHappenedLast;
@@ -57,13 +30,9 @@ public class Plant
     public String toString( )
     {
         return "Plant{" +
-                "id=" + id +
-                ", nameAlias='" + nameAlias + '\'' +
-                ", nameCommon='" + nameCommon + '\'' +
-                ", nameScientific='" + nameScientific + '\'' +
-                ", wikipediaLink='" + wikipediaLink + '\'' +
-                ", description='" + description + '\'' +
-                ", intervalBetweenWatering=" + intervalBetweenWatering +
+                "nameAlias='" + nameAlias + '\'' +
+                ", nameWiki='" + nameWiki + '\'' +
+                ", hoursBetweenWatering=" + hoursBetweenWatering +
                 ", wateringHappenedLast=" + wateringHappenedLast +
                 '}';
     }

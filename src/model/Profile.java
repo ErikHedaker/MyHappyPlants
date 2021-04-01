@@ -9,9 +9,8 @@ public class Profile
 
     public Profile( String name )
     {
-        this.name = name;
+        this( name, null );
     }
-
     public Profile( String name, ArrayList<Plant> plants )
     {
         this.name = name;
@@ -22,7 +21,6 @@ public class Profile
     {
         this.name = name;
     }
-
     public void setPlants( ArrayList<Plant> plants )
     {
         this.plants = plants;
