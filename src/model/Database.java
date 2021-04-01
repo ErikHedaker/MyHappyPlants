@@ -37,7 +37,7 @@ public class Database
             "SELECT * " +
             "FROM plant " +
             "JOIN profile " +
-            "ON profile.id = plant.profile_id " +
+            "ON plant.profile_id = profile.id " +
             "JOIN RecentWatering() AS recent_watering " +
             "ON plant.id = recent_watering.plant_id " +
             "WHERE profile.name = ?";
@@ -74,9 +74,13 @@ public class Database
         return plants;
     }
 
+    public static Profile GetProfile( String name )
+    {
+        return new Profile( "Erik", GetPlantsForProfile( "Erik" ) );
+    }
+
     public static void main(String[] args)
     {
-        Profile profile = new Profile("Erik", GetPlantsForProfile( "Erik" ));
-        System.out.println( profile );
+        System.out.println( GetProfile( "Erik" ) );
     }
 }

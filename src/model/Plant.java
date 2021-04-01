@@ -29,11 +29,10 @@ public class Plant
     @Override
     public String toString( )
     {
-        return "Plant{" +
-                "nameAlias='" + nameAlias + '\'' +
-                ", nameWiki='" + nameWiki + '\'' +
-                ", hoursBetweenWatering=" + hoursBetweenWatering +
-                ", wateringHappenedLast=" + wateringHappenedLast +
-                '}';
+        return
+            "Plant { nameAlias = '" + nameAlias +
+            "', nameWiki = '" + nameWiki +
+            "', hoursBetweenWatering = " + hoursBetweenWatering +
+            ", wateringHappenedLast = " + wateringHappenedLast + " }";
     }
 }
