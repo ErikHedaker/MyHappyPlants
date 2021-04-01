@@ -91,8 +91,6 @@ public class Database
                     plant.setNameWiki( resultSet.getString( "name_wiki" ) );
                     plant.setHoursBetweenWatering( resultSet.getInt( "hours_between_watering" ) );
                     plant.setLastTimeWatered( resultSet.getObject( "last_time_watered", LocalDateTime.class ) );
-                    JWiki wiki = new JWiki(plant.getNameWiki());
-                    plant.setImageIcon(wiki.getImage());
                     plants.add( plant );
                 }
 
@@ -100,8 +98,6 @@ public class Database
             catch( SQLException e )
             {
                 e.printStackTrace( );
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         catch( SQLException e )
