@@ -4,33 +4,35 @@ import java.util.ArrayList;
 
 public class Profile
 {
+    private int databaseID;
     private String name;
-    private ArrayList<Plant> plants;
-
-    public Profile()
-    {
-        this( "Default", new ArrayList<>( ) );
-    }
-    public Profile( String name, ArrayList<Plant> plants )
-    {
-        this.name = name;
-        this.plants = plants;
-    }
+    private ArrayList<Plant> plants = new ArrayList<>( );
 
     public void addPlant( Plant plant )
     {
         this.plants.add( plant );
     }
 
-    public void setName( String name )
+    public Profile setDatabaseID( int databaseID )
+    {
+        this.databaseID = databaseID;
+        return this;
+    }
+    public Profile setName( String name )
     {
         this.name = name;
+        return this;
     }
-    public void setPlants( ArrayList<Plant> plants )
+    public Profile setPlants( ArrayList<Plant> plants )
     {
         this.plants = plants;
+        return this;
     }
 
+    public int getDatabaseID()
+    {
+        return databaseID;
+    }
     public String getName()
     {
         return name;
@@ -42,7 +44,7 @@ public class Profile
     @Override
     public String toString( )
     {
-        String output = name + "\n";
+        String output = name + ", id = " + databaseID + "\n";
         for( Plant plant : plants )
         {
             output += plant + "\n";

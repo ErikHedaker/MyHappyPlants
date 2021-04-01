@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class Plant
 {
+    private int databaseID;
     private String nameAlias;
     private String nameWiki;
     private int hoursBetweenWatering;
@@ -12,6 +13,11 @@ public class Plant
     private ImageIcon imageIcon;
     private String description;
 
+    public Plant setDatabaseID( int databaseID )
+    {
+        this.databaseID = databaseID;
+        return this;
+    }
     public Plant setNameAlias( String nameAlias )
     {
         this.nameAlias = nameAlias;
@@ -41,6 +47,10 @@ public class Plant
         return this;
     }
 
+    public int getDatabaseID()
+    {
+        return databaseID;
+    }
     public String getNameAlias() {
         return nameAlias;
     }
@@ -64,7 +74,8 @@ public class Plant
     public String toString( )
     {
         return
-            "Plant { nameAlias = '" + nameAlias +
+            "Plant { databaseID = " + databaseID +
+            ", nameAlias = '" + nameAlias +
             "', nameWiki = '" + nameWiki +
             "', hoursBetweenWatering = " + hoursBetweenWatering +
             ", lastTimeWatered = " + lastTimeWatered + " }";
