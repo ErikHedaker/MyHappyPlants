@@ -146,6 +146,80 @@ public class Database
             e.printStackTrace( );
         }
     }
+    public void updatePlant( Plant plant )
+    {
+        final String SQL =
+            "UPDATE plant " +
+            "SET name_alias = ?, name_wiki = ?, hours_between_watering = ?" +
+            "WHERE id = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setString( 1, plant.getNameAlias() );
+            preparedStatement.setString( 2, plant.getNameWiki() );
+            preparedStatement.setInt( 3, plant.getHoursBetweenWatering() );
+            preparedStatement.setInt( 4, plant.getDatabaseID() );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+    public void updateProfile( Profile profile )
+    {
+        final String SQL =
+            "UPDATE profile " +
+            "SET name = ? " +
+            "WHERE id = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setString( 1, profile.getName() );
+            preparedStatement.setInt( 2, profile.getDatabaseID() );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+    public void deletePlant( int id )
+    {
+        final String SQL =
+            "DELETE FROM plant " +
+            "WHERE id = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, id );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+    public void deleteProfile( int id )
+    {
+        final String SQL =
+            "DELETE FROM profile " +
+            "WHERE id = ?";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, id );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
 
     public static void main(String[] args)
     {
