@@ -1,7 +1,7 @@
-package myhappyplants.view.panels;
+package view.panels;
 
-import myhappyplants.view.Utilities;
-import myhappyplants.model.Plant;
+import view.Utilities;
+import model.Plant;
 
 import javax.swing.*;
 import java.awt.*;

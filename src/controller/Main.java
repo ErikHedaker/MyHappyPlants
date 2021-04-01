@@ -1,12 +1,11 @@
-package myhappyplants.controller;
+package controller;
 
-import myhappyplants.model.*;
-import myhappyplants.view.PlantList;
+import model.*;
+import view.PlantList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -18,7 +17,7 @@ public class Main {
 
         JPanel panel = new JPanel(new BorderLayout());
 
-        Profile profile = new Profile("Erik", database.getPlantsForProfile( "Erik" ));
+        Profile profile = database.getProfileByName( "Erik" );
 
         new PlantList(profile.getPlants(), panel);
 

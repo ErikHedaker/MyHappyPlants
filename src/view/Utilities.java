@@ -1,4 +1,4 @@
-package myhappyplants.view;
+package view;
 
 public class Utilities {
 

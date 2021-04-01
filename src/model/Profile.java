@@ -1,20 +1,25 @@
-package myhappyplants.model;
+package model;
 
 import java.util.ArrayList;
 
 public class Profile
 {
-    String name;
-    ArrayList<Plant> plants;
+    private String name;
+    private ArrayList<Plant> plants;
 
-    public Profile( String name )
+    public Profile()
     {
-        this( name, null );
+        this( "Default", new ArrayList<>( ) );
     }
     public Profile( String name, ArrayList<Plant> plants )
     {
         this.name = name;
         this.plants = plants;
+    }
+
+    public void addPlant( Plant plant )
+    {
+        this.plants.add( plant );
     }
 
     public void setName( String name )
@@ -26,6 +31,10 @@ public class Profile
         this.plants = plants;
     }
 
+    public String getName()
+    {
+        return name;
+    }
     public ArrayList<Plant> getPlants() {
         return plants;
     }
