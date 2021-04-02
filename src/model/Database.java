@@ -126,27 +126,41 @@ public class Database
             e.printStackTrace( );
         }
     }
-    public void insertPlant( Plant plant, int profileID )
+    public int insertPlant( Plant plant, int profileID )
     {
         final String SQL =
             "INSERT INTO plant (name_alias, name_wiki, profile_id, hours_between_watering)" +
             "VALUES (?, ?, ?, ?)";
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
-             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL, PreparedStatement.RETURN_GENERATED_KEYS ) )
         {
             preparedStatement.setString( 1, plant.getNameAlias() );
             preparedStatement.setString( 2, plant.getNameWiki() );
             preparedStatement.setInt( 3, profileID );
             preparedStatement.setInt( 4, plant.getHoursBetweenWatering() );
             preparedStatement.executeUpdate();
+
+            try( ResultSet resultSet = preparedStatement.getGeneratedKeys() )
+            {
+                if( resultSet.next() )
+                {
+                    return resultSet.getInt( 1 );
+                }
+            }
+            catch( SQLException e )
+            {
+                e.printStackTrace( );
+            }
         }
         catch( SQLException e )
         {
             e.printStackTrace( );
         }
+
+        return -1;
     }
-    public void insertProfile( String name )
+    public int insertProfile( String name )
     {
         final String SQL =
             "INSERT INTO profile (name)" +
@@ -157,11 +171,25 @@ public class Database
         {
             preparedStatement.setString( 1, name );
             preparedStatement.executeUpdate();
+
+            try( ResultSet resultSet = preparedStatement.getGeneratedKeys() )
+            {
+                if( resultSet.next() )
+                {
+                    return resultSet.getInt( 1 );
+                }
+            }
+            catch( SQLException e )
+            {
+                e.printStackTrace( );
+            }
         }
         catch( SQLException e )
         {
             e.printStackTrace( );
         }
+
+        return -1;
     }
     public void updatePlant( Plant plant )
     {
