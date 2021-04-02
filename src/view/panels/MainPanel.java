@@ -19,6 +19,7 @@ public class MainPanel extends JPanel {
         setLayout(new BorderLayout());
         createNorthPanel();
         createCenterPanel();
+        createSouthPanel();
         setCardLayout("plant_list");
     }
 
@@ -41,7 +42,6 @@ public class MainPanel extends JPanel {
         JPanel southHeader = new JPanel(new BorderLayout());
         southHeader.setPreferredSize(new Dimension(1500, 50));
         southHeader.setBackground(new Color(173, 193, 124));
-
         JLabel logoLabel1 = new JLabel();
         logoLabel1.setIcon(new ImageIcon(scaledInstance));
         Border margin1 = new EmptyBorder(0,85,115,0);
@@ -58,13 +58,14 @@ public class MainPanel extends JPanel {
         Image scaledSearch1Instance = search1Icon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
 
         btn.setIcon(new ImageIcon(scaledSearchInstance));
+        btn.setRolloverIcon(new ImageIcon(scaledSearch1Instance));
+        btn.setPressedIcon(new ImageIcon(scaledSearch1Instance));
         btn.setHorizontalTextPosition(2);
         btn.setIconTextGap(20);
         btn.setText("Search");
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setForeground(Color.white);
         btn.setFont(new Font("Times New Roman", Font.BOLD + Font.PLAIN, 30));
-        btn.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.BLACK));
-        btn.setRolloverIcon(new ImageIcon(scaledSearch1Instance));
         btn.setBorder(null);
         btn.setBackground(new Color(176, 194, 147));
         searchPanel.add(btn);
@@ -84,12 +85,24 @@ public class MainPanel extends JPanel {
 
         JPanel panelPlantList = new JPanel(new BorderLayout());
         Controller controller = Controller.getInstance();
-
         new PlantList(controller.getPlantList(), panelPlantList);
 
         panelCenter.add(panelPlantList, "plant_list");
 
-        add(panelCenter, BorderLayout.SOUTH);
+        add(panelCenter, BorderLayout.CENTER);
+    }
+
+    public void createSouthPanel() {
+        JPanel panelSouth = new JPanel(new BorderLayout());
+
+        panelSouth.setBackground(new Color(220, 229, 185));
+        panelSouth.setPreferredSize(new Dimension(1500, 50));
+
+        JLabel label = new JLabel("MyHappyPlants - Team 24 (Sys) \u00A9");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        panelSouth.add(label);
+
+        add(panelSouth, BorderLayout.SOUTH);
     }
 
     public void setCardLayout(String constraint) {
