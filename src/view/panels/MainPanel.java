@@ -44,11 +44,33 @@ public class MainPanel extends JPanel {
 
         JLabel logoLabel1 = new JLabel();
         logoLabel1.setIcon(new ImageIcon(scaledInstance));
-        logoLabel1.setBorder(new CompoundBorder(border, margin));
-        southHeader.add(logoLabel1, BorderLayout.SOUTH);
+        Border margin1 = new EmptyBorder(0,85,115,0);
+        logoLabel1.setBorder(new CompoundBorder(border, margin1));
+        southHeader.add(logoLabel1);
 
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBackground(new Color(173, 193, 124));
         JButton btn = new JButton();
-        btn.setIcon(new ImageIcon("./images/logo-happy.png"));
+
+        ImageIcon searchIcon = new ImageIcon("./images/search.png");
+        Image scaledSearchInstance = searchIcon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
+        ImageIcon search1Icon = new ImageIcon("./images/search-hover.png");
+        Image scaledSearch1Instance = search1Icon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
+
+        btn.setIcon(new ImageIcon(scaledSearchInstance));
+        btn.setHorizontalTextPosition(2);
+        btn.setIconTextGap(20);
+        btn.setText("Search");
+        btn.setForeground(Color.white);
+        btn.setFont(new Font("Times New Roman", Font.BOLD + Font.PLAIN, 30));
+        btn.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.BLACK));
+        btn.setRolloverIcon(new ImageIcon(scaledSearch1Instance));
+        btn.setBorder(null);
+        btn.setBackground(new Color(176, 194, 147));
+        searchPanel.add(btn);
+        Border margin2 = new EmptyBorder(0,0,0,85);
+        searchPanel.setBorder(new CompoundBorder(searchPanel.getBorder(), margin2));
+        southHeader.add(searchPanel, BorderLayout.EAST);
 
         panelNorth.add(northHeader, BorderLayout.NORTH);
         panelNorth.add(southHeader, BorderLayout.SOUTH);
