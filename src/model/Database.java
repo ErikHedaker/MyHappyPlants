@@ -344,7 +344,7 @@ public class Database
 
     /**
      * Gets the image for a plant from the database
-     * @param   plantID     The id of the plant that gets removed
+     * @param   plantID     The id of the plant
      */
     public byte[] getPlantImageRaw( int plantID )
     {
@@ -380,7 +380,7 @@ public class Database
 
     /**
      * Adds or updates the image for a plant in the database
-     * @param   plantID     The id of the plant that gets added or updated
+     * @param   plantID     The id of the plant
      */
     public void upsertPlantImageRaw( byte[] imageData, int plantID )
     {
