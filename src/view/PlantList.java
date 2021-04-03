@@ -4,9 +4,6 @@ import model.Plant;
 import view.panels.PlantPanel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,6 +13,8 @@ public class PlantList implements PropertyChangeListener {
 
     private ArrayList<JPanel> panels = new ArrayList<>();
     private JPanel container;
+    private PlantPanel plantPanel;
+    private ArrayList<PlantPanel> plantPanels = new ArrayList<>();
 
     public PlantList(ArrayList<Plant> plants, JPanel container) {
         this.container = container;
@@ -26,13 +25,18 @@ public class PlantList implements PropertyChangeListener {
             label.setFont(new Font("Garamond", Font.PLAIN, 30));
             panel.add(label);
 
-            PlantPanel flowerPanel = new PlantPanel(plant);
-            flowerPanel.addListener(this);
-
-            panel.add(flowerPanel);
+            plantPanel = new PlantPanel(plant);
+            plantPanels.add(plantPanel);
+            plantPanel.addListener(this);
+            panel.add(plantPanel);
             panels.add(panel);
-            showItemList(panels, container);
+
         }
+        showItemList(panels, container);
+    }
+
+    public ArrayList<PlantPanel> getPlantPanels() {
+        return plantPanels;
     }
 
     private void showItemList(ArrayList<JPanel> paneList, JPanel container) {
@@ -43,7 +47,6 @@ public class PlantList implements PropertyChangeListener {
         for (JPanel pane: paneList) {
             pane.setBorder(BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
             model.addElement(pane);
-
         }
         JList list = new JList(model);
         list.setBorder(BorderFactory.createLineBorder(Color.white, 30));

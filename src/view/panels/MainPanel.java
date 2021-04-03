@@ -9,11 +9,14 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class MainPanel extends JPanel {
     private Controller controllerRef;
     private CardLayout cardLayout;
     private JPanel panelCenter;
+    private PlantList plantList;
 
     public MainPanel(Controller controllerRef) {
         this.controllerRef = controllerRef;
@@ -21,6 +24,7 @@ public class MainPanel extends JPanel {
         createNorthPanel();
         createCenterPanel();
         createSouthPanel();
+        setCardLayout("signIn");
     }
 
     public void createNorthPanel() {
@@ -82,14 +86,18 @@ public class MainPanel extends JPanel {
     public void createCenterPanel() {
         cardLayout = new CardLayout();
         panelCenter = new JPanel(cardLayout);
-
         JPanel panelPlantList = new JPanel(new BorderLayout());
-        new PlantList(controllerRef.getPlantList(), panelPlantList);
-
-        panelCenter.add(panelPlantList, "plant_list");
-
+        plantList = new PlantList(controllerRef.getPlantList(), panelPlantList);
+        JPanel loginPanel = new LoginPanel(controllerRef);
+        panelCenter.add(panelPlantList, "plantList");
+        panelCenter.add(loginPanel, "signIn");
         add(panelCenter, BorderLayout.CENTER);
     }
+
+    public PlantList getPlantList() {
+        return plantList;
+    }
+
 
     public void createSouthPanel() {
         JPanel panelSouth = new JPanel(new BorderLayout());
@@ -100,7 +108,6 @@ public class MainPanel extends JPanel {
         JLabel label = new JLabel("MyHappyPlants - Team 24 (Sys) \u00A9");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panelSouth.add(label);
-
         add(panelSouth, BorderLayout.SOUTH);
     }
 

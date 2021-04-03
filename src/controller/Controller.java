@@ -5,6 +5,7 @@ import model.JWiki;
 import model.Plant;
 import model.Profile;
 import view.MainFrame;
+import view.panels.PlantPanel;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -12,11 +13,11 @@ import java.util.ArrayList;
 
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes)
- * @author      Erik Hedåker, Victor Johansson
+ * @author      Erik Hedåker, ViKtor Johansson
  */
 public class Controller
 {
-    private MainFrame mainFrame;
+    private MainFrame view;
     private Database database;
     private Profile activeProfile;
 
@@ -29,12 +30,26 @@ public class Controller
         //upsertPlantImagesFromWikipediaToDatabase( );
         loadPlantImagesFromDatabase( );
 
-        this.mainFrame = new MainFrame( this );
+        view = new MainFrame( this );
     }
 
     public ArrayList<Plant> getPlantList( )
     {
         return activeProfile.getPlants( );
+    }
+
+    public void buttonPushed(String button) {
+        switch (button) {
+            case "signIn":
+                view.setCardLayout("signIn");
+                break;
+            case "plantList":
+                view.setCardLayout("plantList");
+                for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
+                    panel.getLoadingThread().start();
+                }
+                break;
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ public class PlantPanel extends JPanel {
 
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private Thread loadingThread = new Thread(new Loading());
 
     public PlantPanel(Plant plant) {
         this.plant = plant;
@@ -26,7 +27,10 @@ public class PlantPanel extends JPanel {
         label.setBackground(null);
         add(label);
         add(label1);
-        new Inner().start();
+    }
+
+    public Thread getLoadingThread() {
+        return loadingThread;
     }
 
     public void addListener(PropertyChangeListener listener) {
@@ -53,7 +57,7 @@ public class PlantPanel extends JPanel {
     }
 
 
-    class Inner extends Thread {
+    class Loading implements Runnable {
         @Override
         public void run() {
             while (true) {
