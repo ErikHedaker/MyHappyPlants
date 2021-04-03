@@ -1,6 +1,5 @@
 package model;
 
-import java.security.UnresolvedPermission;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class Database
     {
         this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
     }
+
 
     public ArrayList<String> getAllProfileNames()
     {
