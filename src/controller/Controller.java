@@ -13,7 +13,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
- * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes)
+ * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
+ * and does necessary calculations that fall outside of a specific model's area of expertise.
  * @author      Victor Johansson, Erik Hedåker
  */
 public class Controller
@@ -31,10 +32,15 @@ public class Controller
         //upsertPlantImagesFromWikipediaToDatabase( );
         System.out.println( "OBS: Metoden loadPlantImagesFromDatabase tar lång tid att hämta bilder från databasen, do not be alarmed." );
         loadPlantImagesFromDatabase( );
+        //Kanske göra async???
 
         this.mainFrame = new MainFrame( this );
     }
 
+    /**
+     * Getter method for the active profile's list of plants
+     * @return          an ArrayList of Plants
+     */
     public ArrayList<Plant> getPlantList( )
     {
         return activeProfile.getPlants( );
@@ -80,11 +86,22 @@ public class Controller
         return new ImageIcon( database.getPlantImageRaw( plantID ) );
     }
 
+    /**
+     * Calculates the amount of hours left from when the plant has to be watered, using difference between
+     * the current date and the method getNextWateringDate
+     * @param   plant   a specific Plant from the list of plants that the active profile has
+     * @return          the amount of hours left
+     */
     public long getNextWateringCountdown( Plant plant )
     {
         return ChronoUnit.HOURS.between( LocalDateTime.now(), getNextWateringDate( plant ) );
     }
 
+    /**
+     * Calculates the next date for when the plant has to be watered, using the attributes from the plant
+     * @param   plant   a specific Plant from the list of plants that the active profile has
+     * @return          a LocalDateTime which is the specific date in the future when the plant has to be watered
+     */
     public LocalDateTime getNextWateringDate( Plant plant )
     {
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
