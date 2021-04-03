@@ -9,6 +9,8 @@ import view.panels.PlantPanel;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +30,7 @@ public class Controller
 
         //Temporary methods, takes a lot of time and should be replaced later
         //upsertPlantImagesFromWikipediaToDatabase( );
+        System.out.println( "OBS: Metoden loadPlantImagesFromDatabase tar lång tid att hämta bilder från databasen, do not be alarmed." );
         loadPlantImagesFromDatabase( );
 
         view = new MainFrame( this );
@@ -90,5 +93,15 @@ public class Controller
     public ImageIcon getPlantImageIcon( int plantID )
     {
         return new ImageIcon( database.getPlantImageRaw( plantID ) );
+    }
+
+    public long getNextWateringCountdown( Plant plant )
+    {
+        return ChronoUnit.HOURS.between( LocalDateTime.now(), getNextWateringDate( plant ) );
+    }
+
+    public LocalDateTime getNextWateringDate( Plant plant )
+    {
+        return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }
 }
