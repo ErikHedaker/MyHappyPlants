@@ -11,11 +11,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
-
+    private Controller controllerRef;
     private CardLayout cardLayout;
     private JPanel panelCenter;
 
-    public MainPanel() {
+    public MainPanel(Controller controllerRef) {
+        this.controllerRef = controllerRef;
         setLayout(new BorderLayout());
         createNorthPanel();
         createCenterPanel();
@@ -84,8 +85,7 @@ public class MainPanel extends JPanel {
         panelCenter = new JPanel(cardLayout);
 
         JPanel panelPlantList = new JPanel(new BorderLayout());
-        Controller controller = Controller.getInstance();
-        new PlantList(controller.getPlantList(), panelPlantList);
+        new PlantList(controllerRef.getPlantList(), panelPlantList);
 
         panelCenter.add(panelPlantList, "plant_list");
 
