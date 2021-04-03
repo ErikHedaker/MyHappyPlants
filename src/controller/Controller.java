@@ -8,6 +8,8 @@ import view.MainFrame;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -75,5 +77,15 @@ public class Controller
     public ImageIcon getPlantImageIcon( int plantID )
     {
         return new ImageIcon( database.getPlantImageRaw( plantID ) );
+    }
+
+    public long getNextWateringCountdown( Plant plant )
+    {
+        return ChronoUnit.HOURS.between( LocalDateTime.now(), getNextWateringDate( plant ) );
+    }
+
+    public LocalDateTime getNextWateringDate( Plant plant )
+    {
+        return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }
 }
