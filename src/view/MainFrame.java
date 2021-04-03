@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import view.panels.MainPanel;
 
 import javax.swing.*;

@@ -20,7 +20,6 @@ public class MainPanel extends JPanel {
         createNorthPanel();
         createCenterPanel();
         createSouthPanel();
-        setCardLayout("plant_list");
     }
 
     public void createNorthPanel() {

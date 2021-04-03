@@ -24,8 +24,6 @@ public class PlantList implements PropertyChangeListener {
             panel.setBackground(Color.white);
             JLabel label = new JLabel((plant.getHoursBetweenWatering() != 0 ? " Happy " : " Sad ") + plant.getNameAlias());
             label.setFont(new Font("Garamond", Font.PLAIN, 30));
-            Border margin = new EmptyBorder(0,115,0,0);
-            label.setBorder(new CompoundBorder(label.getBorder(), margin));
             panel.add(label);
 
             PlantPanel flowerPanel = new PlantPanel(plant);
