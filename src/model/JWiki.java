@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -84,6 +85,24 @@ public class JWiki {
         } else {
             return new ImageIcon("./images/plant.jpg");
         }
+    }
+
+
+    /**
+     * Attempts to get the raw image data from wikipedia (does not work atm)
+     * @author          Erik Hedåker
+     * @return          an array of bytes that contain the raw data of an image
+     */
+    public byte[] getImageRaw() throws IOException
+    {
+        String extension = imageURL.substring( 1 + imageURL.lastIndexOf( "." ) );
+        BufferedImage image = ImageIO.read( new URL( imageURL ) );
+        ByteArrayOutputStream baoStream = new ByteArrayOutputStream();
+        ImageIO.write( image, extension, baoStream );
+        baoStream.flush();
+        byte[] imageRaw = baoStream.toByteArray();
+        baoStream.close();
+        return imageRaw;
     }
 
     /**

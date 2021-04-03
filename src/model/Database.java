@@ -1,13 +1,26 @@
 package model;
 
+import java.security.UnresolvedPermission;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * The Database class which handles all queries to a PostgreSQL database
+ * @author      Erik Hedåker
+ */
 public class Database
 {
-    private final String connectionURL =
-        "jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass";
+    private final String connectionURL;
+
+    public Database( String connectionURL )
+    {
+        this.connectionURL = connectionURL;
+    }
+    public Database( )
+    {
+        this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
+    }
 
     public ArrayList<String> getAllProfileNames()
     {
@@ -109,7 +122,8 @@ public class Database
 
         return plants;
     }
-    public void waterPlant( int id )
+
+    public void waterPlant( int plantID )
     {
         final String SQL =
             "INSERT INTO watering (plant_id)" +
@@ -118,7 +132,7 @@ public class Database
         try( Connection connection = DriverManager.getConnection( connectionURL );
              PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
         {
-            preparedStatement.setInt( 1, id );
+            preparedStatement.setInt( 1, plantID );
             preparedStatement.executeUpdate();
         }
         catch( SQLException e )
@@ -126,6 +140,26 @@ public class Database
             e.printStackTrace( );
         }
     }
+    /*
+    public void waterPlant( int plantID, LocalDateTime happened )
+    {
+        final String SQL =
+            "INSERT INTO watering (plant_id, happened)" +
+            "VALUES (?, ?)";
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, plantID );
+            preparedStatement.setObject( 2, happened );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
+    */
     public int insertPlant( Plant plant, int profileID )
     {
         final String SQL =
@@ -265,6 +299,68 @@ public class Database
             e.printStackTrace( );
         }
     }
+    public byte[] getPlantImageRaw( int plantID )
+    {
+        final String SQL =
+            "SELECT raw_data " +
+            "FROM plant_image " +
+            "WHERE plant_id = ?";
+        System.out.println( "OBS: getPlantImageRaw TAR AS LÅNG TID ATT UTFÖRA!" );
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, plantID );
+
+            try( ResultSet resultSet = preparedStatement.executeQuery( ) )
+            {
+                if( resultSet.next() )
+                {
+                    return resultSet.getBytes( "raw_data" );
+                }
+            }
+            catch( SQLException e )
+            {
+                e.printStackTrace( );
+            }
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+
+        return null;
+    }
+
+    /**
+     * Insert or update the table holding image data for plants
+     * @author          Erik Hedåker
+     * @param   plantID integer representing a unique id required for database lookup
+     */
+    public void upsertPlantImageRaw( byte[] imageData, int plantID )
+    {
+        final String SQL =
+            "INSERT INTO plant_image (plant_id, raw_data) " +
+            "VALUES (?, ?) " +
+            "ON CONFLICT (plant_id) DO UPDATE " +
+            "SET raw_data = ? " +
+            "WHERE excluded.plant_id = ?";
+        System.out.println( "OBS: upsertPlantImageRaw TAR AS LÅNG TID ATT UTFÖRA!" );
+
+        try( Connection connection = DriverManager.getConnection( connectionURL );
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+        {
+            preparedStatement.setInt( 1, plantID );
+            preparedStatement.setBytes( 2, imageData );
+            preparedStatement.setBytes( 3, imageData );
+            preparedStatement.setInt( 4, plantID );
+            preparedStatement.executeUpdate();
+        }
+        catch( SQLException e )
+        {
+            e.printStackTrace( );
+        }
+    }
 
     public static void main(String[] args)
     {
@@ -272,6 +368,15 @@ public class Database
 
         Database database = new Database();
         Profile profile = database.getProfileByName( "Erik" );
+
+        /*
+        int id = database.insertPlant( new Plant().setNameWiki( "Cactus" ).setNameAlias( "Aj" ), profile.getDatabaseID() );
+        LocalDateTime time = LocalDateTime.parse( "2017-02-03T10:30:20" );
+        database.waterPlant( id, null );
+        profile = database.getProfileByName( "Erik" );
+        */
+
+
         System.out.println( profile );
     }
 }
