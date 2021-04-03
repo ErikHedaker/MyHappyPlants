@@ -7,8 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame {
-
-    public MainFrame() {
+    Controller controllerRef;
+    public MainFrame( Controller controllerRef ) {
+        this.controllerRef = controllerRef;
         setupFrame();
     }
 
@@ -16,10 +17,11 @@ public class MainFrame {
         JFrame frame = new JFrame("My Happy Plants");
 
 
-        MainPanel mainPanel = new MainPanel();
+        MainPanel mainPanel = new MainPanel(controllerRef);
         frame.add(mainPanel, BorderLayout.NORTH);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
