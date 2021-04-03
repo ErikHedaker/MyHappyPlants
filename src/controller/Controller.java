@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes)
- * @author      Erik Hedåker, Victor Johansson
+ * @author      Victor Johansson, Erik Hedåker
  */
 public class Controller
 {
@@ -29,6 +29,7 @@ public class Controller
 
         //Temporary methods, takes a lot of time and should be replaced later
         //upsertPlantImagesFromWikipediaToDatabase( );
+        System.out.println( "OBS: Metoden loadPlantImagesFromDatabase tar lång tid att hämta bilder från databasen, do not be alarmed." );
         loadPlantImagesFromDatabase( );
 
         this.mainFrame = new MainFrame( this );

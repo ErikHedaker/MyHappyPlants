@@ -7,7 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame {
-    Controller controllerRef;
+    private Controller controllerRef;
+
     public MainFrame( Controller controllerRef ) {
         this.controllerRef = controllerRef;
         setupFrame();

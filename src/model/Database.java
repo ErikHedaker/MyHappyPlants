@@ -125,22 +125,8 @@ public class Database
 
     public void waterPlant( int plantID )
     {
-        final String SQL =
-            "INSERT INTO watering (plant_id)" +
-            "VALUES (?)";
-
-        try( Connection connection = DriverManager.getConnection( connectionURL );
-             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
-        {
-            preparedStatement.setInt( 1, plantID );
-            preparedStatement.executeUpdate();
-        }
-        catch( SQLException e )
-        {
-            e.printStackTrace( );
-        }
+        waterPlant( plantID, LocalDateTime.now() );
     }
-    /*
     public void waterPlant( int plantID, LocalDateTime happened )
     {
         final String SQL =
@@ -159,7 +145,6 @@ public class Database
             e.printStackTrace( );
         }
     }
-    */
     public int insertPlant( Plant plant, int profileID )
     {
         final String SQL =
@@ -265,7 +250,7 @@ public class Database
             e.printStackTrace( );
         }
     }
-    public void deletePlant( int id )
+    public void deletePlant( int plantID )
     {
         final String SQL =
             "DELETE FROM plant " +
@@ -274,7 +259,7 @@ public class Database
         try( Connection connection = DriverManager.getConnection( connectionURL );
              PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
         {
-            preparedStatement.setInt( 1, id );
+            preparedStatement.setInt( 1, plantID );
             preparedStatement.executeUpdate();
         }
         catch( SQLException e )
@@ -282,7 +267,7 @@ public class Database
             e.printStackTrace( );
         }
     }
-    public void deleteProfile( int id )
+    public void deleteProfile( int profileID )
     {
         final String SQL =
             "DELETE FROM profile " +
@@ -291,7 +276,7 @@ public class Database
         try( Connection connection = DriverManager.getConnection( connectionURL );
              PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
         {
-            preparedStatement.setInt( 1, id );
+            preparedStatement.setInt( 1, profileID );
             preparedStatement.executeUpdate();
         }
         catch( SQLException e )
@@ -305,7 +290,6 @@ public class Database
             "SELECT raw_data " +
             "FROM plant_image " +
             "WHERE plant_id = ?";
-        System.out.println( "OBS: getPlantImageRaw TAR AS LÅNG TID ATT UTFÖRA!" );
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
              PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
@@ -345,7 +329,6 @@ public class Database
             "ON CONFLICT (plant_id) DO UPDATE " +
             "SET raw_data = ? " +
             "WHERE excluded.plant_id = ?";
-        System.out.println( "OBS: upsertPlantImageRaw TAR AS LÅNG TID ATT UTFÖRA!" );
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
              PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
@@ -368,15 +351,6 @@ public class Database
 
         Database database = new Database();
         Profile profile = database.getProfileByName( "Erik" );
-
-        /*
-        int id = database.insertPlant( new Plant().setNameWiki( "Cactus" ).setNameAlias( "Aj" ), profile.getDatabaseID() );
-        LocalDateTime time = LocalDateTime.parse( "2017-02-03T10:30:20" );
-        database.waterPlant( id, null );
-        profile = database.getProfileByName( "Erik" );
-        */
-
-
         System.out.println( profile );
     }
 }
