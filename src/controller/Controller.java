@@ -39,7 +39,7 @@ public class Controller
 
     /**
      * Getter method for the active profile's list of plants
-     * @return          an ArrayList of Plants
+     * @return              A list of plants
      */
     public ArrayList<Plant> getPlantList( )
     {
@@ -78,8 +78,8 @@ public class Controller
 
     /**
      * Creates an ImageIcon suitable for Swing GUI from a raw byte array queried from the database
-     * @param   plantID integer representing a unique id required for database lookup
-     * @return          a newly created ImageIcon
+     * @param   plantID     Integer representing a unique id required for database lookup
+     * @return              A newly created ImageIcon
      */
     public ImageIcon getPlantImageIcon( int plantID )
     {
@@ -89,8 +89,8 @@ public class Controller
     /**
      * Calculates the amount of hours left from when the plant has to be watered, using difference between
      * the current date and the method getNextWateringDate
-     * @param   plant   a specific Plant from the list of plants that the active profile has
-     * @return          the amount of hours left
+     * @param   plant       A specific Plant from the list of plants that the active profile has
+     * @return              The amount of hours left
      */
     public long getNextWateringCountdown( Plant plant )
     {
@@ -99,8 +99,8 @@ public class Controller
 
     /**
      * Calculates the next date for when the plant has to be watered, using the attributes from the plant
-     * @param   plant   a specific Plant from the list of plants that the active profile has
-     * @return          a LocalDateTime which is the specific date in the future when the plant has to be watered
+     * @param   plant       A specific Plant from the list of plants that the active profile has
+     * @return              A LocalDateTime which is the specific date in the future when the plant has to be watered
      */
     public LocalDateTime getNextWateringDate( Plant plant )
     {
