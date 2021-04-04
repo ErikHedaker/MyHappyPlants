@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
  * and does necessary calculations that fall outside of a specific model's area of expertise.
- * @author      Victor Johansson, Erik Hedåker
+ * @author Victor Johansson, Erik Hedåker
  */
 public class Controller
 {
