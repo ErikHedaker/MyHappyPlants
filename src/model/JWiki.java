@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,6 @@ public class JWiki {
     private String displayTitle, imageURL, text = "";
     private final String BASE_URL = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
-    private boolean hasImage;
     /**
      * Sends information requests to wikipedia with the specified subject
      * and registers some article parts into variables.
@@ -47,10 +47,7 @@ public class JWiki {
 
             displayTitle = (String) jsonObject.get("displaytitle");
 
-            if (jsonObject.get("originalimage") == null) {
-                hasImage = false;
-            } else {
-                hasImage = true;
+            if (jsonObject.get("originalimage") != null) {
                 JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
                 imageURL = (String) jsonObjectOriginalImage.get("source");
             }
@@ -71,38 +68,9 @@ public class JWiki {
         return title;
     }
 
-    /**
-     * Constructs image from the selected article.
-     *
-     * @return icon
-     */
-    public ImageIcon getImage() throws IOException {
-
-        if (hasImage) {
-            URL url = new URL(imageURL);
-            BufferedImage c = ImageIO.read(url);
-            return new ImageIcon(c);
-        } else {
-            return new ImageIcon("./images/plant.jpg");
-        }
-    }
-
-
-    /**
-     * Attempts to get the raw image data from wikipedia (does not work atm)
-     * @author          Erik Hedåker
-     * @return          an array of bytes that contain the raw data of an image
-     */
-    public byte[] getImageRaw() throws IOException
+    public String getImageURL()
     {
-        String extension = imageURL.substring( 1 + imageURL.lastIndexOf( "." ) );
-        BufferedImage image = ImageIO.read( new URL( imageURL ) );
-        ByteArrayOutputStream baoStream = new ByteArrayOutputStream();
-        ImageIO.write( image, extension, baoStream );
-        baoStream.flush();
-        byte[] imageRaw = baoStream.toByteArray();
-        baoStream.close();
-        return imageRaw;
+        return imageURL;
     }
 
     /**
