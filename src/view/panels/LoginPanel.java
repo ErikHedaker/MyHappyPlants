@@ -48,7 +48,8 @@ public class LoginPanel extends JPanel {
         JLabel passwordLabel = new JLabel("Password    ");
         passwordLabel.setFont(new Font("Calibri light", Font.PLAIN, 25));
         passwordPanel.add(passwordLabel, BorderLayout.WEST);
-        JTextField passwordTF = new JTextField();
+        JPasswordField passwordTF = new JPasswordField(0);
+        passwordTF.setEchoChar('*');
         passwordTF.setPreferredSize(new Dimension(150, 30));
         passwordPanel.add(passwordTF, BorderLayout.EAST);
         loginPanel.add(passwordPanel, BorderLayout.CENTER);
