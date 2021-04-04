@@ -73,6 +73,17 @@ public class Controller
     }
 
     /**
+     * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
+     */
+    public void loadPlantImagesFromDatabase( )
+    {
+        for( Plant plant : activeProfile.getPlants( ) )
+        {
+            plant.setImageIcon( new ImageIcon( database.getPlantImageRaw( plant.getDatabaseID( ) ) ) );
+        }
+    }
+
+    /**
      * Attempts to get an image from the URL, otherwise returns a default image
      * @param   imageURL    A URL to an image (png, jpg, gif, or similar)
      * @return              An image in the byte array format
@@ -95,27 +106,6 @@ public class Controller
         }
 
         return imageDefault;
-    }
-
-    /**
-     * Sets images for the list of plants in the active profile
-     */
-    public void loadPlantImagesFromDatabase( )
-    {
-        for( Plant plant : activeProfile.getPlants( ) )
-        {
-            plant.setImageIcon( getPlantImageIconFromDatabase( plant.getDatabaseID( ) ) );
-        }
-    }
-
-    /**
-     * Creates an ImageIcon suitable for Swing GUI from a raw byte array queried from the database
-     * @param   plantID     Integer representing a unique id required for database lookup
-     * @return              A newly created ImageIcon
-     */
-    public ImageIcon getPlantImageIconFromDatabase( int plantID )
-    {
-        return new ImageIcon( database.getPlantImageRaw( plantID ) );
     }
 
     /**
