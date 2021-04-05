@@ -96,13 +96,11 @@ public class Database
     public ArrayList<Plant> getPlantsByProfileID( int profileID )
     {
         final String SQL =
-            "SELECT plant.id AS plantID, name_alias, name_wiki, hours_between_watering, last_time_watered " +
+            "SELECT id, name_alias, name_wiki, hours_between_watering, last_time_watered " +
             "FROM plant " +
-            "JOIN profile " +
-            "ON profile.id = plant.profile_id " +
             "LEFT JOIN RecentWatering() AS recent_watering " +
             "ON plant.id = recent_watering.plant_id " +
-            "WHERE profile.id = ?";
+            "WHERE plant.profile_id = ?";
         ArrayList<Plant> plants = new ArrayList<>(  );
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
@@ -116,7 +114,7 @@ public class Database
                 {
                     plants.add(
                         new Plant()
-                            .setDatabaseID( resultSet.getInt( "plantID" ) )
+                            .setDatabaseID( resultSet.getInt( "id" ) )
                             .setNameAlias( resultSet.getString( "name_alias" ) )
                             .setNameWiki( resultSet.getString( "name_wiki" ) )
                             .setHoursBetweenWatering( resultSet.getInt( "hours_between_watering" ) )
@@ -223,7 +221,7 @@ public class Database
             "VALUES (?)";
 
         try( Connection connection = DriverManager.getConnection( connectionURL );
-             PreparedStatement preparedStatement = connection.prepareStatement( SQL ) )
+             PreparedStatement preparedStatement = connection.prepareStatement( SQL, PreparedStatement.RETURN_GENERATED_KEYS ) )
         {
             preparedStatement.setString( 1, profile.getName() );
             preparedStatement.executeUpdate();
@@ -411,7 +409,9 @@ public class Database
         // Används för att testa databas metoder utan GUI
 
         Database database = new Database();
-        Profile profile = database.getProfileByName( "Erik" );
-        System.out.println( profile );
+        Profile profileAdmin = database.getProfileByName( "Admin" );
+        Profile profileErik = database.getProfileByName( "Erik" );
+        System.out.println( profileAdmin );
+        System.out.println( profileErik );
     }
 }

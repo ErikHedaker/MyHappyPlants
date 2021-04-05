@@ -31,7 +31,7 @@ public class Controller
     public Controller( )
     {
         this.database = new Database( );
-        this.activeProfile = database.getProfileByName( "Erik" );
+        this.activeProfile = database.getProfileByName( "Admin" );
         this.view = new MainFrame( this );
         this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
         new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
