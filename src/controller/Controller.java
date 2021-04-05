@@ -7,8 +7,11 @@ import model.Profile;
 import view.MainFrame;
 import view.panels.PlantPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -16,26 +19,22 @@ import java.util.ArrayList;
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
  * and does necessary calculations that fall outside of a specific model's area of expertise.
- * @author      Victor Johansson, Erik Hedåker
+ * @author Victor Johansson, Erik Hedåker
  */
 public class Controller
 {
-    private MainFrame view;
     private Database database;
     private Profile activeProfile;
+    private MainFrame view;
+    private byte[] imageDefault;
 
     public Controller( )
     {
         this.database = new Database( );
         this.activeProfile = database.getProfileByName( "Erik" );
-
-        //Temporary methods, takes a lot of time and should be replaced later
-        //upsertPlantImagesFromWikipediaToDatabase( );
-        System.out.println( "OBS: Metoden loadPlantImagesFromDatabase tar lång tid att hämta bilder från databasen, do not be alarmed." );
-        loadPlantImagesFromDatabase( );
-        //Kanske göra async???
-
-        view = new MainFrame( this );
+        this.view = new MainFrame( this );
+        this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
+        new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
     }
 
     /**
@@ -68,37 +67,45 @@ public class Controller
     {
         for( Plant plant : activeProfile.getPlants( ) )
         {
-            try
-            {
-                JWiki wiki = new JWiki( plant.getNameWiki( ) );
-                database.upsertPlantImageRaw( wiki.getImageRaw( ), plant.getDatabaseID( ) );
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace( );
-            }
+            JWiki wiki = new JWiki( plant.getNameWiki( ) );
+            database.upsertPlantImageRaw( fetchImageFromURL( wiki.getImageURL( ) ), plant.getDatabaseID( ) );
         }
     }
 
     /**
-     * Sets images for the list of plants from the active profile and queries for stored images on the database
+     * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
     public void loadPlantImagesFromDatabase( )
     {
         for( Plant plant : activeProfile.getPlants( ) )
         {
-            plant.setImageIcon( getPlantImageIcon( plant.getDatabaseID( ) ) );
+            plant.setImageIcon( new ImageIcon( database.getPlantImageRaw( plant.getDatabaseID( ) ) ) );
         }
     }
 
     /**
-     * Creates an ImageIcon suitable for Swing GUI from a raw byte array queried from the database
-     * @param   plantID     Integer representing a unique id required for database lookup
-     * @return              A newly created ImageIcon
+     * Attempts to get an image from the URL, otherwise returns a default image
+     * @param   imageURL    A URL to an image (png, jpg, gif, or similar)
+     * @return              An image in the byte array format
      */
-    public ImageIcon getPlantImageIcon( int plantID )
+    public byte[] fetchImageFromURL( String imageURL )
     {
-        return new ImageIcon( database.getPlantImageRaw( plantID ) );
+        if( imageURL != null )
+        {
+            try( ByteArrayOutputStream baoStream = new ByteArrayOutputStream() )
+            {
+                String extension = imageURL.substring( imageURL.lastIndexOf( "." ) + 1 );
+                ImageIO.write( ImageIO.read( new URL( imageURL ) ), extension, baoStream );
+                baoStream.flush();
+                return baoStream.toByteArray();
+            }
+            catch( IOException e )
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return imageDefault;
     }
 
     /**
@@ -107,7 +114,7 @@ public class Controller
      * @param   plant       A specific Plant from the list of plants that the active profile has
      * @return              The amount of hours left
      */
-    public long getNextWateringCountdown( Plant plant )
+    public static long getNextWateringCountdown( Plant plant )
     {
         return ChronoUnit.HOURS.between( LocalDateTime.now(), getNextWateringDate( plant ) );
     }
@@ -117,7 +124,7 @@ public class Controller
      * @param   plant       A specific Plant from the list of plants that the active profile has
      * @return              A LocalDateTime which is the specific date in the future when the plant has to be watered
      */
-    public LocalDateTime getNextWateringDate( Plant plant )
+    public static LocalDateTime getNextWateringDate( Plant plant )
     {
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }

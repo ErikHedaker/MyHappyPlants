@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * The Database class which handle the connection and all queries to a PostgreSQL database
- * @author                  Erik Hedåker
+ * @author Erik Hedåker
  */
 public class Database
 {
