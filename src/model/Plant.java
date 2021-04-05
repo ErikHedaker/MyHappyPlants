@@ -74,7 +74,7 @@ public class Plant
     public String toString( )
     {
         return
-            "Plant { databaseID = " + databaseID +
+            "Plant\t{ databaseID = " + databaseID +
             ", nameAlias = '" + nameAlias +
             "', nameWiki = '" + nameWiki +
             "', hoursBetweenWatering = " + hoursBetweenWatering +

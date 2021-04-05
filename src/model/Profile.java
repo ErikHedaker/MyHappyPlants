@@ -44,7 +44,7 @@ public class Profile
     @Override
     public String toString( )
     {
-        String output = name + ", id = " + databaseID + "\n";
+        String output = "Profile\t{ databaseID = " + databaseID + ", name = " + name + " }\n";
         for( Plant plant : plants )
         {
             output += plant + "\n";
