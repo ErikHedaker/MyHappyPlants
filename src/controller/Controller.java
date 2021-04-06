@@ -5,6 +5,7 @@ import model.JWiki;
 import model.Plant;
 import model.Profile;
 import view.MainFrame;
+import view.panels.LoginPanel;
 import view.panels.PlantPanel;
 
 import javax.imageio.ImageIO;
@@ -26,6 +27,8 @@ public class Controller
     private Database database;
     private Profile activeProfile;
     private MainFrame view;
+    private LoginPanel l;
+    private final int validP = 6;
     private byte[] imageDefault;
 
     public Controller( )
@@ -127,5 +130,13 @@ public class Controller
     public static LocalDateTime getNextWateringDate( Plant plant )
     {
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
+    }
+
+    public boolean invalidPassword(){
+        if(activeProfile.getPassword().length() < validP){
+            l.invalidPasswordMessage();
+            return false;
+        }
+        else return true;
     }
 }

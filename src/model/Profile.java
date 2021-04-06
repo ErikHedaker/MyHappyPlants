@@ -6,6 +6,9 @@ public class Profile
 {
     private int databaseID;
     private String name;
+    private String password;
+
+
     private ArrayList<Plant> plants = new ArrayList<>( );
 
     public void addPlant( Plant plant )
@@ -18,11 +21,18 @@ public class Profile
         this.databaseID = databaseID;
         return this;
     }
+
     public Profile setName( String name )
     {
         this.name = name;
         return this;
     }
+
+    public Profile setPassword(String password){
+        this.password = password;
+        return this;
+    }
+
     public Profile setPlants( ArrayList<Plant> plants )
     {
         this.plants = plants;
@@ -37,6 +47,7 @@ public class Profile
     {
         return name;
     }
+    public String getPassword(){ return password;}
     public ArrayList<Plant> getPlants() {
         return plants;
     }

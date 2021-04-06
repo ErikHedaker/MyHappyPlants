@@ -15,6 +15,7 @@ public class LoginPanel extends JPanel {
 
     private JButton signInBtn;
     private Controller controller;
+    private JFrame f = new JFrame();
 
     public LoginPanel(Controller controller) {
         this.controller = controller;
@@ -76,6 +77,9 @@ public class LoginPanel extends JPanel {
         return signInBtn;
     }
 
+    public void invalidPasswordMessage(){
+        JOptionPane.showMessageDialog(f,"The Password Must Be At Least 6 Characters Long");
+    }
 
     class Action implements ActionListener {
 
