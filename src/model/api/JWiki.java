@@ -1,4 +1,4 @@
-package model;
+package model.api;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -55,13 +55,18 @@ public class JWiki {
     /**
      * Display title of the article.
      *
-     * @return displayTitle
+     * @return returns the wikipedia title from chosen article.
      */
     public String getDisplayTitle() {
         String title = displayTitle.replaceAll("<i>", "").replaceAll("</i>", "");
         return title;
     }
 
+    /**
+     * Collects image url from wikipage.
+     *
+     * @return returns an image url.
+     */
     public String getImageURL()
     {
         return imageURL;
@@ -70,7 +75,7 @@ public class JWiki {
     /**
      * This gives you the body text from the article.
      *
-     * @return text
+     * @return text from wikipedia article.
      */
     public String getText() {
         return text;

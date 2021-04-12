@@ -8,20 +8,32 @@ import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * The PlantPanel class handles the visual elements of plants, this class is made to be multiplied into multiple instances in a list for each plant.
+ * @author Viktor Johansson
+ */
+
 public class PlantPanel extends JPanel {
 
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
+    private int x = 320;
 
+    /**
+     * Constructs labels for JPanel that tells about watering status.
+     * @param plant
+     */
     public PlantPanel(Plant plant) {
         this.plant = plant;
-        setLayout(new GridLayout(2,1,0,0));
+        setLayout(new GridLayout(4,1,0,0));
+        setBorder(BorderFactory.createEmptyBorder(15,0,0,0));
         JLabel label = new JLabel(Utilities.centerText("Watering Status", 0));
         label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
         JLabel label1 = new JLabel(Utilities.centerText("Previous: " + 0 + "d ago", 0)
                 + "                     Next: " + plant.getHoursBetweenWatering() + " days left");
+        label1.setBorder(BorderFactory.createEmptyBorder(15,0,0,0));
         label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
         label.setBackground(null);
@@ -29,16 +41,25 @@ public class PlantPanel extends JPanel {
         add(label1);
     }
 
+    /**
+     * @return returns the loading thread so that it can get accessed from other classes.
+     */
     public Thread getLoadingThread() {
         return loadingThread;
     }
 
+    /**
+     * Adds a PropertyChangeListener class into PropertyChangeSupport.
+     * @param listener
+     */
     public void addListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    int x = 320;
-
+    /**
+     * Draws the loadingbar and plant image.
+     * @param g used for drawing.
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
@@ -50,7 +71,7 @@ public class PlantPanel extends JPanel {
             graphics2D.drawRoundRect(120, 45, x, 20, 15, 15);
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
-            icon = new ImageIcon("./images/logo-happy.png");
+            icon = new ImageIcon("./images/plant.jpg");
         }
         graphics2D.drawImage(icon.getImage(), 05, 05, 105, 100, null);
 

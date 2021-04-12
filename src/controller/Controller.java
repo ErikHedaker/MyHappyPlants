@@ -1,7 +1,7 @@
 package controller;
 
 import model.Database;
-import model.JWiki;
+import model.api.JWiki;
 import model.Plant;
 import model.Profile;
 import view.MainFrame;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
  * and does necessary calculations that fall outside of a specific model's area of expertise.
- * @author Victor Johansson, Erik Hedåker
+ * @author Viktor Johansson, Erik Hedåker
  */
 public class Controller
 {
@@ -34,10 +34,9 @@ public class Controller
     public Controller( )
     {
         this.database = new Database( );
-        this.activeProfile = database.getProfileByName( "Admin" );
+
         this.view = new MainFrame( this );
         this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
-        new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
     }
 
     /**
@@ -55,7 +54,9 @@ public class Controller
                 view.setCardLayout("signIn");
                 break;
             case "plantList":
+                view.createPlantList();
                 view.setCardLayout("plantList");
+                new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                     panel.getLoadingThread().start();
                 }
@@ -82,6 +83,8 @@ public class Controller
     {
         for( Plant plant : activeProfile.getPlants( ) )
         {
+            if (database.getPlantImageRaw( plant.getDatabaseID( ) ) == null) plant.setImageIcon(new ImageIcon(imageDefault));
+            else
             plant.setImageIcon( new ImageIcon( database.getPlantImageRaw( plant.getDatabaseID( ) ) ) );
         }
     }
@@ -107,7 +110,6 @@ public class Controller
                 e.printStackTrace();
             }
         }
-
         return imageDefault;
     }
 
@@ -132,7 +134,17 @@ public class Controller
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }
 
-    public boolean invalidPassword(){
+    public void loginAttempt(String username, String password) {
+        if (database.getProfileByName(username) != null) {
+            activeProfile = database.getProfileByName(username);
+                view.showLoginError(false);
+                buttonPushed("plantList");
+        } else {
+            view.showLoginError(true);
+        }
+    }
+
+    public boolean invalidPassword() {
         if(activeProfile.getPassword().length() < validP){
             l.invalidPasswordMessage();
             return false;

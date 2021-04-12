@@ -28,11 +28,12 @@ public class MainFrame{
         popupMenu = new PopupMenu();
 
         frame.add(panel, BorderLayout.NORTH);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
 
         frame.setJMenuBar(new MenuBar());
         frame.add(popupMenu);
+        frame.setSize(1500, 1000);
+        frame.setPreferredSize(new Dimension(1500, 1000));
+        frame.setLocationRelativeTo(null);
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
@@ -61,7 +62,13 @@ public class MainFrame{
         return panel.getPlantList();
     }
 
+    public void showLoginError(boolean show) {
+        panel.showLoginError(show);
+    }
 
+    public void createPlantList() {
+        panel.createPlantList();
+    }
 
 
 }

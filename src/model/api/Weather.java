@@ -1,4 +1,4 @@
-package model;
+package model.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -49,10 +49,16 @@ public class Weather extends MyLocation {
         }
     }
 
+    /**
+     * @return navigates in json object to the "values" key and collects humidity.
+     */
     public int getHumidity() {
         return currentWeather.get(5).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
     }
 
+    /**
+     * @return navigates in json object to the "values" key and collects celsius.
+     */
     public int getCelsius() {
         return currentWeather.get(0).getAsJsonObject().get("values").getAsJsonArray().get(0).getAsInt();
     }

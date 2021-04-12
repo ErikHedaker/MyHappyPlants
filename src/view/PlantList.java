@@ -19,16 +19,17 @@ public class PlantList implements PropertyChangeListener {
     public PlantList(ArrayList<Plant> plants, JPanel container) {
         this.container = container;
         for (Plant plant : plants) {
-            JPanel panel = new JPanel(new GridLayout(2,1,0,0));
+            JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.white);
             JLabel label = new JLabel((plant.getHoursBetweenWatering() != 0 ? " Happy " : " Sad ") + plant.getNameAlias());
+            label.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
             label.setFont(new Font("Garamond", Font.PLAIN, 30));
-            panel.add(label);
+            panel.add(label, BorderLayout.NORTH);
 
             plantPanel = new PlantPanel(plant);
             plantPanels.add(plantPanel);
             plantPanel.addListener(this);
-            panel.add(plantPanel);
+            panel.add(plantPanel, BorderLayout.CENTER);
             panels.add(panel);
 
         }

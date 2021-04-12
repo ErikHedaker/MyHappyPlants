@@ -1,7 +1,6 @@
 package view.panels;
 
 import controller.Controller;
-import view.MainFrame;
 import view.PlantList;
 
 import javax.swing.*;
@@ -9,14 +8,16 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainPanel extends JPanel {
     private Controller controllerRef;
     private CardLayout cardLayout;
     private JPanel panelCenter;
     private PlantList plantList;
+    private LoginPanel loginPanel;
+    private JButton btn;
 
     public MainPanel(Controller controllerRef) {
         this.controllerRef = controllerRef;
@@ -54,7 +55,7 @@ public class MainPanel extends JPanel {
 
         JPanel searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBackground(new Color(173, 193, 124));
-        JButton btn = new JButton();
+        btn = new JButton();
 
         ImageIcon searchIcon = new ImageIcon("./images/search.png");
         Image scaledSearchInstance = searchIcon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
@@ -86,12 +87,16 @@ public class MainPanel extends JPanel {
     public void createCenterPanel() {
         cardLayout = new CardLayout();
         panelCenter = new JPanel(cardLayout);
-        JPanel panelPlantList = new JPanel(new BorderLayout());
-        plantList = new PlantList(controllerRef.getPlantList(), panelPlantList);
-        JPanel loginPanel = new LoginPanel(controllerRef);
-        panelCenter.add(panelPlantList, "plantList");
+        panelCenter.setPreferredSize(new Dimension(1500, 720));
+        loginPanel = new LoginPanel(controllerRef);
         panelCenter.add(loginPanel, "signIn");
         add(panelCenter, BorderLayout.CENTER);
+    }
+
+    public void createPlantList() {
+        JPanel panelPlantList = new JPanel(new BorderLayout());
+        plantList = new PlantList(controllerRef.getPlantList(), panelPlantList);
+        panelCenter.add(panelPlantList, "plantList");
     }
 
     public PlantList getPlantList() {
@@ -111,8 +116,22 @@ public class MainPanel extends JPanel {
         add(panelSouth, BorderLayout.SOUTH);
     }
 
+    public void showLoginError(boolean show) {
+        loginPanel.showLoginError(show);
+    }
+
     public void setCardLayout(String constraint) {
         cardLayout.show(panelCenter, constraint);
         repaint();
+    }
+
+    class Action implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(btn)) {
+                controllerRef.buttonPushed("search");
+            }
+        }
     }
 }

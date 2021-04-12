@@ -1,4 +1,4 @@
-package model;
+package model.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -45,11 +45,19 @@ public class MyLocation {
         }
     }
 
+    /**
+     * Collect latitude from geoplugin.
+     * @return returns latitude in form of string.
+     */
     public String getLatitude() {
         String latitude = rootObj.get("geoplugin_latitude").getAsString();
         return latitude;
     }
 
+    /**
+     * Collect longitude from geoplugin.
+     * @return returns longitude in form of string.
+     */
     public String getLongitude() {
         String latitude = rootObj.get("geoplugin_longitude").getAsString();
         return latitude;

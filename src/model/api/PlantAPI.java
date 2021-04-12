@@ -1,4 +1,4 @@
-package model;
+package model.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -51,11 +51,14 @@ public class PlantAPI {
         }
     }
 
-        public String getFamilyName() {
+    /**
+     * Collects family name from the chosen plant.
+     * @return familyName
+     */
+    public String getFamilyName() {
         String familyName = result.get("family_common_name").getAsString();
         return familyName;
     }
-
 
     public static void main(String args[]) {
         System.out.println(new PlantAPI("monstera").getFamilyName());
