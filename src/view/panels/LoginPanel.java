@@ -130,7 +130,8 @@ public class LoginPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(getSignInButton())) {
-                controller.loginAttempt(usernameTF.getText(), passwordTF.getPassword().toString());
+                controller.buttonPushed("loading-screen");
+                new Thread( ( ) -> controller.loginAttempt(usernameTF.getText(), passwordTF.getPassword().toString()) ).start( );
             }
         }
     }

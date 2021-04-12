@@ -90,6 +90,13 @@ public class MainPanel extends JPanel {
         panelCenter.setPreferredSize(new Dimension(1500, 720));
         loginPanel = new LoginPanel(controllerRef);
         panelCenter.add(loginPanel, "signIn");
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(300,300,300,300));
+        panel.setBackground(Color.white);
+        JLabel label = new JLabel("Loading...");
+        label.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        panel.add(label);
+        panelCenter.add(panel, "loading-screen");
         add(panelCenter, BorderLayout.CENTER);
     }
 

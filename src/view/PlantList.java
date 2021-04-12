@@ -46,13 +46,12 @@ public class PlantList implements PropertyChangeListener {
         container.setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 340));
         container.setBackground(Color.WHITE);
         for (JPanel pane: paneList) {
-            pane.setBorder(BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
             model.addElement(pane);
         }
         JList list = new JList(model);
         list.setBorder(BorderFactory.createLineBorder(Color.white, 30));
         list.setBackground(Color.white);
-        list.setFixedCellHeight(205);
+        list.setFixedCellHeight(150);
         list.setSelectedIndex(-1);
 
         list.setCellRenderer(new PanelRenderer());

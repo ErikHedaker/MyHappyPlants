@@ -6,7 +6,6 @@ import model.Plant;
 import model.Profile;
 import org.apache.commons.codec.binary.Base64;
 import view.MainFrame;
-import view.panels.LoginPanel;
 import view.panels.PlantPanel;
 
 import javax.imageio.ImageIO;
@@ -38,10 +37,9 @@ public class Controller
     {
         this.database = new Database( );
 
-        this.activeProfile = ProfileLogin( "Admin", "Admin" );
+        //this.activeProfile = ProfileLogin( "Admin", "Admin" );
         this.view = new MainFrame( this );
         this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
-        new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
     }
 
     /**
@@ -66,6 +64,9 @@ public class Controller
                     panel.getLoadingThread().start();
                 }
                 break;
+            case "loading-screen":
+                view.setCardLayout("loading-screen");
+                break;
         }
     }
 
@@ -88,9 +89,8 @@ public class Controller
     {
         for( Plant plant : activeProfile.getPlants( ) )
         {
-            if (database.getPlantImageRaw( plant.getDatabaseID( ) ) == null) plant.setImageIcon(new ImageIcon(imageDefault));
+            if (database.getPlantImage( plant.getDatabaseID( ) ) == null) plant.setImageIcon(new ImageIcon(imageDefault));
             else
-            plant.setImageIcon( new ImageIcon( database.getPlantImageRaw( plant.getDatabaseID( ) ) ) );
             plant.setImageIcon( new ImageIcon( database.getPlantImage( plant.getDatabaseID( ) ) ) );
         }
     }
@@ -185,18 +185,17 @@ public class Controller
         return null;
     }
 
-    public static byte[] StringToByte( String input )
-    {
-        if( Base64.isBase64( input ) )
-        {
-            return Base64.decodeBase64( input );
+    public static byte[] StringToByte( String input ) {
+        if (Base64.isBase64(input)) {
+            return Base64.decodeBase64(input);
+        } else {
+            return Base64.encodeBase64(input.getBytes());
         }
-        else
-        {
-            return Base64.encodeBase64( input.getBytes( ) );
+    }
+
     public void loginAttempt(String username, String password) {
-        if (database.getProfileByName(username) != null) {
-            activeProfile = database.getProfileByName(username);
+        if (database.getProfile(username) != null) {
+            activeProfile = database.getProfile(username);
                 view.showLoginError(false);
                 buttonPushed("plantList");
         } else {
@@ -204,15 +203,15 @@ public class Controller
         }
     }
 
-    public boolean invalidPassword() {
+    /*public boolean invalidPassword() {
         if(activeProfile.getPassword().length() < validP){
-            l.invalidPasswordMessage();
+            //l.invalidPasswordMessage();
             return false;
         }
-    }
+    }*/
 
     public static String ByteToString( byte[] input )
     {
-        return org.apache.commons.codec.binary.Base64.encodeBase64String( input );
+        return Base64.encodeBase64String( input );
     }
 }
