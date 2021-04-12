@@ -4,6 +4,7 @@ import model.Database;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
+import org.apache.commons.codec.binary.Base64;
 import view.MainFrame;
 import view.panels.LoginPanel;
 import view.panels.PlantPanel;
@@ -13,9 +14,13 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
@@ -27,16 +32,16 @@ public class Controller
     private Database database;
     private Profile activeProfile;
     private MainFrame view;
-    private LoginPanel l;
-    private final int validP = 6;
     private byte[] imageDefault;
 
     public Controller( )
     {
         this.database = new Database( );
 
+        this.activeProfile = ProfileLogin( "Admin", "Admin" );
         this.view = new MainFrame( this );
         this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
+        new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
     }
 
     /**
@@ -72,7 +77,7 @@ public class Controller
         for( Plant plant : activeProfile.getPlants( ) )
         {
             JWiki wiki = new JWiki( plant.getNameWiki( ) );
-            database.upsertPlantImageRaw( fetchImageFromURL( wiki.getImageURL( ) ), plant.getDatabaseID( ) );
+            database.upsertPlantImage( plant.getDatabaseID( ), fetchImageFromURL( wiki.getImageURL( ) ) );
         }
     }
 
@@ -86,6 +91,7 @@ public class Controller
             if (database.getPlantImageRaw( plant.getDatabaseID( ) ) == null) plant.setImageIcon(new ImageIcon(imageDefault));
             else
             plant.setImageIcon( new ImageIcon( database.getPlantImageRaw( plant.getDatabaseID( ) ) ) );
+            plant.setImageIcon( new ImageIcon( database.getPlantImage( plant.getDatabaseID( ) ) ) );
         }
     }
 
@@ -110,6 +116,7 @@ public class Controller
                 e.printStackTrace();
             }
         }
+
         return imageDefault;
     }
 
@@ -134,6 +141,59 @@ public class Controller
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }
 
+    public Profile ProfileLogin( String name, String password )
+    {
+        Profile profile = database.getProfile( name );
+        byte[] hashed = GetPasswordHash( password, profile.getPasswordSalt() );
+        byte[] stored = profile.getPasswordHash( );
+        return Arrays.equals( hashed, stored ) ? profile : null;
+    }
+
+    public Profile CreateProfile( String name, String password )
+    {
+        byte[] salt = GenerateRandomSalt();
+        Profile profile = new Profile()
+            .setName( name )
+            .setPasswordHash( GetPasswordHash( password, salt ) )
+            .setPasswordSalt( salt );
+        int id = database.insertProfile( profile );
+        profile.setDatabaseID( id );
+        return profile;
+    }
+
+    public static byte[] GenerateRandomSalt()
+    {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[20];
+        random.nextBytes(salt);
+        return salt;
+    }
+
+    public static byte[] GetPasswordHash( String password, byte[] salt )
+    {
+        try
+        {
+            MessageDigest messageDigest = MessageDigest.getInstance( "SHA-512" );
+            messageDigest.update( salt );
+            return messageDigest.digest( StringToByte( password ) );
+        }
+        catch( NoSuchAlgorithmException e )
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static byte[] StringToByte( String input )
+    {
+        if( Base64.isBase64( input ) )
+        {
+            return Base64.decodeBase64( input );
+        }
+        else
+        {
+            return Base64.encodeBase64( input.getBytes( ) );
     public void loginAttempt(String username, String password) {
         if (database.getProfileByName(username) != null) {
             activeProfile = database.getProfileByName(username);
@@ -149,6 +209,10 @@ public class Controller
             l.invalidPasswordMessage();
             return false;
         }
-        else return true;
+    }
+
+    public static String ByteToString( byte[] input )
+    {
+        return org.apache.commons.codec.binary.Base64.encodeBase64String( input );
     }
 }

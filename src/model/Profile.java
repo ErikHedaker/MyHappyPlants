@@ -1,19 +1,25 @@
 package model;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Profile
 {
+    private ArrayList<Plant> plants = new ArrayList<>( );
     private int databaseID;
     private String name;
-    private String password;
-
-
-    private ArrayList<Plant> plants = new ArrayList<>( );
+    private byte[] passwordHash;
+    private byte[] passwordSalt;
 
     public void addPlant( Plant plant )
     {
         this.plants.add( plant );
+    }
+
+    public Profile setPlants( ArrayList<Plant> plants )
+    {
+        this.plants = plants;
+        return this;
     }
 
     public Profile setDatabaseID( int databaseID )
@@ -28,17 +34,21 @@ public class Profile
         return this;
     }
 
-    public Profile setPassword(String password){
-        this.password = password;
-        return this;
-    }
-
-    public Profile setPlants( ArrayList<Plant> plants )
+    public Profile setPasswordHash( byte[] passwordHash )
     {
-        this.plants = plants;
+        this.passwordHash = passwordHash;
         return this;
     }
 
+    public Profile setPasswordSalt( byte[] passwordSalt )
+    {
+        this.passwordSalt = passwordSalt;
+        return this;
+    }
+
+    public ArrayList<Plant> getPlants() {
+        return plants;
+    }
     public int getDatabaseID()
     {
         return databaseID;
@@ -47,15 +57,17 @@ public class Profile
     {
         return name;
     }
-    public String getPassword(){ return password;}
-    public ArrayList<Plant> getPlants() {
-        return plants;
-    }
+    public byte[] getPasswordHash(){ return passwordHash;}
+    public byte[] getPasswordSalt(){ return passwordSalt;}
 
     @Override
     public String toString( )
     {
-        String output = "Profile\t{ databaseID = " + databaseID + ", name = '" + name + "' }\n";
+        String output =
+            "Profile\t{ databaseID = " + databaseID +
+            ", name = '" + name +
+            "', passwordHash = '" + passwordHash +
+            "', passwordSalt = '" + passwordSalt + "' }\n";
         for( Plant plant : plants )
         {
             output += plant + "\n";
