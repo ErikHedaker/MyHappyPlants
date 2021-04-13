@@ -37,7 +37,7 @@ public class Controller
     {
         this.database = new Database( );
 
-        //this.activeProfile = ProfileLogin( "Admin", "Admin" );
+        //this.activeProfile = profileLogin( "Admin", "Admin" );
         this.view = new MainFrame( this );
         this.imageDefault = fetchImageFromURL( "file:images/plant.jpg" );
     }
@@ -51,13 +51,16 @@ public class Controller
         return activeProfile.getPlants( );
     }
 
+    public void createPlantList() {
+        view.createPlantList();
+    }
+
     public void buttonPushed(String button) {
         switch (button) {
             case "signIn":
                 view.setCardLayout("signIn");
                 break;
             case "plantList":
-                view.createPlantList();
                 view.setCardLayout("plantList");
                 new Thread( ( ) -> loadPlantImagesFromDatabase( ) ).start( );
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
@@ -141,27 +144,27 @@ public class Controller
         return plant.getLastTimeWatered().plusHours( plant.getHoursBetweenWatering() );
     }
 
-    public Profile ProfileLogin( String name, String password )
+    public Profile profileLogin( String name, String password )
     {
         Profile profile = database.getProfile( name );
-        byte[] hashed = GetPasswordHash( password, profile.getPasswordSalt() );
+        byte[] hashed = getPasswordHash( password, profile.getPasswordSalt() );
         byte[] stored = profile.getPasswordHash( );
         return Arrays.equals( hashed, stored ) ? profile : null;
     }
 
-    public Profile CreateProfile( String name, String password )
+    public Profile createProfile( String name, String password )
     {
-        byte[] salt = GenerateRandomSalt();
+        byte[] salt = generateRandomSalt();
         Profile profile = new Profile()
             .setName( name )
-            .setPasswordHash( GetPasswordHash( password, salt ) )
+            .setPasswordHash( getPasswordHash( password, salt ) )
             .setPasswordSalt( salt );
         int id = database.insertProfile( profile );
         profile.setDatabaseID( id );
         return profile;
     }
 
-    public static byte[] GenerateRandomSalt()
+    public static byte[] generateRandomSalt()
     {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[20];
@@ -169,13 +172,13 @@ public class Controller
         return salt;
     }
 
-    public static byte[] GetPasswordHash( String password, byte[] salt )
+    public static byte[] getPasswordHash( String password, byte[] salt )
     {
         try
         {
             MessageDigest messageDigest = MessageDigest.getInstance( "SHA-512" );
             messageDigest.update( salt );
-            return messageDigest.digest( StringToByte( password ) );
+            return messageDigest.digest( stringToByte( password ) );
         }
         catch( NoSuchAlgorithmException e )
         {
@@ -185,7 +188,7 @@ public class Controller
         return null;
     }
 
-    public static byte[] StringToByte( String input ) {
+    public static byte[] stringToByte( String input ) {
         if (Base64.isBase64(input)) {
             return Base64.decodeBase64(input);
         } else {
@@ -194,10 +197,11 @@ public class Controller
     }
 
     public void loginAttempt(String username, String password) {
-        if (database.getProfile(username) != null) {
-            activeProfile = database.getProfile(username);
-                view.showLoginError(false);
-                buttonPushed("plantList");
+        activeProfile = profileLogin(username, password);
+        if (activeProfile != null) {
+            createPlantList();
+            view.showLoginError(false);
+            buttonPushed("plantList");
         } else {
             view.showLoginError(true);
         }

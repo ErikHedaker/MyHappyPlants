@@ -110,7 +110,6 @@ public class LoginPanel extends JPanel {
         loginPanel.add(buttons, BorderLayout.SOUTH);
 
         add(loginPanel);
-
     }
 
     public JButton getSignInButton() {
@@ -131,7 +130,7 @@ public class LoginPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(getSignInButton())) {
                 controller.buttonPushed("loading-screen");
-                new Thread( ( ) -> controller.loginAttempt(usernameTF.getText(), passwordTF.getPassword().toString()) ).start( );
+                new Thread( ( ) -> controller.loginAttempt(usernameTF.getText(), String.valueOf(passwordTF.getPassword())) ).start( );
             }
         }
     }
