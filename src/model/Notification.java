@@ -33,10 +33,8 @@ public class Notification {
      * @param message message to display
      */
     public Notification(String imagePath, String title, String message) {
+        this(title, message);
         icon = new TrayIcon(new ImageIcon(imagePath).getImage(), "tip");
-        icon.setImageAutoSize(true);
-        this.message = message;
-        this.title = title;
     }
 
     /**
