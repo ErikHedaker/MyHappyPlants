@@ -1,7 +1,6 @@
 package view.panels;
 
 import controller.Controller;
-import view.Utilities;
 
 import javax.swing.*;
 import javax.swing.border.Border;

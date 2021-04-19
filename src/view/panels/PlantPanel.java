@@ -1,6 +1,6 @@
 package view.panels;
 
-import view.Utilities;
+import controller.Utility;
 import model.Plant;
 
 import javax.swing.*;
@@ -27,10 +27,10 @@ public class PlantPanel extends JPanel {
     public PlantPanel(Plant plant) {
         this.plant = plant;
         setLayout(new BorderLayout());
-        JLabel label = new JLabel(Utilities.centerText("Watering Status", 0));
+        JLabel label = new JLabel( Utility.centerText("Watering Status", 0));
         label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
-        JLabel label1 = new JLabel(Utilities.centerText("Previous: " + 0 + "d ago", 0)
+        JLabel label1 = new JLabel( Utility.centerText("Previous: " + 0 + "d ago", 0)
                 + "                     Next: " + plant.getHoursBetweenWatering() + " days left");
         label1.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
         label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
