@@ -1,6 +1,6 @@
 package view.menus;
 
-import view.SettingsFrame;
+import view.settingsFrame.SettingsFrame;
 
 import javax.swing.*;
 import java.awt.*;
