@@ -70,5 +70,19 @@ public class MainFrame{
         panel.createPlantList();
     }
 
+    public void setTitle(String title) {
+        panel.setTitle(title);
+    }
 
+    public void setImage(ImageIcon icon) {
+        panel.setImage(icon);
+    }
+
+    public void showSearch(boolean show) {
+        panel.showSearch(show);
+    }
+
+    public String getSearch() {
+        return panel.getSearch();
+    }
 }

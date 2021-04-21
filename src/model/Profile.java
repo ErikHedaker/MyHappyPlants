@@ -1,6 +1,5 @@
 package model;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Profile

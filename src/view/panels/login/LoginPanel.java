@@ -1,4 +1,4 @@
-package view.panels;
+package view.panels.login;
 
 import controller.Controller;
 
@@ -15,8 +15,17 @@ public class LoginPanel extends JPanel {
     private JButton signInBtn;
     private Controller controller;
     private JPasswordField passwordTF;
+    private JPasswordField passwordTF1;
     private JTextField usernameTF;
     private JLabel wrongLogin;
+    private JButton registerBtn;
+    private JPanel passwordPanel;
+    private JPanel loginPanel;
+    private JPanel passwordsFields;
+    private LoginStatus status;
+    private JLabel title;
+    private JLabel password1Label;
+    private JLabel registerTxt;
 
     public LoginPanel(Controller controller) {
         this.controller = controller;
@@ -24,11 +33,11 @@ public class LoginPanel extends JPanel {
     }
 
     public void createLoginPanel() {
+        if (loginPanel != null) loginPanel.setVisible(false);
         setBackground(new Color(245, 245, 245));
         setPreferredSize(new Dimension(1100, 720));
-        setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 340));
-        setBorder(BorderFactory.createEmptyBorder(120,0,0,0));
-        JPanel loginPanel = new JPanel(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(120, 340, 0, 340));
+        loginPanel = new JPanel(new BorderLayout());
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         loginPanel.setBorder(border);
@@ -40,12 +49,13 @@ public class LoginPanel extends JPanel {
 
         JPanel usernamePanel = new JPanel(new BorderLayout());
         usernamePanel.setBackground(Color.white);
-        JLabel loginText = new JLabel("Sign in");
-        loginText.setBorder(BorderFactory.createEmptyBorder(0,0,30,0));
-        loginText.setFont(new Font("Calibri", Font.BOLD, 25));
-        usernamePanel.add(loginText, BorderLayout.NORTH);
-        JLabel usernameLabel = new JLabel("Username    ");
-        usernameLabel.setFont(new Font("Calibri light", Font.PLAIN, 25));
+        title = new JLabel("Sign in");
+        title.setBorder(BorderFactory.createEmptyBorder(0,0,30,0));
+        title.setFont(new Font("Calibri", Font.BOLD, 25));
+        usernamePanel.add(title, BorderLayout.NORTH);
+
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setFont(new Font("Calibri light", Font.PLAIN, 22));
         usernamePanel.add(usernameLabel, BorderLayout.CENTER);
 
         usernameTF = new JTextField();
@@ -54,18 +64,40 @@ public class LoginPanel extends JPanel {
         loginPanel.add(usernamePanel, BorderLayout.NORTH);
 
 
-        JPanel passwordPanel = new JPanel(new BorderLayout());
+        passwordPanel = new JPanel(new BorderLayout());
         passwordPanel.setBackground(Color.white);
         Border margin2 = new EmptyBorder(5,0,0,0);
         passwordPanel.setBorder(new CompoundBorder(passwordPanel.getBorder(), margin2));
 
-        JLabel passwordLabel = new JLabel("Password    ");
-        passwordLabel.setFont(new Font("Calibri light", Font.PLAIN, 25));
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setFont(new Font("Calibri light", Font.PLAIN, 22));
         passwordPanel.add(passwordLabel, BorderLayout.NORTH);
+
+        passwordsFields = new JPanel(new BorderLayout());
+
         passwordTF = new JPasswordField(0);
         passwordTF.setEchoChar('*');
         passwordTF.setPreferredSize(new Dimension(350, 40));
-        passwordPanel.add(passwordTF, BorderLayout.CENTER);
+        passwordsFields.add(passwordTF, BorderLayout.NORTH);
+
+        JPanel passwordPanel1 = new JPanel(new BorderLayout());
+        passwordPanel1.setBackground(Color.white);
+        Border passMargin = new EmptyBorder(5,0,0,0);
+        passwordPanel1.setBorder(new CompoundBorder(passwordPanel1.getBorder(), passMargin));
+
+        password1Label = new JLabel("Password (Confirm)");
+        password1Label.setFont(new Font("Calibri light", Font.PLAIN, 22));
+        password1Label.setVisible(false);
+        passwordPanel1.add(password1Label, BorderLayout.NORTH);
+
+        passwordTF1 = new JPasswordField(0);
+        passwordTF1.setEchoChar('*');
+        passwordTF1.setPreferredSize(new Dimension(350, 40));
+        passwordTF1.setVisible(false);
+        passwordPanel1.add(passwordTF1, BorderLayout.SOUTH);
+        passwordsFields.add(passwordPanel1, BorderLayout.SOUTH);
+
+        passwordPanel.add(passwordsFields, BorderLayout.CENTER);
 
         wrongLogin = new JLabel("Invalid username or password.");
         wrongLogin.setForeground(new Color(142, 25, 25));
@@ -95,20 +127,42 @@ public class LoginPanel extends JPanel {
         register.setBackground(Color.white);
 
 
-        JButton registerBtn = new JButton("Create One");
+        registerBtn = new JButton("Create One");
         registerBtn.setForeground(new Color(26, 122, 169));
         registerBtn.setBorder(null);
         registerBtn.setBackground(Color.white);
+        registerBtn.addActionListener(new Action());
         registerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         register.add(registerBtn, FlowLayout.LEFT);
 
-        JLabel registerTxt = new JLabel("Don't have an account? ");
+        registerTxt = new JLabel("Don't have an account? ");
         register.add(registerTxt, FlowLayout.LEFT);
 
         buttons.add(register, BorderLayout.SOUTH);
         loginPanel.add(buttons, BorderLayout.SOUTH);
 
         add(loginPanel);
+    }
+
+    public void setStatus(LoginStatus status) {
+        this.status = status;
+    }
+
+    public LoginStatus getStatus() {
+        return status;
+    }
+
+    public void createRegisterPanel() {
+        showLoginError(false);
+        password1Label.setVisible(true);
+        passwordTF1.setVisible(true);
+        title.setText("Register");
+        signInBtn.setText("Create Account");
+        wrongLogin.setText("Password should be longer than 4 letters and needs to match.");
+        registerTxt.setText("Already registered? ");
+        registerBtn.setText("Sign In");
+        loginPanel.revalidate();
+        loginPanel.repaint();
     }
 
     public JButton getSignInButton() {
@@ -119,7 +173,7 @@ public class LoginPanel extends JPanel {
         wrongLogin.setVisible(show);
     }
 
-    public void invalidPasswordMessage(){
+    public void invalidPasswordMessage() {
         JOptionPane.showMessageDialog(null,"The Password Must Be At Least 6 Characters Long");
     }
 
@@ -128,8 +182,22 @@ public class LoginPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(getSignInButton())) {
-                controller.buttonPushed("loading-screen");
-                new Thread( ( ) -> controller.loginAttempt(usernameTF.getText(), String.valueOf(passwordTF.getPassword())) ).start( );
+                if (getStatus() == LoginStatus.REGISTER_PAGE) {
+                    if (!controller.register(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {
+                        showLoginError(true);
+                    }
+                } else  {
+                    controller.attemptLogin(usernameTF.getText(), String.valueOf(passwordTF.getPassword()));
+                }
+            }
+            else if (e.getSource().equals(registerBtn)) {
+                if (getStatus() != LoginStatus.REGISTER_PAGE) {
+                    setStatus(LoginStatus.REGISTER_PAGE);
+                    createRegisterPanel();
+                } else {
+                    setStatus(LoginStatus.LOGIN_PAGE);
+                    createLoginPanel();
+                }
             }
         }
     }

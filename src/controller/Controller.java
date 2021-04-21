@@ -4,13 +4,18 @@ import model.Database;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
+import model.api.trefle.PlantAPI;
+import model.api.trefle.TreflePlant;
 import view.MainFrame;
 import view.panels.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +32,16 @@ public class Controller {
     private Database database;
     private Profile activeProfile;
     private MainFrame view;
+    private PlantAPI plantAPI;
     private byte[] imageDefault;
 
     public Controller() {
         this.database = new Database();
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
+        ArrayList<Plant> plants = new ArrayList<>();
+        activeProfile = new Profile().setName("Guest").setPlants(plants);
+        createPlantList();
     }
 
     /**
@@ -55,15 +64,29 @@ public class Controller {
                 break;
             case "plantList":
                 view.setCardLayout("plantList");
+                view.showSearch(true);
                 new Thread(() -> loadPlantImagesFromDatabase()).start();
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                     panel.getLoadingThread().start();
                 }
                 break;
-            case "loading-screen":
-                view.setCardLayout("loading-screen");
+            case "search":
+                if (view.getSearch().length() > 2) {
+                    plantAPI = new PlantAPI(view.getSearch());
+                    plantAPI.start();
+                    view.setCardLayout("show plant page");
+                    view.setTitle(plantAPI.getPlantAlias());
+                }
                 break;
         }
+    }
+
+    public void setImage(String strURL) {
+
+    }
+
+    public PlantAPI getPlantAPI() {
+        return plantAPI;
     }
 
     /**
@@ -118,14 +141,11 @@ public class Controller {
         Profile profile = database.getProfile(name);
         byte[] hashed;
         byte[] stored;
-        try
-        {
+        try {
             hashed = generatePasswordHash(password, profile.getPasswordSalt());
             stored = profile.getPasswordHash();
         }
-        catch (NullPointerException e)
-        {
-            e.printStackTrace();
+        catch (NullPointerException e) {
             return null;
         }
         return Arrays.equals(hashed, stored) ? profile : null;
@@ -149,23 +169,35 @@ public class Controller {
         return id != -1 ? profile : null;
     }
 
-    public void loginAttempt(String username, String password) {
-        activeProfile = profileLogin(username, password);
-        if (activeProfile != null) {
+    public boolean register(String username, String password, String password1) {
+        if (validPassword(password, password1)) {
+            activeProfile = createProfile(username, password);
+            System.out.println("User " + activeProfile.getName() + " was created.");
             createPlantList();
-            view.showLoginError(false);
             buttonPushed("plantList");
-        } else {
-            view.showLoginError(true);
+            return true;
         }
+        return false;
     }
 
-    /*
-    public boolean invalidPassword() {
-        if(activeProfile.getPassword().length() < validP) {
-            //l.invalidPasswordMessage();
-            return false;
+    public void attemptLogin(String username, String password) {
+        activeProfile = profileLogin(username, password);
+        if (activeProfile == null) {
+            view.showLoginError(true);
+            return;
         }
+
+        view.showLoginError(false);
+        createPlantList();
+        buttonPushed("plantList");
     }
-    */
+
+
+    public boolean validPassword(String password, String password1) {
+        if(password.length() > 4 && password.equals(password1)) {
+            return true;
+        }
+        return false;
+    }
+
 }
