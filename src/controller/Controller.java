@@ -5,17 +5,13 @@ import model.api.JWiki;
 import model.Plant;
 import model.Profile;
 import model.api.trefle.PlantAPI;
-import model.api.trefle.TreflePlant;
 import view.MainFrame;
 import view.panels.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,8 +35,7 @@ public class Controller {
         this.database = new Database();
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
-        ArrayList<Plant> plants = new ArrayList<>();
-        activeProfile = new Profile().setName("Guest").setPlants(plants);
+        this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         createPlantList();
     }
 
@@ -78,7 +73,30 @@ public class Controller {
                     view.setTitle(plantAPI.getPlantAlias());
                 }
                 break;
+            case "Add Plant":
+                Plant plant = new Plant()
+                    .setImageIcon(new ImageIcon(imageDefault))
+                    .setNameAlias("Temp")
+                    .setNameWiki("Rose")
+                    .setHoursBetweenWatering(10);
+                addPlant(plant);
+                System.out.println("Added plant");
+                System.out.println(plant);
+                System.out.println("Doesn't refresh the GUI :(");
+                break;
+            case "Remove Plant":
+                System.out.println("Remove Plant");
+                break;
+            case "Water Plant":
+                System.out.println("Water Plant");
+                break;
         }
+    }
+
+    public void addPlant( Plant plant ) {
+        int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
+        plant.setDatabaseID(id);
+        activeProfile.addPlant(plant);
     }
 
     public void setImage(String strURL) {
@@ -137,15 +155,14 @@ public class Controller {
      * @param password A string representing the password that the user want to login with
      * @return A Profile if the login attempt is successful, null if not
      */
-    public Profile profileLogin(String name, String password) {
+    public Profile loginProfile(String name, String password) {
         Profile profile = database.getProfile(name);
         byte[] hashed;
         byte[] stored;
         try {
             hashed = generatePasswordHash(password, profile.getPasswordSalt());
             stored = profile.getPasswordHash();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             return null;
         }
         return Arrays.equals(hashed, stored) ? profile : null;
@@ -169,8 +186,8 @@ public class Controller {
         return id != -1 ? profile : null;
     }
 
-    public boolean register(String username, String password, String password1) {
-        if (validPassword(password, password1)) {
+    public boolean registerProfile(String username, String password, String passwordRepeat) {
+        if (validPassword(password, passwordRepeat)) {
             activeProfile = createProfile(username, password);
             System.out.println("User " + activeProfile.getName() + " was created.");
             createPlantList();
@@ -181,7 +198,7 @@ public class Controller {
     }
 
     public void attemptLogin(String username, String password) {
-        activeProfile = profileLogin(username, password);
+        activeProfile = loginProfile(username, password);
         if (activeProfile == null) {
             view.showLoginError(true);
             return;
@@ -192,12 +209,7 @@ public class Controller {
         buttonPushed("plantList");
     }
 
-
-    public boolean validPassword(String password, String password1) {
-        if(password.length() > 4 && password.equals(password1)) {
-            return true;
-        }
-        return false;
+    public boolean validPassword(String password, String passwordRepeat) {
+        return password.length() > 4 && password.equals(passwordRepeat);
     }
-
 }

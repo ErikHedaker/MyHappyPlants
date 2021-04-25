@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.Plant;
 import view.panels.PlantPanel;
 
@@ -16,7 +17,7 @@ public class PlantList implements PropertyChangeListener {
     private PlantPanel plantPanel;
     private ArrayList<PlantPanel> plantPanels = new ArrayList<>();
 
-    public PlantList(ArrayList<Plant> plants, JPanel container) {
+    public PlantList(Controller controllerRef, ArrayList<Plant> plants, JPanel container) {
         this.container = container;
         for (Plant plant : plants) {
             JPanel panel = new JPanel(new BorderLayout());
@@ -26,7 +27,7 @@ public class PlantList implements PropertyChangeListener {
             label.setFont(new Font("Garamond", Font.PLAIN, 30));
             panel.add(label, BorderLayout.NORTH);
 
-            plantPanel = new PlantPanel(plant);
+            plantPanel = new PlantPanel(controllerRef, plant);
             plantPanels.add(plantPanel);
             plantPanel.addListener(this);
             panel.add(plantPanel, BorderLayout.CENTER);

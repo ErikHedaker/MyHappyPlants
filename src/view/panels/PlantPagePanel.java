@@ -2,15 +2,11 @@ package view.panels;
 
 import controller.Controller;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class PlantPagePanel extends JPanel {
 
@@ -41,8 +37,6 @@ public class PlantPagePanel extends JPanel {
         title = new JLabel("", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 27));
         header.add(title, BorderLayout.CENTER);
-
-
 
         plantPanel.add(header, BorderLayout.NORTH);
 

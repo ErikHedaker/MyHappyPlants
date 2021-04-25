@@ -1,5 +1,6 @@
 package view.panels;
 
+import controller.Controller;
 import controller.Utility;
 import model.Plant;
 
@@ -8,35 +9,50 @@ import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import static controller.Utility.getNextWateringCountdown;
+
 /**
  * The PlantPanel class handles the visual elements of plants, this class is made to be multiplied into multiple instances in a list for each plant.
  * @author Viktor Johansson
  */
 
 public class PlantPanel extends JPanel {
-
+    private Controller controllerRef;
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
     private int x = 320;
 
+    private JButton btnRemovePlant;
+    private JButton btnWaterPlant;
+
     /**
      * Constructs labels for JPanel that tells about watering status.
      * @param plant
      */
-    public PlantPanel(Plant plant) {
+    public PlantPanel(Controller controllerRef, Plant plant) {
+        this.controllerRef = controllerRef;
         this.plant = plant;
         setLayout(new BorderLayout());
-        JLabel label = new JLabel( Utility.centerText("Watering Status", 0));
-        label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
+        JLabel lblWaterStatus = new JLabel( Utility.centerText("Watering Status", 0));
+        lblWaterStatus.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
-        JLabel label1 = new JLabel( Utility.centerText("Previous: " + 0 + "d ago", 0)
-                + "                     Next: " + plant.getHoursBetweenWatering() + " days left");
-        label1.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
-        label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
+        JLabel lblWaterCountdown = new JLabel( Utility.centerText("Previous: " + plant.getLastTimeWatered(), 0)
+                + "                     Next: " + getNextWateringCountdown(plant) + " hours left");
+        lblWaterCountdown.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
+        lblWaterCountdown.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
-        add(label, BorderLayout.CENTER);
-        add(label1, BorderLayout.SOUTH);
+        btnRemovePlant = new JButton("Remove Plant");
+        btnWaterPlant = new JButton("Water Plant");
+        btnRemovePlant.addActionListener(e -> controllerRef.buttonPushed("Remove Plant"));
+        btnWaterPlant.addActionListener(e -> controllerRef.buttonPushed("Water Plant"));
+        JPanel temp = new JPanel();
+        temp.add(btnRemovePlant);
+        temp.add(btnWaterPlant);
+        add(temp, BorderLayout.EAST);
+
+        add(lblWaterStatus, BorderLayout.CENTER);
+        add(lblWaterCountdown, BorderLayout.SOUTH);
     }
 
     /**

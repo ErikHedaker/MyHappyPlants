@@ -183,7 +183,7 @@ public class LoginPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(getSignInButton())) {
                 if (getStatus() == LoginStatus.REGISTER_PAGE) {
-                    if (!controller.register(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {
+                    if (!controller.registerProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {
                         showLoginError(true);
                     }
                 } else  {

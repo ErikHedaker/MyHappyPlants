@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +23,8 @@ public class MainPanel extends JPanel {
     private JButton searchBtn;
     private JPanel searchPanel;
     private PlantPagePanel plantPagePanel;
+
+    private JButton btnAddPlant;
 
     public MainPanel(Controller controllerRef) {
         this.controllerRef = controllerRef;
@@ -110,12 +111,19 @@ public class MainPanel extends JPanel {
         label.setFont(new Font("Times New Roman", Font.BOLD, 30));
         panel.add(label);
         panelCenter.add(panel, "loading-screen");
+
+        btnAddPlant = new JButton("Add Plant");
+        btnAddPlant.addActionListener(e -> controllerRef.buttonPushed("Add Plant"));
+        JPanel temp = new JPanel();
+        temp.add(btnAddPlant);
+        add(temp, BorderLayout.EAST);
+
         add(panelCenter, BorderLayout.CENTER);
     }
 
     public void createPlantList() {
         JPanel panelPlantList = new JPanel(new BorderLayout());
-        plantList = new PlantList(controllerRef.getPlantList(), panelPlantList);
+        plantList = new PlantList(controllerRef, controllerRef.getPlantList(), panelPlantList);
         panelCenter.add(panelPlantList, "plantList");
     }
 
