@@ -34,6 +34,8 @@ public class Controller {
     private MainFrame view;
     private PlantAPI plantAPI;
     private byte[] imageDefault;
+    private String plantSearchInputName;
+    private String wikiPlantDescription;
 
     public Controller() {
         this.database = new Database();
@@ -67,26 +69,54 @@ public class Controller {
                 view.showSearch(true);
                 new Thread(() -> loadPlantImagesFromDatabase()).start();
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
-                    panel.getLoadingThread().start();
+                    if (!panel.getLoadingThread().isAlive()) {
+                        panel.getLoadingThread().start();
+                    }
                 }
                 break;
             case "search":
-                if (view.getSearch().length() > 2) {
+                if (view.getSearch().length() > 0) {
                     plantAPI = new PlantAPI(view.getSearch());
                     plantAPI.start();
                     view.setCardLayout("show plant page");
-                    view.setTitle(plantAPI.getPlantAlias());
+
+                    plantSearchInputName = plantAPI.getPlantAlias();
+
+                    displayPlantSearchPage();
                 }
                 break;
         }
     }
 
-    public void setImage(String strURL) {
-
+    public void displayPlantSearchPage() {
+        if (isPlantFound(plantSearchInputName)) {
+            showPlantPage(true);
+        } else {
+            showPlantPage(false);
+        }
     }
 
-    public PlantAPI getPlantAPI() {
-        return plantAPI;
+    public void showPlantPage(boolean isPlantFound) {
+        if (isPlantFound) {
+            view.showButton(true);
+            view.setTitle(plantSearchInputName);
+            new Thread(() -> view.setDescription(wikiPlantDescription)).start();
+        } else  {
+            view.setTitle("No plant was found.");
+            view.setDescription("");
+            view.showButton(false);
+        }
+    }
+
+    public boolean isPlantFound(String plantName) {
+        JWiki wiki = new JWiki(plantName);
+        if (!(plantName == "" || wiki.getText() == null
+                || wiki.getText().equalsIgnoreCase("null may refer to:"))) {
+            wikiPlantDescription = wiki.getText();
+            return true;
+        }
+        wikiPlantDescription = wiki.getText();
+        return false;
     }
 
     /**

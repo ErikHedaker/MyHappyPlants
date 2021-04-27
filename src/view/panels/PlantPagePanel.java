@@ -1,16 +1,19 @@
 package view.panels;
 
 import controller.Controller;
+import controller.Utility;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class PlantPagePanel extends JPanel {
 
@@ -18,6 +21,8 @@ public class PlantPagePanel extends JPanel {
     private Controller controller;
     private JLabel title;
     private JLabel image;
+    private JTextPane description;
+    private JButton addPlantBtn;
 
     public  PlantPagePanel(Controller controller) {
         this.controller = controller;
@@ -43,13 +48,22 @@ public class PlantPagePanel extends JPanel {
         header.add(title, BorderLayout.CENTER);
 
 
-
         plantPanel.add(header, BorderLayout.NORTH);
 
-        JLabel description = new JLabel("Description: ");
-        description.setFont(new Font("Calibri", Font.BOLD, 23));
+        description = new JTextPane();
+        description.setEditable(false);
+        StyledDocument doc = description.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        description.setPreferredSize(new Dimension(200,200));
+        description.setFont(new Font("Calibri", Font.BOLD, 15));
         description.setBorder(BorderFactory.createEmptyBorder(0,0,200,0));
         plantPanel.add(description, BorderLayout.CENTER);
+
+        addPlantBtn = new JButton("ADD PLANT");
+
+        plantPanel.add(addPlantBtn, BorderLayout.SOUTH);
 
         add(plantPanel);
     }
@@ -58,6 +72,14 @@ public class PlantPagePanel extends JPanel {
         /*Image scaledSearchInstance = icon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
         this.image.setIcon(new ImageIcon(scaledSearchInstance));*/
 
+    }
+
+    public void showButton(boolean show) {
+        addPlantBtn.setVisible(show);
+    }
+
+    public void setDescription(String txt) {
+        description.setText(Utility.splitParagraph(txt, 10));
     }
 
     public void setTitle(String title) {

@@ -151,6 +151,14 @@ public class MainPanel extends JPanel {
         loginPanel.showLoginError(show);
     }
 
+    public void setDescription(String txt) {
+        plantPagePanel.setDescription(txt);
+    }
+
+    public void showButton(boolean show) {
+        plantPagePanel.showButton(show);
+    }
+
     public void setCardLayout(String constraint) {
         cardLayout.show(panelCenter, constraint);
         repaint();
@@ -175,6 +183,7 @@ public class MainPanel extends JPanel {
                     searchField.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
+                            controllerRef.buttonPushed("plantList");
                             searchField.setText("");
                         }
                     });

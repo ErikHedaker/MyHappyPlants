@@ -52,6 +52,14 @@ public class PlantAPI extends Thread {
 
     public String getPlantAlias() {
         try {
+            return buffer.get().getPlant().common_name;
+        } catch (InterruptedException | NullPointerException e) {
+            return "Plant not found.";
+        }
+    }
+
+    public String getScientificName() {
+        try {
             return buffer.get().getPlant().scientific_name;
         } catch (InterruptedException | NullPointerException e) {
             return "Plant not found.";

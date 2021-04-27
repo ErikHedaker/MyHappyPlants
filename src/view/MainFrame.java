@@ -74,6 +74,14 @@ public class MainFrame{
         panel.setTitle(title);
     }
 
+    public void showButton(boolean show) {
+        panel.showButton(show);
+    }
+
+    public void setDescription(String txt) {
+        panel.setDescription(txt);
+    }
+
     public void setImage(ImageIcon icon) {
         panel.setImage(icon);
     }

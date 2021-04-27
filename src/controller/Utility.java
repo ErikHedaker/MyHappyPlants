@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.regex.Pattern;
 
 /**
  * A Utility class for all static methods that have no state
@@ -25,6 +26,22 @@ public class Utility {
             sb.append(" ");
         }
         sb.append(text);
+        return sb.toString();
+    }
+
+    public static String splitParagraph(String text, int maxLength) {
+        int i = 0;
+        String[] parts = text.split(Pattern.quote(" "));
+        StringBuilder sb = new StringBuilder();
+        for (String p : parts) {
+            i++;
+            if (i == maxLength) {
+                sb.append(p + "\n");
+                i = 0;
+            } else {
+                sb.append(p + " ");
+            }
+        }
         return sb.toString();
     }
 

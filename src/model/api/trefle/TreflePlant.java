@@ -17,6 +17,7 @@ public class TreflePlant {
     }
 
     class Plant {
+        public String common_name;
         public String scientific_name;
         public ArrayList<String> synonyms;
         public String image_url;
