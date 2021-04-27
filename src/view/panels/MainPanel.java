@@ -24,7 +24,9 @@ public class MainPanel extends JPanel {
     private JPanel searchPanel;
     private PlantPagePanel plantPagePanel;
 
-    private JButton btnAddPlant;
+    private JButton btnPlantAdd;
+    private JButton btnPlantRemove;
+    private JButton btnPlantWater;
 
     public MainPanel(Controller controllerRef) {
         this.controllerRef = controllerRef;
@@ -112,10 +114,17 @@ public class MainPanel extends JPanel {
         panel.add(label);
         panelCenter.add(panel, "loading-screen");
 
-        btnAddPlant = new JButton("Add Plant");
-        btnAddPlant.addActionListener(e -> controllerRef.buttonPushed("Add Plant"));
+        btnPlantAdd = new JButton("Add Plant");
+        btnPlantRemove = new JButton("Remove Plant");
+        btnPlantWater = new JButton("Water Plant");
+        btnPlantAdd.addActionListener(e -> controllerRef.buttonPushed("Add Plant"));
+        btnPlantRemove.addActionListener(e -> controllerRef.buttonPushed("Remove Plant"));
+        btnPlantWater.addActionListener(e -> controllerRef.buttonPushed("Water Plant"));
         JPanel temp = new JPanel();
-        temp.add(btnAddPlant);
+        temp.setLayout(new GridLayout(3,1));
+        temp.add(btnPlantAdd);
+        temp.add(btnPlantRemove);
+        temp.add(btnPlantWater);
         add(temp, BorderLayout.EAST);
 
         add(panelCenter, BorderLayout.CENTER);

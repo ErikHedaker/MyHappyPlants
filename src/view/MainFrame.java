@@ -12,7 +12,8 @@ import java.awt.event.MouseEvent;
 
 public class MainFrame{
     private Controller controllerRef;
-    private MainPanel panel;
+    private JFrame frame;
+    private MainPanel mainPanel;
     private view.menus.PopupMenu popupMenu;
 
     public MainFrame( Controller controllerRef ) {
@@ -22,12 +23,12 @@ public class MainFrame{
 
 
     public void setupFrame() {
-        JFrame frame = new JFrame("MyHappyPlants");
+        frame = new JFrame("MyHappyPlants");
 
-        panel = new MainPanel(controllerRef);
+        mainPanel = new MainPanel(controllerRef);
         popupMenu = new PopupMenu();
 
-        frame.add(panel, BorderLayout.NORTH);
+        frame.add(mainPanel, BorderLayout.NORTH);
 
         frame.setJMenuBar(new MenuBar());
         frame.add(popupMenu);
@@ -55,34 +56,34 @@ public class MainFrame{
     }
 
     public void setCardLayout(String cardLayout) {
-        panel.setCardLayout(cardLayout);
+        mainPanel.setCardLayout(cardLayout);
     }
 
     public PlantList getPlantList() {
-        return panel.getPlantList();
+        return mainPanel.getPlantList();
     }
 
     public void showLoginError(boolean show) {
-        panel.showLoginError(show);
+        mainPanel.showLoginError(show);
     }
 
     public void createPlantList() {
-        panel.createPlantList();
+        mainPanel.createPlantList();
     }
 
     public void setTitle(String title) {
-        panel.setTitle(title);
+        mainPanel.setTitle(title);
     }
 
     public void setImage(ImageIcon icon) {
-        panel.setImage(icon);
+        mainPanel.setImage(icon);
     }
 
     public void showSearch(boolean show) {
-        panel.showSearch(show);
+        mainPanel.showSearch(show);
     }
 
     public String getSearch() {
-        return panel.getSearch();
+        return mainPanel.getSearch();
     }
 }

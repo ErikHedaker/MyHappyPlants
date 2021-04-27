@@ -13,8 +13,10 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import static controller.Utility.*;
 
@@ -30,6 +32,7 @@ public class Controller {
     private MainFrame view;
     private PlantAPI plantAPI;
     private byte[] imageDefault;
+    public int indexTemp;
 
     public Controller() {
         this.database = new Database();
@@ -74,29 +77,57 @@ public class Controller {
                 }
                 break;
             case "Add Plant":
+                System.out.println("Add Plant");
                 Plant plant = new Plant()
                     .setImageIcon(new ImageIcon(imageDefault))
                     .setNameAlias("Temp")
                     .setNameWiki("Rose")
                     .setHoursBetweenWatering(10);
                 addPlant(plant);
-                System.out.println("Added plant");
-                System.out.println(plant);
-                System.out.println("Doesn't refresh the GUI :(");
+                refreshPlantListGUI();
                 break;
             case "Remove Plant":
                 System.out.println("Remove Plant");
+                if( validPlantIndex(indexTemp)) {
+                    removePlant(activeProfile.getPlants().get(indexTemp));
+                    refreshPlantListGUI();
+                }
                 break;
             case "Water Plant":
                 System.out.println("Water Plant");
+                if( validPlantIndex(indexTemp)) {
+                    waterPlant(activeProfile.getPlants().get(indexTemp));
+                    refreshPlantListGUI();
+                }
                 break;
         }
+    }
+
+    public void refreshPlantListGUI()
+    {
+        //TEMPORÄR LÖSNING
+        createPlantList();
+        view.setCardLayout("plantList");
+    }
+
+    public boolean validPlantIndex(int index) {
+        return index >= 0 && index < activeProfile.getPlants().size();
+    }
+
+    public void waterPlant( Plant plant ) {
+        LocalDateTime date = database.waterPlant(plant.getDatabaseID());
+        plant.setLastTimeWatered(date);
     }
 
     public void addPlant( Plant plant ) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
         activeProfile.addPlant(plant);
+    }
+
+    public void removePlant( Plant plant ) {
+        database.deletePlant(plant.getDatabaseID());
+        activeProfile.getPlants().remove(plant);
     }
 
     public void setImage(String strURL) {
@@ -120,11 +151,24 @@ public class Controller {
     /**
      * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
-    public void loadPlantImagesFromDatabase() {
+    public synchronized void loadPlantImagesFromDatabase() {
+        //FUNKAR INTE >:(
+        synchronized (activeProfile.getPlants())
+        {
+            Iterator<Plant> it = activeProfile.getPlants().iterator();
+            while (it.hasNext()) {
+                Plant plant = it.next();
+                byte[] image = database.getPlantImage(plant.getDatabaseID());
+                plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
+            }
+        }
+
+        /*
         for (Plant plant : activeProfile.getPlants()) {
             byte[] image = database.getPlantImage(plant.getDatabaseID());
             plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
         }
+        */
     }
 
     /**

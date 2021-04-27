@@ -11,13 +11,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class PlantList implements PropertyChangeListener {
-
+    private Controller controllerRef;
     private ArrayList<JPanel> panels = new ArrayList<>();
     private JPanel container;
     private PlantPanel plantPanel;
     private ArrayList<PlantPanel> plantPanels = new ArrayList<>();
 
     public PlantList(Controller controllerRef, ArrayList<Plant> plants, JPanel container) {
+        this.controllerRef = controllerRef;
         this.container = container;
         for (Plant plant : plants) {
             JPanel panel = new JPanel(new BorderLayout());
@@ -73,6 +74,10 @@ public class PlantList implements PropertyChangeListener {
             JPanel renderer = (JPanel) value;
             renderer.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
             renderer.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
+            if( isSelected )
+            {
+                controllerRef.indexTemp = index;
+            }
             return renderer;
         }
     }

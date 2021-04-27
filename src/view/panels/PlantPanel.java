@@ -23,9 +23,6 @@ public class PlantPanel extends JPanel {
     private Thread loadingThread = new Thread(new Loading());
     private int x = 320;
 
-    private JButton btnRemovePlant;
-    private JButton btnWaterPlant;
-
     /**
      * Constructs labels for JPanel that tells about watering status.
      * @param plant
@@ -41,15 +38,6 @@ public class PlantPanel extends JPanel {
                 + "                     Next: " + getNextWateringCountdown(plant) + " hours left");
         lblWaterCountdown.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
         lblWaterCountdown.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
-
-        btnRemovePlant = new JButton("Remove Plant");
-        btnWaterPlant = new JButton("Water Plant");
-        btnRemovePlant.addActionListener(e -> controllerRef.buttonPushed("Remove Plant"));
-        btnWaterPlant.addActionListener(e -> controllerRef.buttonPushed("Water Plant"));
-        JPanel temp = new JPanel();
-        temp.add(btnRemovePlant);
-        temp.add(btnWaterPlant);
-        add(temp, BorderLayout.EAST);
 
         add(lblWaterStatus, BorderLayout.CENTER);
         add(lblWaterCountdown, BorderLayout.SOUTH);

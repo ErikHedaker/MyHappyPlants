@@ -31,7 +31,7 @@ public class Profile
      * Param is the private attribute being set
      * @return A reference to the current object, in order to chain method calls
      */
-    public Profile setPlants( ArrayList<Plant> plants )
+    public synchronized Profile setPlants( ArrayList<Plant> plants )
     {
         this.plants = plants;
         return this;
