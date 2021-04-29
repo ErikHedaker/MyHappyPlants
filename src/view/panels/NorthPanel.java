@@ -18,12 +18,14 @@ public class NorthPanel extends JPanel {
     private JButton searchBtn;
     private JTextField searchField;
     private Controller controller;
+    private JPanel searchPanel;
 
     public NorthPanel(Controller controller) {
         this.controller = controller;
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1500, 150));
 
+        searchPanel = new JPanel(new BorderLayout());
         searchBtn = new JButton();
         ImageIcon searchIcon = new ImageIcon("./images/search.png");
         Image scaledSearchInstance = searchIcon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
@@ -49,10 +51,9 @@ public class NorthPanel extends JPanel {
         Border margin2 = new EmptyBorder(100, 0, 0, 40);
         setBorder(new CompoundBorder(getBorder(), margin2));
 
-        add(searchBtn, BorderLayout.EAST);
+        searchPanel.add(searchBtn, BorderLayout.EAST);
 
-
-        //panelNorth.add(northHeader, BorderLayout.NORTH);
+        add(searchPanel, BorderLayout.EAST);
 
     }
 
@@ -85,13 +86,25 @@ public class NorthPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (e.getSource().equals(searchBtn)) {
 
                 if (searchField == null) {
-                    JPanel search = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                    search.setBackground(new Color(173, 193, 124));
                     searchField = new JTextField("aloe vera");
-                    searchField.setHorizontalAlignment(JTextField.CENTER);
+                    JPanel search = new JPanel();
+                    search.setBackground(new Color(173, 193, 124));
+                    searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+
+                    searchField.setFont(new Font("Arial", Font.BOLD, 20));
+                    searchField.setForeground(Color.gray);
+
+                    searchField.setPreferredSize(new Dimension(200, 40));
+
+                    search.add(searchField, BorderLayout.WEST);
+
+                    searchPanel.add(search, BorderLayout.WEST);
+                    revalidate();
+                    repaint();
                     searchField.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
@@ -99,19 +112,11 @@ public class NorthPanel extends JPanel {
                             searchField.setText("");
                         }
                     });
-                    searchField.setFont(new Font("Arial", Font.BOLD, 20));
-                    searchField.setForeground(Color.gray);
-                    Border searchMargin = new EmptyBorder(0, 5, 0, 0);
-                    searchBtn.setBorder(new CompoundBorder(searchBtn.getBorder(), searchMargin));
-
-
-                    searchField.setPreferredSize(new Dimension(200, 40));
-                    search.add(searchField);
-                    add(search, BorderLayout.EAST);
 
                 } else {
                     controller.buttonPushed("search");
                 }
+
             }
         }
     }

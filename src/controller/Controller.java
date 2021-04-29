@@ -74,11 +74,11 @@ public class Controller {
                 if (view.getSearchInput().length() > 0) {
                     plantAPI = new PlantAPI(view.getSearchInput());
                     plantAPI.start();
-                    view.setCardLayout("show plant page");
 
                     plantSearchInputName = plantAPI.getPlantAlias();
 
                     new Thread(() -> displayPlantSearchPage()).start();
+                    view.setCardLayout("show plant page");
                 }
                 break;
             case "show plant edit page":
