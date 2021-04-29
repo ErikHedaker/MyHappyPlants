@@ -36,7 +36,7 @@ public class LoginPanel extends JPanel {
         if (loginPanel != null) loginPanel.setVisible(false);
         setBackground(new Color(245, 245, 245));
 
-        setBorder(BorderFactory.createEmptyBorder(20, 340, 0, 340));
+        setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         loginPanel = new JPanel(new BorderLayout());
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
@@ -154,7 +154,7 @@ public class LoginPanel extends JPanel {
 
     public void createRegisterPanel() {
         showLoginError(false);
-        setBorder(BorderFactory.createEmptyBorder(20, 340, 0, 340));
+        setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         password1Label.setVisible(true);
         passwordTF1.setVisible(true);
         title.setText("Register");

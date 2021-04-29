@@ -44,7 +44,7 @@ public class MainFrame{
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int sizeWidth = (dim.width +800)/ 2;
-        int sizeHeight = (dim.height + 700)/ 2;
+        int sizeHeight = (dim.height + 750)/ 2;
         panel.setPreferredSize(new Dimension((sizeWidth + 300)/2, (sizeWidth + 300)/2));
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
