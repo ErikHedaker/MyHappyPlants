@@ -1,7 +1,8 @@
-package view;
+package view.panels.plant;
 
 import model.Plant;
-import view.panels.PlantPanel;
+import org.junit.Rule;
+import view.panels.plant.PlantPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,11 +19,12 @@ public class PlantList implements PropertyChangeListener {
 
     public PlantList(ArrayList<Plant> plants, JPanel container) {
         this.container = container;
+        container.setPreferredSize(new Dimension(200,200));
         for (Plant plant : plants) {
             JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.white);
             JLabel label = new JLabel((plant.getHoursBetweenWatering() != 0 ? " Happy " : " Sad ") + plant.getNameAlias());
-            label.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+            label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
             label.setFont(new Font("Garamond", Font.PLAIN, 30));
             panel.add(label, BorderLayout.NORTH);
 
@@ -42,7 +44,6 @@ public class PlantList implements PropertyChangeListener {
 
     private void showItemList(ArrayList<JPanel> paneList, JPanel container) {
         DefaultListModel model = new DefaultListModel();
-        container.setPreferredSize(new Dimension(1100, 720));
         container.setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 340));
         container.setBackground(Color.WHITE);
         for (JPanel pane: paneList) {
@@ -54,8 +55,10 @@ public class PlantList implements PropertyChangeListener {
         list.setFixedCellHeight(150);
         list.setSelectedIndex(-1);
 
-        list.setCellRenderer(new PanelRenderer());
+        PanelRenderer p = new PanelRenderer();
+        list.setCellRenderer(p);
         JScrollPane scroll1 = new JScrollPane(list);
+        scroll1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         container.add(scroll1);
     }
@@ -67,12 +70,24 @@ public class PlantList implements PropertyChangeListener {
 
     class PanelRenderer implements ListCellRenderer {
 
+        private JPanel panel;
+        private JLabel label;
+
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JPanel renderer = (JPanel) value;
-            renderer.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
-            renderer.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
-            return renderer;
+            panel = (JPanel) value;
+            panel.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
+            panel.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
+
+            label = new JLabel("         ");
+            panel.add(label, BorderLayout.WEST);
+            if (isSelected) {
+                label.setVisible(true);
+            } else {
+                label.setVisible(false);
+            }
+
+            return panel;
         }
     }
 }

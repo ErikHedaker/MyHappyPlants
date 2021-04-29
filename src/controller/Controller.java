@@ -5,17 +5,13 @@ import model.api.JWiki;
 import model.Plant;
 import model.Profile;
 import model.api.trefle.PlantAPI;
-import model.api.trefle.TreflePlant;
 import view.MainFrame;
-import view.panels.PlantPanel;
+import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,21 +71,24 @@ public class Controller {
                 }
                 break;
             case "search":
-                if (view.getSearch().length() > 0) {
-                    plantAPI = new PlantAPI(view.getSearch());
+                if (view.getSearchInput().length() > 0) {
+                    plantAPI = new PlantAPI(view.getSearchInput());
                     plantAPI.start();
                     view.setCardLayout("show plant page");
 
                     plantSearchInputName = plantAPI.getPlantAlias();
 
-                    displayPlantSearchPage();
+                    new Thread(() -> displayPlantSearchPage()).start();
                 }
+                break;
+            case "show plant edit page":
+
                 break;
         }
     }
 
     public void displayPlantSearchPage() {
-        if (isPlantFound(plantSearchInputName)) {
+        if (plantFound()) {
             showPlantPage(true);
         } else {
             showPlantPage(false);
@@ -108,14 +107,13 @@ public class Controller {
         }
     }
 
-    public boolean isPlantFound(String plantName) {
-        JWiki wiki = new JWiki(plantName);
-        if (!(plantName == "" || wiki.getText() == null
+    public boolean plantFound() {
+        JWiki wiki = new JWiki(plantSearchInputName);
+        if (!(plantSearchInputName == "" || wiki.getText() == null
                 || wiki.getText().equalsIgnoreCase("null may refer to:"))) {
             wikiPlantDescription = wiki.getText();
             return true;
         }
-        wikiPlantDescription = wiki.getText();
         return false;
     }
 

@@ -1,4 +1,4 @@
-package view.panels;
+package view.panels.plant;
 
 import controller.Controller;
 import controller.Utility;
@@ -20,7 +20,6 @@ public class PlantPagePanel extends JPanel {
     private JPanel plantPanel;
     private Controller controller;
     private JLabel title;
-    private JLabel image;
     private JTextPane description;
     private JButton addPlantBtn;
 
@@ -28,7 +27,6 @@ public class PlantPagePanel extends JPanel {
         this.controller = controller;
 
         setBackground(new Color(245, 245, 245));
-        setPreferredSize(new Dimension(1100, 720));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
         plantPanel = new JPanel(new BorderLayout());
@@ -38,7 +36,7 @@ public class PlantPagePanel extends JPanel {
 
         Border margin1 = new EmptyBorder(50,50,50,50);
         plantPanel.setBorder(new CompoundBorder(plantPanel.getBorder(), margin1));
-        plantPanel.setPreferredSize(new Dimension(600,600));
+        plantPanel.setPreferredSize(new Dimension(600,400));
         plantPanel.setBackground(Color.white);
 
         JPanel header = new JPanel(new BorderLayout());
@@ -46,7 +44,6 @@ public class PlantPagePanel extends JPanel {
         title = new JLabel("", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 27));
         header.add(title, BorderLayout.CENTER);
-
 
         plantPanel.add(header, BorderLayout.NORTH);
 

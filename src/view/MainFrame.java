@@ -4,6 +4,7 @@ import controller.Controller;
 import view.menus.MenuBar;
 import view.menus.PopupMenu;
 import view.panels.MainPanel;
+import view.panels.plant.PlantList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,19 +21,23 @@ public class MainFrame{
         setupFrame();
     }
 
-
     public void setupFrame() {
         JFrame frame = new JFrame("MyHappyPlants");
 
         panel = new MainPanel(controllerRef);
         popupMenu = new PopupMenu();
-
-        frame.add(panel, BorderLayout.NORTH);
-
+        frame.setLayout(new BorderLayout());
         frame.setJMenuBar(new MenuBar());
         frame.add(popupMenu);
-        frame.setSize(1500, 1000);
-        frame.setPreferredSize(new Dimension(1500, 1000));
+        //frame.setSize(1500, 820);
+        frame.add(panel.getNorthPanel(), BorderLayout.NORTH);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int sizeWidth = (dim.width +800)/ 2;
+        int sizeHeight = (dim.height + 600)/ 2;
+        panel.setPreferredSize(new Dimension((sizeWidth + 300)/2, (sizeWidth + 300)/2));
+        frame.add(panel, BorderLayout.CENTER);
+
+        frame.setSize(sizeWidth, sizeHeight);
         frame.setLocationRelativeTo(null);
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -48,8 +53,7 @@ public class MainFrame{
                 }
             }
         });
-
-
+        frame.add(panel.getSouthPanel(), BorderLayout.SOUTH);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -87,10 +91,10 @@ public class MainFrame{
     }
 
     public void showSearch(boolean show) {
-        panel.showSearch(show);
+        panel.showSearchBtn(show);
     }
 
-    public String getSearch() {
-        return panel.getSearch();
+    public String getSearchInput() {
+        return panel.getSearchInput();
     }
 }
