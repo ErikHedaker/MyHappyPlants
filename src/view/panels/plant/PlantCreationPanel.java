@@ -5,11 +5,11 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class EditPanel extends JPanel {
+public class PlantCreationPanel extends JPanel {
     private Controller controller;
     private JLabel editLabel;
 
-    public EditPanel(Controller controller){
+    public PlantCreationPanel(Controller controller){
         this.controller = controller;
         createPanelEdit();
     }
@@ -18,7 +18,11 @@ public class EditPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
-        editLabel = new JLabel("lmao");
+        editLabel = new JLabel("Edit");
+
+
+
+
 
 
 
