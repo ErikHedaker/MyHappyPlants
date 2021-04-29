@@ -78,11 +78,11 @@ public class Controller {
                     plantSearchInputName = plantAPI.getPlantAlias();
 
                     new Thread(() -> displayPlantSearchPage()).start();
-                    view.setCardLayout("show plant page");
+                    view.setCardLayout("plant page");
                 }
                 break;
-            case "show plant edit page":
-
+            case "show plant creation page":
+                view.setCardLayout("plant creation page");
                 break;
         }
     }

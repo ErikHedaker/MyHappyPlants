@@ -10,6 +10,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -59,16 +61,21 @@ public class PlantPagePanel extends JPanel {
         plantPanel.add(description, BorderLayout.CENTER);
 
         addPlantBtn = new JButton("ADD PLANT");
-
+        addPlantBtn.addActionListener(new Action());
         plantPanel.add(addPlantBtn, BorderLayout.SOUTH);
 
         add(plantPanel);
     }
 
-    public void setImage(ImageIcon icon) {
-        /*Image scaledSearchInstance = icon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
-        this.image.setIcon(new ImageIcon(scaledSearchInstance));*/
+    class Action implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (e.getSource().equals(addPlantBtn)) {
+                controller.buttonPushed("show plant creation page");
+            }
+        }
     }
 
     public void showButton(boolean show) {

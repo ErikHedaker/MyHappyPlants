@@ -1,6 +1,7 @@
 package view.panels;
 
 import controller.Controller;
+import view.panels.plant.PlantCreationPanel;
 import view.panels.plant.PlantList;
 import view.panels.login.LoginPanel;
 import view.panels.plant.PlantPagePanel;
@@ -17,6 +18,7 @@ public class MainPanel extends JPanel {
     private JPanel panelCenter;
     private NorthPanel northPanel;
     private SouthPanel southPanel;
+    private PlantCreationPanel plantCreationPanel;
 
     public MainPanel(Controller controller) {
         this.controller = controller;
@@ -34,7 +36,10 @@ public class MainPanel extends JPanel {
         loginPanel = new LoginPanel(controller);
         panelCenter.add(loginPanel, "signIn");
         plantPagePanel = new PlantPagePanel(controller);
-        panelCenter.add(plantPagePanel, "show plant page");
+        panelCenter.add(plantPagePanel, "plant page");
+        plantCreationPanel = new PlantCreationPanel(controller);
+        panelCenter.add(plantCreationPanel, "plant creation page");
+
         setOpaque(false);
         JPanel panel = new JPanel();
         panel.setBackground(Color.white);
@@ -64,9 +69,7 @@ public class MainPanel extends JPanel {
         return southPanel;
     }
 
-    public void setImage(ImageIcon icon) {
-        plantPagePanel.setImage(icon);
-    }
+
 
     public void setTitle(String title) {
         plantPagePanel.setTitle(title);
