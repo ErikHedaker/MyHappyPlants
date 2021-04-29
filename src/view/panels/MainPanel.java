@@ -35,6 +35,7 @@ public class MainPanel extends JPanel {
         panelCenter.add(loginPanel, "signIn");
         plantPagePanel = new PlantPagePanel(controller);
         panelCenter.add(plantPagePanel, "show plant page");
+        setOpaque(false);
         JPanel panel = new JPanel();
         panel.setBackground(Color.white);
         JLabel label = new JLabel("Loading...");

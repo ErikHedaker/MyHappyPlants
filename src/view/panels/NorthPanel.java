@@ -11,43 +11,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class NorthPanel extends JPanel {
 
     private JButton searchBtn;
-    private JPanel searchPanel;
     private JTextField searchField;
     private Controller controller;
 
     public NorthPanel(Controller controller) {
         this.controller = controller;
         setLayout(new BorderLayout());
-        JPanel panelNorth = new JPanel(new BorderLayout());
-        JPanel northHeader = new JPanel(new BorderLayout());
-        northHeader.setPreferredSize(new Dimension(1500, 115));
-        northHeader.setBackground(new Color(220, 229, 185));
-        JLabel logoLabel = new JLabel();
-        ImageIcon logo = new ImageIcon("./images/logo-happy.png");
-        Image scaledInstance = logo.getImage().getScaledInstance(165, 165, Image.SCALE_SMOOTH);
-        logoLabel.setIcon(new ImageIcon(scaledInstance));
+        setPreferredSize(new Dimension(1500, 150));
 
-        Border border = logoLabel.getBorder();
-        Border margin = new EmptyBorder(0, 85, 0, 0);
-        logoLabel.setBorder(new CompoundBorder(border, margin));
-
-        northHeader.add(logoLabel, BorderLayout.NORTH);
-
-        JPanel southHeader = new JPanel(new BorderLayout());
-        southHeader.setPreferredSize(new Dimension(1500, 50));
-        southHeader.setBackground(new Color(173, 193, 124));
-        JLabel logoLabel1 = new JLabel();
-        logoLabel1.setIcon(new ImageIcon(scaledInstance));
-        Border margin1 = new EmptyBorder(0, 85, 115, 0);
-        logoLabel1.setBorder(new CompoundBorder(border, margin1));
-        southHeader.add(logoLabel1);
-
-        searchPanel = new JPanel(new BorderLayout());
-        searchPanel.setBackground(new Color(173, 193, 124));
         searchBtn = new JButton();
         ImageIcon searchIcon = new ImageIcon("./images/search.png");
         Image scaledSearchInstance = searchIcon.getImage().getScaledInstance(47, 45, Image.SCALE_SMOOTH);
@@ -69,17 +45,15 @@ public class NorthPanel extends JPanel {
         searchBtn.addActionListener(new Action());
 
 
-        searchPanel.add(searchBtn, BorderLayout.EAST);
         searchBtn.setVisible(false);
-        Border margin2 = new EmptyBorder(0, 0, 0, 40);
-        searchPanel.setBorder(new CompoundBorder(searchPanel.getBorder(), margin2));
+        Border margin2 = new EmptyBorder(100, 0, 0, 40);
+        setBorder(new CompoundBorder(getBorder(), margin2));
 
-        southHeader.add(searchPanel, BorderLayout.EAST);
+        add(searchBtn, BorderLayout.EAST);
 
-        panelNorth.add(northHeader, BorderLayout.NORTH);
-        panelNorth.add(southHeader, BorderLayout.SOUTH);
 
-        add(panelNorth);
+        //panelNorth.add(northHeader, BorderLayout.NORTH);
+
     }
 
     public JButton getSearchBtn() {
@@ -90,6 +64,23 @@ public class NorthPanel extends JPanel {
         return searchField;
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        graphics2D.setColor(new Color(220, 229, 185));
+        graphics2D.fillRect(0,0, 4000, 100);
+
+        graphics2D.setColor(new Color(173, 193, 124));
+        graphics2D.fillRect(0,100, 4000, 50);
+
+        ImageIcon logo = new ImageIcon("./images/logo-happy.png");
+        Image img = logo.getImage().getScaledInstance(150, 150,
+                        Image.SCALE_SMOOTH);
+        graphics2D.drawImage(new ImageIcon(img).getImage(), 50, 0, 150, 150, null);
+
+    }
+
     class Action implements ActionListener {
 
         @Override
@@ -97,8 +88,8 @@ public class NorthPanel extends JPanel {
             if (e.getSource().equals(searchBtn)) {
 
                 if (searchField == null) {
-                    JPanel search = new JPanel();
-                    search.setBackground(null);
+                    JPanel search = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                    search.setBackground(new Color(173, 193, 124));
                     searchField = new JTextField("aloe vera");
                     searchField.setHorizontalAlignment(JTextField.CENTER);
                     searchField.addMouseListener(new MouseAdapter() {
@@ -113,9 +104,10 @@ public class NorthPanel extends JPanel {
                     Border searchMargin = new EmptyBorder(0, 5, 0, 0);
                     searchBtn.setBorder(new CompoundBorder(searchBtn.getBorder(), searchMargin));
 
+
                     searchField.setPreferredSize(new Dimension(200, 40));
                     search.add(searchField);
-                    searchPanel.add(search, BorderLayout.WEST);
+                    add(search, BorderLayout.EAST);
 
                 } else {
                     controller.buttonPushed("search");
