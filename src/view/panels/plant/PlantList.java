@@ -1,8 +1,6 @@
 package view.panels.plant;
 
 import model.Plant;
-import org.junit.Rule;
-import view.panels.plant.PlantPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +14,7 @@ public class PlantList implements PropertyChangeListener {
     private JPanel container;
     private PlantPanel plantPanel;
     private ArrayList<PlantPanel> plantPanels = new ArrayList<>();
+    private JList list;
 
     public PlantList(ArrayList<Plant> plants, JPanel container) {
         this.container = container;
@@ -44,12 +43,13 @@ public class PlantList implements PropertyChangeListener {
 
     private void showItemList(ArrayList<JPanel> paneList, JPanel container) {
         DefaultListModel model = new DefaultListModel();
-        container.setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 340));
+        container.setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 0));
         container.setBackground(Color.WHITE);
+
         for (JPanel pane: paneList) {
             model.addElement(pane);
         }
-        JList list = new JList(model);
+        list = new JList(model);
         list.setBorder(BorderFactory.createLineBorder(Color.white, 30));
         list.setBackground(Color.white);
         list.setFixedCellHeight(150);
@@ -71,7 +71,6 @@ public class PlantList implements PropertyChangeListener {
     class PanelRenderer implements ListCellRenderer {
 
         private JPanel panel;
-        private JLabel label;
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -79,12 +78,8 @@ public class PlantList implements PropertyChangeListener {
             panel.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
             panel.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
 
-            label = new JLabel("         ");
-            panel.add(label, BorderLayout.WEST);
             if (isSelected) {
-                label.setVisible(true);
-            } else {
-                label.setVisible(false);
+
             }
 
             return panel;

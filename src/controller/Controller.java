@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -40,6 +41,10 @@ public class Controller {
         ArrayList<Plant> plants = new ArrayList<>();
         activeProfile = new Profile().setName("Guest").setPlants(plants);
         createPlantList();
+    }
+
+    public byte[] getImageDefault() {
+        return imageDefault;
     }
 
     /**
@@ -84,6 +89,11 @@ public class Controller {
             case "show plant creation page":
                 view.setCardLayout("plant creation page");
                 break;
+
+            case "add plant":
+                /*Plant plant = new Plant();
+                plant.setDatabaseID(33).setNameWiki("cactus").setNameAlias("Spiky Boy").setHoursBetweenWatering(4).setLastTimeWatered(LocalDateTime.now());
+                database.insertPlant(activeProfile.getDatabaseID(), plant);*/
         }
     }
 

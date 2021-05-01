@@ -5,6 +5,7 @@ import view.panels.plant.PlantCreationPanel;
 import view.panels.plant.PlantList;
 import view.panels.login.LoginPanel;
 import view.panels.plant.PlantPagePanel;
+import view.panels.plant.PlantSelectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +54,10 @@ public class MainPanel extends JPanel {
 
     public void createPlantList() {
         JPanel panelPlantList = new JPanel(new BorderLayout());
+
+        PlantSelectionPanel plantSelectionPanel = new PlantSelectionPanel(controller);
+        panelPlantList.add(plantSelectionPanel, BorderLayout.EAST);
+
         plantList = new PlantList(controller.getPlantList(), panelPlantList);
         panelCenter.add(panelPlantList, "plantList");
     }
