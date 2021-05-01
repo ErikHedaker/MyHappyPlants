@@ -82,11 +82,12 @@ public class PlantCreationPanel extends JPanel {
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         climatePanel.add(climateLabel, BorderLayout.WEST);
 
-        String[] choices = {"Wet room", "Outside", "Inside"};
+        String[] choices = {"Inside", "Outside"};
         JComboBox<String> climateMenu = new JComboBox<String>(choices);
+        climateMenu.setBackground(Color.white);
         climateMenu.setPreferredSize(new Dimension(200, 18));
         climatePanel.add(climateMenu, BorderLayout.EAST);
-        editPanel.add(climatePanel);
+        labelPanel.add(climatePanel);
 
         JPanel savePanel = new JPanel(new BorderLayout());
         savePanel.setBackground(Color.white);
