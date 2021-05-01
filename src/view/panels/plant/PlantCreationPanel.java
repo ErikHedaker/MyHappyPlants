@@ -86,7 +86,7 @@ public class PlantCreationPanel extends JPanel {
         JComboBox<String> climateMenu = new JComboBox<String>(choices);
         climateMenu.setPreferredSize(new Dimension(200, 18));
         climatePanel.add(climateMenu, BorderLayout.EAST);
-        editPanel.add(climatePanel;
+        editPanel.add(climatePanel);
 
         JPanel savePanel = new JPanel(new BorderLayout());
         savePanel.setBackground(Color.white);
