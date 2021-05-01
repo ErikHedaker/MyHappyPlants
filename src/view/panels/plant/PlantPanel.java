@@ -19,6 +19,7 @@ public class PlantPanel extends JPanel {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
     private int x = 320;
+    private JButton waterBtn;
 
     /**
      * Constructs labels for JPanel that tells about watering status.
@@ -36,8 +37,15 @@ public class PlantPanel extends JPanel {
         label1.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
         label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
+        waterBtn = new JButton("Water");
+        waterBtn.setVisible(false);
         add(label, BorderLayout.CENTER);
         add(label1, BorderLayout.SOUTH);
+        add(waterBtn, BorderLayout.EAST);
+    }
+
+    public void showWaterBtn(boolean visibility) {
+        waterBtn.setVisible(visibility);
     }
 
     /**

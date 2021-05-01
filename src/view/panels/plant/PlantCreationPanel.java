@@ -7,7 +7,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import javax.swing.SpringLayout;
 
 /**
     * The class sux, but yeah...
@@ -19,10 +18,10 @@ public class PlantCreationPanel extends JPanel {
 
     public PlantCreationPanel(Controller controller){
         this.controller = controller;
-        createEditPanel();
+        createPanelEdit();
     }
 
-    public void createEditPanel(){
+    public void createPanelEdit(){
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
@@ -37,8 +36,7 @@ public class PlantCreationPanel extends JPanel {
         editPanel.setBorder(new CompoundBorder(editPanel.getBorder(), margin1));
         editPanel.setBackground(Color.white);
 
-        JLabel title = new JLabel("ENTER PLANT DETAILS");
-        title.setBorder(BorderFactory.createEmptyBorder(0,66,30,0));
+        JLabel title = new JLabel("ENTER PLANT DETAILS", JLabel.CENTER);
         title.setBounds(10,10,10,10);
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
         editPanel.add(title, BorderLayout.NORTH);
@@ -70,23 +68,12 @@ public class PlantCreationPanel extends JPanel {
         nicknamePanel.add(nicknameTF, BorderLayout.EAST);
         labelPanel.add(nicknamePanel);
 
-        JPanel sizePanel = new JPanel(new BorderLayout());
+         /*JPanel sizePanel = new JPanel(new BorderLayout());
         sizePanel.setBackground(Color.white);
 
         JLabel sizeLabel = new JLabel("Size: ");
-        sizeLabel.setBackground(Color.white);
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        sizePanel.add(sizeLabel, BorderLayout.WEST);
-
-        JPanel boxes = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-        JCheckBox smallBox = new JCheckBox("Small");
-        JCheckBox mediumBox = new JCheckBox("Medium");
-        JCheckBox bigBox = new JCheckBox("Large");
-        sizePanel.add(smallBox);
-        sizePanel.add(mediumBox);
-        sizePanel.add(bigBox);
-        sizePanel.add(boxes, BorderLayout.EAST);
-        labelPanel.add(sizePanel);
+        sizePanel.add(sizeLabel, BorderLayout.WEST);*/
 
         JPanel climatePanel = new JPanel(new BorderLayout());
         climatePanel.setBackground(Color.white);
@@ -95,12 +82,11 @@ public class PlantCreationPanel extends JPanel {
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         climatePanel.add(climateLabel, BorderLayout.WEST);
 
-        String[] choices = {"Inside", "Outside", "Wet room"};
+        String[] choices = {"Wet room", "Outside", "Inside"};
         JComboBox<String> climateMenu = new JComboBox<String>(choices);
-        climateMenu.setBackground(Color.white);
         climateMenu.setPreferredSize(new Dimension(200, 18));
         climatePanel.add(climateMenu, BorderLayout.EAST);
-        labelPanel.add(climatePanel);
+        editPanel.add(climatePanel;
 
         JPanel savePanel = new JPanel(new BorderLayout());
         savePanel.setBackground(Color.white);
@@ -112,5 +98,6 @@ public class PlantCreationPanel extends JPanel {
         editPanel.add(labelPanel, BorderLayout.CENTER);
 
         add(editPanel);
+
     }
 }
