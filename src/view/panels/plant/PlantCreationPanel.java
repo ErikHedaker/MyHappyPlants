@@ -7,6 +7,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
     * The class sux, but yeah...
@@ -25,7 +27,6 @@ public class PlantCreationPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
-
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel editPanel = new JPanel(new BorderLayout());
 
@@ -41,8 +42,7 @@ public class PlantCreationPanel extends JPanel {
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
         editPanel.add(title, BorderLayout.NORTH);
 
-
-        JPanel labelPanel = new JPanel(new GridLayout(10,0,0,0));
+        JPanel labelPanel = new JPanel(new GridLayout(20,0,0,10));
         labelPanel.setBackground(Color.white);
         JPanel plantName = new JPanel(new BorderLayout());
         plantName.setBackground(Color.white);
@@ -54,7 +54,7 @@ public class PlantCreationPanel extends JPanel {
         plantTF.setPreferredSize(new Dimension(200, 18));
         plantName.add(plantTF, BorderLayout.EAST);
 
-        labelPanel.add(plantName); //lägger till textfield och label
+        labelPanel.add(plantName);
 
         JPanel nicknamePanel = new JPanel(new BorderLayout());
         nicknamePanel.setBackground(Color.white);
@@ -68,12 +68,71 @@ public class PlantCreationPanel extends JPanel {
         nicknamePanel.add(nicknameTF, BorderLayout.EAST);
         labelPanel.add(nicknamePanel);
 
-         /*JPanel sizePanel = new JPanel(new BorderLayout());
+        JPanel sizePanel = new JPanel();
         sizePanel.setBackground(Color.white);
 
         JLabel sizeLabel = new JLabel("Size: ");
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        sizePanel.add(sizeLabel, BorderLayout.WEST);*/
+        sizePanel.add(sizeLabel, BorderLayout.WEST);
+
+        JPanel picPanel = new JPanel();
+
+        picPanel.setBackground(Color.white);
+        ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
+        Image image = imageIcon.getImage();
+        Image smallimg = image.getScaledInstance(25,25,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(smallimg);
+
+        ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
+        Image image2 = imageIcon2.getImage();
+        Image mediumimg = image2.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon2 = new ImageIcon(mediumimg);
+
+        ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
+        Image image3 = imageIcon3.getImage();
+        Image largeimg = image3.getScaledInstance(70, 50,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon3 = new ImageIcon(largeimg);
+
+        JButton button1 = new JButton(imageIcon);
+        button1.setBackground(Color.white);
+        button1.setBorderPainted(false);
+        button1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("small");
+            }
+        });
+
+        JButton button2 = new JButton(imageIcon2);
+        button2.setBackground(Color.white);
+        button2.setBorderPainted(false);
+        button2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("medium");
+            }
+        });
+
+        JButton button3 = new JButton(imageIcon3);
+        button3.setBackground(Color.white);
+        button3.setBorderPainted(false);
+        button3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("bik");
+            }
+        });
+
+        picPanel.add(button1);
+        picPanel.add(button2);
+        picPanel.add(button3);
+
+        sizePanel.add(picPanel, BorderLayout.EAST);
+
+        labelPanel.add(sizePanel, BorderLayout.CENTER);
 
         JPanel climatePanel = new JPanel(new BorderLayout());
         climatePanel.setBackground(Color.white);
@@ -101,4 +160,5 @@ public class PlantCreationPanel extends JPanel {
         add(editPanel);
 
     }
+
 }
