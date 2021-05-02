@@ -115,7 +115,7 @@ public class Database {
      * @param plantID  The id of the plant that gets watered
      * @param happened A date of when the user watered their plant
      */
-    public void waterPlant(int plantID, LocalDateTime happened) {
+    public LocalDateTime waterPlant(int plantID, LocalDateTime happened) {
         final String SQL =
             "INSERT INTO watering (plant_id, happened)" +
             "VALUES (?, ?)";
@@ -127,6 +127,7 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return happened;
     }
 
     /**
@@ -134,8 +135,8 @@ public class Database {
      *
      * @param plantID The id of the plant that gets watered
      */
-    public void waterPlant(int plantID) {
-        waterPlant(plantID, LocalDateTime.now());
+    public LocalDateTime waterPlant(int plantID) {
+        return waterPlant(plantID, LocalDateTime.now());
     }
 
     /**

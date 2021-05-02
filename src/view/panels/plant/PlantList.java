@@ -1,4 +1,4 @@
-package view.panels.plant;
+package view;
 
 import controller.Controller;
 import model.Plant;
@@ -89,11 +89,10 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            panel = (JPanel) value;
-            panel.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
-            panel.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
-
-            return panel;
+            JPanel renderer = (JPanel) value;
+            renderer.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
+            renderer.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
+            return renderer;
         }
     }
 }

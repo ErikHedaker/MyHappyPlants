@@ -17,6 +17,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import static controller.Utility.*;
 
@@ -32,6 +33,7 @@ public class Controller {
     private MainFrame view;
     private PlantAPI plantAPI;
     private byte[] imageDefault;
+    public int indexTemp;
     private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
@@ -40,6 +42,7 @@ public class Controller {
         this.database = new Database();
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
+        this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         imageIcon = new ImageIcon(imageDefault);
         ArrayList<Plant> plants = new ArrayList<>();
         activeProfile = new Profile().setName("Guest").setPlants(plants);
@@ -110,15 +113,58 @@ public class Controller {
                     view.setCardLayout("plant page");
                 }
                 break;
-            case "show plant creation page":
-                view.setCardLayout("plant creation page");
+            case "Add Plant":
+                System.out.println("Add Plant");
+                Plant plant = new Plant()
+                    .setImageIcon(new ImageIcon(imageDefault))
+                    .setNameAlias("Temp")
+                    .setNameWiki("Rose")
+                    .setHoursBetweenWatering(10);
+                addPlant(plant);
+                refreshPlantListGUI();
                 break;
-
-            case "add plant":
-                /*Plant plant = new Plant();
-                plant.setDatabaseID(33).setNameWiki("cactus").setNameAlias("Spiky Boy").setHoursBetweenWatering(4).setLastTimeWatered(LocalDateTime.now());
-                database.insertPlant(activeProfile.getDatabaseID(), plant);*/
+            case "Remove Plant":
+                System.out.println("Remove Plant");
+                if( validPlantIndex(indexTemp)) {
+                    removePlant(activeProfile.getPlants().get(indexTemp));
+                    refreshPlantListGUI();
+                }
+                break;
+            case "Water Plant":
+                System.out.println("Water Plant");
+                if( validPlantIndex(indexTemp)) {
+                    waterPlant(activeProfile.getPlants().get(indexTemp));
+                    refreshPlantListGUI();
+                }
+                break;
         }
+    }
+
+    public void refreshPlantListGUI()
+    {
+        //TEMPORÄR LÖSNING
+        createPlantList();
+        view.setCardLayout("plantList");
+    }
+
+    public boolean validPlantIndex(int index) {
+        return index >= 0 && index < activeProfile.getPlants().size();
+    }
+
+    public void waterPlant( Plant plant ) {
+        LocalDateTime date = database.waterPlant(plant.getDatabaseID());
+        plant.setLastTimeWatered(date);
+    }
+
+    public void addPlant( Plant plant ) {
+        int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
+        plant.setDatabaseID(id);
+        activeProfile.addPlant(plant);
+    }
+
+    public void removePlant( Plant plant ) {
+        database.deletePlant(plant.getDatabaseID());
+        activeProfile.getPlants().remove(plant);
     }
 
     public void displayPlantSearchPage() {
@@ -164,11 +210,24 @@ public class Controller {
     /**
      * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
-    public void loadPlantImagesFromDatabase() {
+    public synchronized void loadPlantImagesFromDatabase() {
+        //FUNKAR INTE >:(
+        synchronized (activeProfile.getPlants())
+        {
+            Iterator<Plant> it = activeProfile.getPlants().iterator();
+            while (it.hasNext()) {
+                Plant plant = it.next();
+                byte[] image = database.getPlantImage(plant.getDatabaseID());
+                plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
+            }
+        }
+
+        /*
         for (Plant plant : activeProfile.getPlants()) {
             byte[] image = database.getPlantImage(plant.getDatabaseID());
             plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
         }
+        */
     }
 
     /**
@@ -199,15 +258,14 @@ public class Controller {
      * @param password A string representing the password that the user want to login with
      * @return A Profile if the login attempt is successful, null if not
      */
-    public Profile profileLogin(String name, String password) {
+    public Profile loginProfile(String name, String password) {
         Profile profile = database.getProfile(name);
         byte[] hashed;
         byte[] stored;
         try {
             hashed = generatePasswordHash(password, profile.getPasswordSalt());
             stored = profile.getPasswordHash();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             return null;
         }
         return Arrays.equals(hashed, stored) ? profile : null;
@@ -231,8 +289,8 @@ public class Controller {
         return id != -1 ? profile : null;
     }
 
-    public boolean register(String username, String password, String password1) {
-        if (validPassword(password, password1)) {
+    public boolean registerProfile(String username, String password, String passwordRepeat) {
+        if (validPassword(password, passwordRepeat)) {
             activeProfile = createProfile(username, password);
             System.out.println("User " + activeProfile.getName() + " was created.");
             createPlantList();
@@ -243,7 +301,7 @@ public class Controller {
     }
 
     public void attemptLogin(String username, String password) {
-        activeProfile = profileLogin(username, password);
+        activeProfile = loginProfile(username, password);
         if (activeProfile == null) {
             view.showLoginError(true);
             return;
@@ -254,12 +312,7 @@ public class Controller {
         buttonPushed("plantList");
     }
 
-
-    public boolean validPassword(String password, String password1) {
-        if(password.length() > 4 && password.equals(password1)) {
-            return true;
-        }
-        return false;
+    public boolean validPassword(String password, String passwordRepeat) {
+        return password.length() > 4 && password.equals(passwordRepeat);
     }
-
 }

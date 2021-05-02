@@ -3,6 +3,11 @@ package model;
 import javax.swing.*;
 import java.time.LocalDateTime;
 
+/**
+ * The Plant class represents a plant that the profile has and tracks
+ *
+ * @author Erik Hedåker, Viktor Johansson
+ */
 public class Plant
 {
     private int databaseID;
@@ -13,6 +18,12 @@ public class Plant
     private ImageIcon imageIcon;
     private String description;
 
+    /**
+     * All Setter methods
+     *
+     * Param is the private attribute being set
+     * @return A reference to the current object, in order to chain method calls
+     */
     public Plant setDatabaseID( int databaseID )
     {
         this.databaseID = databaseID;
@@ -47,6 +58,11 @@ public class Plant
         return this;
     }
 
+    /**
+     * All Getter methods
+     *
+     * @return The private attribute
+     */
     public int getDatabaseID()
     {
         return databaseID;
