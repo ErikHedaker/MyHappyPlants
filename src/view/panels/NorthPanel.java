@@ -114,7 +114,7 @@ public class NorthPanel extends JPanel {
                     });
 
                 } else {
-                    controller.buttonPushed("search");
+                    new Thread(() -> controller.buttonPushed("search")).start();
                 }
 
             }

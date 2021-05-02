@@ -19,6 +19,7 @@ public class MainPanel extends JPanel {
     private JPanel panelCenter;
     private NorthPanel northPanel;
     private SouthPanel southPanel;
+    private PlantSelectionPanel plantSelectionPanel;
     private PlantCreationPanel plantCreationPanel;
 
     public MainPanel(Controller controller) {
@@ -27,7 +28,6 @@ public class MainPanel extends JPanel {
         createCenterPanel();
         northPanel = new NorthPanel(controller);
         southPanel = new SouthPanel();
-        setCardLayout("signIn");
     }
 
     public void createCenterPanel() {
@@ -55,11 +55,19 @@ public class MainPanel extends JPanel {
     public void createPlantList() {
         JPanel panelPlantList = new JPanel(new BorderLayout());
 
-        PlantSelectionPanel plantSelectionPanel = new PlantSelectionPanel(controller);
+        plantSelectionPanel = new PlantSelectionPanel(controller);
         panelPlantList.add(plantSelectionPanel, BorderLayout.EAST);
 
-        plantList = new PlantList(controller.getPlantList(), panelPlantList);
+        plantList = new PlantList(controller.getPlantList(), panelPlantList, controller);
         panelCenter.add(panelPlantList, "plantList");
+    }
+
+    public void setSelectedPlantName(String plantName) {
+        plantSelectionPanel.setPlantName(plantName);
+    }
+
+    public void setSelectedImageIcon(ImageIcon imageIcon) {
+        plantSelectionPanel.setImageIcon(imageIcon);
     }
 
     public PlantList getPlantList() {
@@ -74,7 +82,9 @@ public class MainPanel extends JPanel {
         return southPanel;
     }
 
-
+    public PlantSelectionPanel getPlantSelectionPanel() {
+        return plantSelectionPanel;
+    }
 
     public void setTitle(String title) {
         plantPagePanel.setTitle(title);

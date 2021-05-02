@@ -1,22 +1,28 @@
 package view.panels.plant;
 
+import controller.Controller;
 import model.Plant;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-public class PlantList implements PropertyChangeListener {
+public class PlantList implements PropertyChangeListener, ListSelectionListener {
 
     private ArrayList<JPanel> panels = new ArrayList<>();
     private JPanel container;
     private PlantPanel plantPanel;
     private ArrayList<PlantPanel> plantPanels = new ArrayList<>();
     private JList list;
+    private Controller controller;
 
-    public PlantList(ArrayList<Plant> plants, JPanel container) {
+
+    public PlantList(ArrayList<Plant> plants, JPanel container, Controller controller) {
+        this.controller = controller;
         this.container = container;
         container.setPreferredSize(new Dimension(200,200));
         for (Plant plant : plants) {
@@ -54,13 +60,22 @@ public class PlantList implements PropertyChangeListener {
         list.setBackground(Color.white);
         list.setFixedCellHeight(150);
         list.setSelectedIndex(-1);
-
+        list.addListSelectionListener(this);
         PanelRenderer p = new PanelRenderer();
         list.setCellRenderer(p);
         JScrollPane scroll1 = new JScrollPane(list);
         scroll1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         container.add(scroll1);
+    }
+
+    public int getSelectedIndex() {
+        return list.getSelectedIndex();
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        controller.setSelectedPlantFromIndex(getSelectedIndex());
     }
 
     @Override
@@ -77,10 +92,6 @@ public class PlantList implements PropertyChangeListener {
             panel = (JPanel) value;
             panel.setBackground(isSelected ? new Color(243, 243, 243) : list.getBackground());
             panel.setBorder(isSelected ? BorderFactory.createLineBorder(new Color(177, 177, 177), 1, true) : BorderFactory.createLineBorder(new Color(243, 243, 243), 1));
-
-            if (isSelected) {
-
-            }
 
             return panel;
         }

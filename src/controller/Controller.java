@@ -10,6 +10,7 @@ import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +32,7 @@ public class Controller {
     private MainFrame view;
     private PlantAPI plantAPI;
     private byte[] imageDefault;
+    private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
 
@@ -38,6 +40,7 @@ public class Controller {
         this.database = new Database();
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
+        imageIcon = new ImageIcon(imageDefault);
         ArrayList<Plant> plants = new ArrayList<>();
         activeProfile = new Profile().setName("Guest").setPlants(plants);
         createPlantList();
@@ -45,6 +48,27 @@ public class Controller {
 
     public byte[] getImageDefault() {
         return imageDefault;
+    }
+
+    public Plant getPlantFromIndex(int index) {
+        return getPlantList().get(index);
+    }
+
+    public void setSelectedPlantFromIndex(int plantIndex) {
+
+        Plant plant = getPlantFromIndex(plantIndex);
+        view.setSelectedPlantName(plant.getNameAlias());
+        ImageIcon imageIcon = plant.getImageIcon();
+
+        if (imageIcon == null) {
+            imageIcon = this.imageIcon;
+        }
+
+        view.setSelectedImageIcon(imageIcon);
+    }
+
+    public void showConnectivityError() {
+        view.showConnectivityError();
     }
 
     /**
@@ -77,12 +101,12 @@ public class Controller {
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
-                    plantAPI = new PlantAPI(view.getSearchInput());
-                    plantAPI.start();
+                    plantAPI = new PlantAPI(this);
 
+                    plantAPI.beginSearch(view.getSearchInput());
                     plantSearchInputName = plantAPI.getPlantAlias();
 
-                    new Thread(() -> displayPlantSearchPage()).start();
+                    displayPlantSearchPage();
                     view.setCardLayout("plant page");
                 }
                 break;
