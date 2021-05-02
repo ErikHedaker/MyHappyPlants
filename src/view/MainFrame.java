@@ -86,6 +86,18 @@ public class MainFrame{
         panel.createPlantList();
     }
 
+    public void setSelectedPlantName(String plantName) {
+        panel.setSelectedPlantName(plantName);
+    }
+
+    public void showConnectivityError() {
+        JOptionPane.showMessageDialog(null, "API Down. Please try again later.");
+    }
+
+    public void setSelectedImageIcon(ImageIcon imageIcon) {
+        panel.setSelectedImageIcon(imageIcon);
+    }
+
     public void setTitle(String title) {
         panel.setTitle(title);
     }
