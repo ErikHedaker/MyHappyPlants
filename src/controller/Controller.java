@@ -41,6 +41,7 @@ public class Controller {
         ArrayList<Plant> plants = new ArrayList<>();
         activeProfile = new Profile().setName("Guest").setPlants(plants);
         createPlantList();
+        view.setCardLayout("plant creation page");
     }
 
     public byte[] getImageDefault() {

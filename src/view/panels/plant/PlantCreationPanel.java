@@ -7,6 +7,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
     * The class sux, but yeah...
@@ -40,8 +42,7 @@ public class PlantCreationPanel extends JPanel {
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
         editPanel.add(title, BorderLayout.NORTH);
 
-
-        JPanel labelPanel = new JPanel(new GridLayout(10,0,0,12));
+        JPanel labelPanel = new JPanel(new GridLayout(20,0,0,10));
         labelPanel.setBackground(Color.white);
         JPanel plantName = new JPanel(new BorderLayout());
         plantName.setBackground(Color.white);
@@ -53,7 +54,7 @@ public class PlantCreationPanel extends JPanel {
         plantTF.setPreferredSize(new Dimension(200, 18));
         plantName.add(plantTF, BorderLayout.EAST);
 
-        labelPanel.add(plantName); //lägger till textfield och label
+        labelPanel.add(plantName);
 
         JPanel nicknamePanel = new JPanel(new BorderLayout());
         nicknamePanel.setBackground(Color.white);
@@ -67,7 +68,7 @@ public class PlantCreationPanel extends JPanel {
         nicknamePanel.add(nicknameTF, BorderLayout.EAST);
         labelPanel.add(nicknamePanel);
 
-        JPanel sizePanel = new JPanel(new BorderLayout());
+        JPanel sizePanel = new JPanel();
         sizePanel.setBackground(Color.white);
 
         JLabel sizeLabel = new JLabel("Size: ");
@@ -75,6 +76,7 @@ public class PlantCreationPanel extends JPanel {
         sizePanel.add(sizeLabel, BorderLayout.WEST);
 
         JPanel picPanel = new JPanel();
+
         picPanel.setBackground(Color.white);
         ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
         Image image = imageIcon.getImage();
@@ -88,16 +90,45 @@ public class PlantCreationPanel extends JPanel {
 
         ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
         Image image3 = imageIcon3.getImage();
-        Image largemimg = image3.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH);
-        imageIcon3 = new ImageIcon(largemimg);
+        Image largeimg = image3.getScaledInstance(70, 50,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon3 = new ImageIcon(largeimg);
 
-        JLabel label1 = new JLabel(imageIcon);
-        JLabel label2 = new JLabel(imageIcon2);
-        JLabel label3 = new JLabel(imageIcon3);
+        JButton button1 = new JButton(imageIcon);
+        button1.setBackground(Color.white);
+        button1.setBorderPainted(false);
+        button1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("small");
+            }
+        });
 
-        picPanel.add(label1);
-        picPanel.add(label2);
-        picPanel.add(label3);
+        JButton button2 = new JButton(imageIcon2);
+        button2.setBackground(Color.white);
+        button2.setBorderPainted(false);
+        button2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("medium");
+            }
+        });
+
+        JButton button3 = new JButton(imageIcon3);
+        button3.setBackground(Color.white);
+        button3.setBorderPainted(false);
+        button3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("bik");
+            }
+        });
+
+        picPanel.add(button1);
+        picPanel.add(button2);
+        picPanel.add(button3);
 
         sizePanel.add(picPanel, BorderLayout.EAST);
 
