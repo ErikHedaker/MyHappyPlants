@@ -25,7 +25,6 @@ public class PlantCreationPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
-
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel editPanel = new JPanel(new BorderLayout());
 
@@ -42,7 +41,7 @@ public class PlantCreationPanel extends JPanel {
         editPanel.add(title, BorderLayout.NORTH);
 
 
-        JPanel labelPanel = new JPanel(new GridLayout(10,0,0,0));
+        JPanel labelPanel = new JPanel(new GridLayout(10,0,0,12));
         labelPanel.setBackground(Color.white);
         JPanel plantName = new JPanel(new BorderLayout());
         plantName.setBackground(Color.white);
@@ -68,12 +67,41 @@ public class PlantCreationPanel extends JPanel {
         nicknamePanel.add(nicknameTF, BorderLayout.EAST);
         labelPanel.add(nicknamePanel);
 
-         /*JPanel sizePanel = new JPanel(new BorderLayout());
+        JPanel sizePanel = new JPanel(new BorderLayout());
         sizePanel.setBackground(Color.white);
 
         JLabel sizeLabel = new JLabel("Size: ");
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        sizePanel.add(sizeLabel, BorderLayout.WEST);*/
+        sizePanel.add(sizeLabel, BorderLayout.WEST);
+
+        JPanel picPanel = new JPanel();
+        picPanel.setBackground(Color.white);
+        ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
+        Image image = imageIcon.getImage();
+        Image smallimg = image.getScaledInstance(25,25,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(smallimg);
+
+        ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
+        Image image2 = imageIcon2.getImage();
+        Image mediumimg = image2.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon2 = new ImageIcon(mediumimg);
+
+        ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
+        Image image3 = imageIcon3.getImage();
+        Image largemimg = image3.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon3 = new ImageIcon(largemimg);
+
+        JLabel label1 = new JLabel(imageIcon);
+        JLabel label2 = new JLabel(imageIcon2);
+        JLabel label3 = new JLabel(imageIcon3);
+
+        picPanel.add(label1);
+        picPanel.add(label2);
+        picPanel.add(label3);
+
+        sizePanel.add(picPanel, BorderLayout.EAST);
+
+        labelPanel.add(sizePanel, BorderLayout.CENTER);
 
         JPanel climatePanel = new JPanel(new BorderLayout());
         climatePanel.setBackground(Color.white);
@@ -101,4 +129,5 @@ public class PlantCreationPanel extends JPanel {
         add(editPanel);
 
     }
+
 }
