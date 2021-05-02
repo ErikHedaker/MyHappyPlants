@@ -113,6 +113,9 @@ public class Controller {
                     view.setCardLayout("plant page");
                 }
                 break;
+            case "show plant creation page":
+                view.setCardLayout("plant creation page");
+                break;
             case "Add Plant":
                 System.out.println("Add Plant");
                 Plant plant = new Plant()
@@ -125,14 +128,14 @@ public class Controller {
                 break;
             case "Remove Plant":
                 System.out.println("Remove Plant");
-                if( validPlantIndex(indexTemp)) {
+                if(validPlantIndex(indexTemp)) {
                     removePlant(activeProfile.getPlants().get(indexTemp));
                     refreshPlantListGUI();
                 }
                 break;
             case "Water Plant":
                 System.out.println("Water Plant");
-                if( validPlantIndex(indexTemp)) {
+                if(validPlantIndex(indexTemp)) {
                     waterPlant(activeProfile.getPlants().get(indexTemp));
                     refreshPlantListGUI();
                 }

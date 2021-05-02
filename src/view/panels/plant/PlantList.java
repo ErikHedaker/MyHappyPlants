@@ -1,4 +1,4 @@
-package view;
+package view.panels.plant;
 
 import controller.Controller;
 import model.Plant;

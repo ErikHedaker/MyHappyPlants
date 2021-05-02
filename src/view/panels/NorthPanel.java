@@ -7,13 +7,9 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
+import java.awt.event.*;
 
-public class NorthPanel extends JPanel {
+public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     private JButton searchBtn;
     private JTextField searchField;
@@ -44,7 +40,7 @@ public class NorthPanel extends JPanel {
         searchBtn.setFont(new Font("Times New Roman", Font.BOLD + Font.PLAIN, 30));
         searchBtn.setBorder(null);
         searchBtn.setBackground(new Color(176, 194, 147));
-        searchBtn.addActionListener(new Action());
+        searchBtn.addActionListener(this);
 
 
         searchBtn.setVisible(false);
@@ -82,42 +78,54 @@ public class NorthPanel extends JPanel {
 
     }
 
-    class Action implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(searchBtn)) {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+            if (searchField == null) {
+                searchField = new JTextField("krokus");
+                JPanel search = new JPanel();
+                search.setBackground(new Color(173, 193, 124));
+                searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
 
-            if (e.getSource().equals(searchBtn)) {
+                searchField.setFont(new Font("Arial", Font.BOLD, 20));
+                searchField.setForeground(Color.gray);
+                searchField.addKeyListener(this);
+                searchField.setPreferredSize(new Dimension(200, 40));
 
-                if (searchField == null) {
-                    searchField = new JTextField("aloe vera");
-                    JPanel search = new JPanel();
-                    search.setBackground(new Color(173, 193, 124));
-                    searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+                search.add(searchField, BorderLayout.WEST);
 
-                    searchField.setFont(new Font("Arial", Font.BOLD, 20));
-                    searchField.setForeground(Color.gray);
+                searchPanel.add(search, BorderLayout.WEST);
+                revalidate();
+                repaint();
+                searchField.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        controller.buttonPushed("plantList");
+                        searchField.setText("");
+                    }
+                });
 
-                    searchField.setPreferredSize(new Dimension(200, 40));
-
-                    search.add(searchField, BorderLayout.WEST);
-
-                    searchPanel.add(search, BorderLayout.WEST);
-                    revalidate();
-                    repaint();
-                    searchField.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            controller.buttonPushed("plantList");
-                            searchField.setText("");
-                        }
-                    });
-
-                } else {
-                    new Thread(() -> controller.buttonPushed("search")).start();
-                }
-
+            } else {
+                new Thread(() -> controller.buttonPushed("search")).start();
             }
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            new Thread(() -> controller.buttonPushed("search")).start();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

@@ -117,4 +117,5 @@ public class MainFrame{
     public String getSearchInput() {
         return panel.getSearchInput();
     }
+
 }

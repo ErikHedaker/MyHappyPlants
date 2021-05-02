@@ -9,8 +9,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements ActionListener, KeyListener {
 
     private JButton signInBtn;
     private Controller controller;
@@ -38,7 +40,6 @@ public class LoginPanel extends JPanel {
 
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         loginPanel = new JPanel(new BorderLayout());
-
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         loginPanel.setBorder(border);
 
@@ -59,6 +60,7 @@ public class LoginPanel extends JPanel {
         usernamePanel.add(usernameLabel, BorderLayout.CENTER);
 
         usernameTF = new JTextField();
+        usernameTF.addKeyListener(this);
         usernameTF.setPreferredSize(new Dimension(350, 40));
         usernamePanel.add(usernameTF, BorderLayout.SOUTH);
         loginPanel.add(usernamePanel, BorderLayout.NORTH);
@@ -76,6 +78,7 @@ public class LoginPanel extends JPanel {
         passwordsFields = new JPanel(new BorderLayout());
 
         passwordTF = new JPasswordField(0);
+        passwordTF.addKeyListener(this);
         passwordTF.setEchoChar('*');
         passwordTF.setPreferredSize(new Dimension(350, 40));
         passwordsFields.add(passwordTF, BorderLayout.NORTH);
@@ -119,7 +122,7 @@ public class LoginPanel extends JPanel {
         signInBtn.setBackground(new Color(51, 51, 52));
         signInBtn.setForeground(Color.white);
         signInBtn.setPreferredSize(new Dimension(150, 50));
-        signInBtn.addActionListener(new Action());
+        signInBtn.addActionListener(this);
         buttons.add(signInBtn, BorderLayout.CENTER);
 
         JPanel register = new JPanel(new FlowLayout());
@@ -131,7 +134,7 @@ public class LoginPanel extends JPanel {
         registerBtn.setForeground(new Color(26, 122, 169));
         registerBtn.setBorder(null);
         registerBtn.setBackground(Color.white);
-        registerBtn.addActionListener(new Action());
+        registerBtn.addActionListener(this);
         registerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         register.add(registerBtn, FlowLayout.LEFT);
 
@@ -174,32 +177,44 @@ public class LoginPanel extends JPanel {
         wrongLogin.setVisible(show);
     }
 
-    public void invalidPasswordMessage() {
-        JOptionPane.showMessageDialog(null,"The Password Must Be At Least 6 Characters Long");
-    }
-
-    class Action implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(getSignInButton())) {
-                if (getStatus() == LoginStatus.REGISTER_PAGE) {
-                    if (!controller.registerProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {
-                        showLoginError(true);
-                    }
-                } else  {
-                    controller.attemptLogin(usernameTF.getText(), String.valueOf(passwordTF.getPassword()));
-                }
-            }
-            else if (e.getSource().equals(registerBtn)) {
-                if (getStatus() != LoginStatus.REGISTER_PAGE) {
-                    setStatus(LoginStatus.REGISTER_PAGE);
-                    createRegisterPanel();
-                } else {
-                    setStatus(LoginStatus.LOGIN_PAGE);
-                    createLoginPanel();
-                }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(getSignInButton())) {
+            signInOrRegister();
+        }
+        else if (e.getSource().equals(registerBtn)) {
+            if (getStatus() != LoginStatus.REGISTER_PAGE) {
+                setStatus(LoginStatus.REGISTER_PAGE);
+                createRegisterPanel();
+            } else {
+                setStatus(LoginStatus.LOGIN_PAGE);
+                createLoginPanel();
             }
         }
+    }
+
+    public void signInOrRegister() {
+        if (getStatus() == LoginStatus.REGISTER_PAGE) {
+            if (!controller.registerProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {
+                showLoginError(true);
+            }
+        } else  {
+            controller.attemptLogin(usernameTF.getText(), String.valueOf(passwordTF.getPassword()));
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            signInOrRegister();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
