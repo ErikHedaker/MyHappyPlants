@@ -80,17 +80,17 @@ public class PlantCreationPanel extends JPanel {
         picPanel.setBackground(Color.white);
         ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
         Image image = imageIcon.getImage();
-        Image smallimg = image.getScaledInstance(25,25,  java.awt.Image.SCALE_SMOOTH);
+        Image smallimg = image.getScaledInstance(30,25,  java.awt.Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(smallimg);
 
         ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
         Image image2 = imageIcon2.getImage();
-        Image mediumimg = image2.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        Image mediumimg = image2.getScaledInstance(55, 50,  java.awt.Image.SCALE_SMOOTH);
         imageIcon2 = new ImageIcon(mediumimg);
 
         ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
         Image image3 = imageIcon3.getImage();
-        Image largeimg = image3.getScaledInstance(70, 50,  java.awt.Image.SCALE_SMOOTH);
+        Image largeimg = image3.getScaledInstance(75, 70,  java.awt.Image.SCALE_SMOOTH);
         imageIcon3 = new ImageIcon(largeimg);
 
         JButton button1 = new JButton(imageIcon);

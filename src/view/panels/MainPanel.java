@@ -42,11 +42,11 @@ public class MainPanel extends JPanel {
         panelCenter.add(plantCreationPanel, "plant creation page");
 
         setOpaque(false);
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
-        JLabel label = new JLabel("Loading...");
+        JLabel label = new JLabel("Loading...", JLabel.CENTER);
         label.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        panel.add(label);
+        panel.add(label, BorderLayout.CENTER);
         panelCenter.add(panel, "loading-screen");
         add(panelCenter);
     }

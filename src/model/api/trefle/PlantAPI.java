@@ -10,6 +10,7 @@ import model.api.Buffer;
 
 import java.io.*;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @API https://trefle.io/api/v1/plants/search?q=aloe%20vera&token=G0dYZMd8_VZu3_3XLF9iLympM5EUoB7tVePMK_i5dPk
@@ -17,7 +18,7 @@ import java.net.URL;
 
 public class PlantAPI {
 
-    private final OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client = new OkHttpClient();
     public static Buffer<TreflePlant> buffer = new Buffer<>();
     private Controller controller;
 
@@ -33,11 +34,14 @@ public class PlantAPI {
                 .url("https://trefle.io/api/v1/plants/search?q=" + plantName + "&token=G0dYZMd8_VZu3_3XLF9iLympM5EUoB7tVePMK_i5dPk")
                 .build();
 
+        client.setConnectTimeout(5, TimeUnit.SECONDS);
+        client.setReadTimeout(5, TimeUnit.SECONDS);
+        client.setWriteTimeout(5, TimeUnit.SECONDS);
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
                 controller.showConnectivityError();
-                System.out.println("API down");
             }
 
             @Override
@@ -47,7 +51,10 @@ public class PlantAPI {
 
                     TreflePlant plant = gson.fromJson(response.body().charStream(), TreflePlant.class);
                     buffer.put(plant);
+                } else {
+                    controller.showConnectivityError();
                 }
+                response.body().close();
             }
         });
     }
@@ -73,6 +80,7 @@ public class PlantAPI {
             return buffer.get().getPlant().scientific_name;
         } catch (InterruptedException | NullPointerException e) {
             if (e instanceof InterruptedException) {
+                controller.showConnectivityError();
                 System.out.println("API down");
             }
             return "Plant not found.";
@@ -83,6 +91,8 @@ public class PlantAPI {
         try {
             return buffer.get().getPlant().image_url;
         } catch (InterruptedException e) {
+            controller.showConnectivityError();
+            System.out.println("API down");
             return null;
         }
     }

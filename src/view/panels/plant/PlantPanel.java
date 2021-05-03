@@ -18,7 +18,7 @@ public class PlantPanel extends JPanel {
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
-    private int x = 320;
+    private int x = 330;
     private JButton waterBtn;
 
     /**
@@ -30,11 +30,14 @@ public class PlantPanel extends JPanel {
         setSize(200,200);
         setPreferredSize(new Dimension(200,200));
         setLayout(new BorderLayout());
-        JLabel label = new JLabel( Utility.centerText("Watering Status", 0));
+        JLabel label = new JLabel( Utility.centerText("Watering Status", 90));
         label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
-        JLabel label1 = new JLabel( Utility.centerText("Previous: " + 0 + "d ago", 0)
+        label.setBorder(BorderFactory.createEmptyBorder(0,0,4,0));
+        label.setForeground(Color.darkGray);
+        JLabel label1 = new JLabel( Utility.centerText("Previous: " + 0 + "d ago", 90)
                 + "                     Next: " + plant.getHoursBetweenWatering() + " days left");
-        label1.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
+        label1.setBorder(BorderFactory.createEmptyBorder(0,0,30,0));
+        label1.setForeground(Color.darkGray);
         label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
         waterBtn = new JButton("Water");
@@ -71,11 +74,12 @@ public class PlantPanel extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
 
-        graphics2D.drawRoundRect(120, 45, 320, 20, 15, 15);
+        graphics2D.setColor(Color.darkGray);
+        graphics2D.drawRoundRect(140, 45, 330, 20, 15, 15);
         graphics2D.setColor(new Color(16, 219 - x / 5, 219));
 
         if (x > 1)
-            graphics2D.drawRoundRect(120, 45, x, 20, 15, 15);
+            graphics2D.drawRoundRect(140, 45, x, 20, 15, 15);
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
             icon = new ImageIcon("./images/plant.jpg");

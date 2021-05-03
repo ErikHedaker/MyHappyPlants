@@ -10,7 +10,6 @@ import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -44,13 +43,7 @@ public class Controller {
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         imageIcon = new ImageIcon(imageDefault);
-        ArrayList<Plant> plants = new ArrayList<>();
-        activeProfile = new Profile().setName("Guest").setPlants(plants);
         createPlantList();
-    }
-
-    public byte[] getImageDefault() {
-        return imageDefault;
     }
 
     public Plant getPlantFromIndex(int index) {
@@ -105,7 +98,7 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     plantAPI = new PlantAPI(this);
-
+                    //setCardLayout("loading-screen");
                     plantAPI.beginSearch(view.getSearchInput());
                     plantSearchInputName = plantAPI.getPlantAlias();
 
@@ -141,6 +134,10 @@ public class Controller {
                 }
                 break;
         }
+    }
+
+    public void setCardLayout(String layout) {
+        view.setCardLayout(layout);
     }
 
     public void refreshPlantListGUI()
@@ -307,6 +304,7 @@ public class Controller {
         activeProfile = loginProfile(username, password);
         if (activeProfile == null) {
             view.showLoginError(true);
+            setCardLayout("signIn");
             return;
         }
 

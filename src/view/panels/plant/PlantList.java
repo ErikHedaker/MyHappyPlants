@@ -28,9 +28,11 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
         for (Plant plant : plants) {
             JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.white);
-            JLabel label = new JLabel((plant.getHoursBetweenWatering() != 0 ? " Happy " : " Sad ") + plant.getNameAlias());
-            label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-            label.setFont(new Font("Garamond", Font.PLAIN, 30));
+
+            JLabel label = new JLabel(plant.getNameAlias() + " (" + plant.getNameWiki().toLowerCase() + ")");
+            label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+            label.setForeground(Color.darkGray);
+            label.setFont(new Font("Arial", Font.BOLD, 19));
             panel.add(label, BorderLayout.NORTH);
 
             plantPanel = new PlantPanel(plant);
@@ -84,8 +86,6 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
     }
 
     class PanelRenderer implements ListCellRenderer {
-
-        private JPanel panel;
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

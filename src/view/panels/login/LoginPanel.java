@@ -199,7 +199,8 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
                 showLoginError(true);
             }
         } else  {
-            controller.attemptLogin(usernameTF.getText(), String.valueOf(passwordTF.getPassword()));
+            controller.setCardLayout("loading-screen");
+            new Thread(() -> controller.attemptLogin(usernameTF.getText(), String.valueOf(passwordTF.getPassword()))).start();
         }
     }
 

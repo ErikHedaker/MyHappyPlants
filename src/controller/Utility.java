@@ -3,6 +3,9 @@ package controller;
 import model.Plant;
 import org.apache.commons.codec.binary.Base64;
 
+import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

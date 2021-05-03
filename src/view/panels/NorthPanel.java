@@ -34,6 +34,9 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
         searchBtn.setHorizontalTextPosition(2);
         searchBtn.setIconTextGap(20);
+        searchBtn.setFocusable(false);
+        searchBtn.setContentAreaFilled(false);
+        searchBtn.setOpaque(true);
 
         searchBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         searchBtn.setForeground(Color.white);
@@ -84,12 +87,14 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
             if (searchField == null) {
                 searchField = new JTextField("krokus");
-                JPanel search = new JPanel();
-                search.setBackground(new Color(173, 193, 124));
                 searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
 
+                JPanel search = new JPanel();
+                search.setBackground(new Color(173, 193, 124));
+
+                searchField.setBorder(BorderFactory.createMatteBorder(1,1,3,1, new Color(93, 118, 77)));
                 searchField.setFont(new Font("Arial", Font.BOLD, 20));
-                searchField.setForeground(Color.gray);
+                searchField.setForeground(new Color(93, 118, 77));
                 searchField.addKeyListener(this);
                 searchField.setPreferredSize(new Dimension(200, 40));
 
@@ -98,17 +103,21 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
                 searchPanel.add(search, BorderLayout.WEST);
                 revalidate();
                 repaint();
-                searchField.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        controller.buttonPushed("plantList");
-                        searchField.setText("");
-                    }
-                });
+
 
             } else {
+                if (searchField.getMouseListeners().length != 4) {
+                    searchField.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            controller.buttonPushed("plantList");
+                            searchField.setText("");
+                        }
+                    });
+                }
                 new Thread(() -> controller.buttonPushed("search")).start();
             }
+
         }
     }
 
