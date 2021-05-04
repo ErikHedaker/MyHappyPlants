@@ -31,7 +31,7 @@ public class JWikiAPI {
 
     public void beginSearch(String plantName) {
         Request request = new Request.Builder()
-                .url("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageimages&pithumbsize=70&explaintext=true&exsentences=5&redirects=true&titles=cherry")
+                .url("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageimages&pithumbsize=70&explaintext=true&exsentences=5&redirects=true&titles=" + plantName)
                 .build();
 
         client.setConnectTimeout(5, TimeUnit.SECONDS);
