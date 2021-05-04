@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
-    * The class sux, but yeah...
+    * The class is dope
     * @author Fandoggie
     */
 
