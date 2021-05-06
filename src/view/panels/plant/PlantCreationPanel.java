@@ -7,158 +7,293 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
-    * The class is dope
-    * @author Fandoggie
-    */
+ * The class sux, but yeah...
+ * @author Fandoggie
+ */
 
-public class PlantCreationPanel extends JPanel {
+public class PlantCreationPanel extends JPanel implements ActionListener {
     private Controller controller;
+    private JButton backButton;
+    private JToggleButton smallButton;
+    private JToggleButton mediumButton;
+    private JToggleButton largeButton;
 
-    public PlantCreationPanel(Controller controller){
+    public PlantCreationPanel(Controller controller) {
         this.controller = controller;
         createPanelEdit();
     }
 
-    public void createPanelEdit(){
+    public void createPanelEdit() {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
-        JPanel editPanel = new JPanel(new BorderLayout());
+        JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 100, 25, 8);
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         editPanel.setBorder(border);
 
-        Border margin1 = new EmptyBorder(50,50,50,50);
+        Border margin1 = new EmptyBorder(50, 50, 50, 50);
         editPanel.setBorder(new CompoundBorder(editPanel.getBorder(), margin1));
         editPanel.setBackground(Color.white);
 
-        JLabel title = new JLabel("ENTER PLANT DETAILS", JLabel.CENTER);
-        title.setBounds(10,10,10,10);
-        title.setFont(new Font("Calibri light", Font.BOLD, 25));
-        editPanel.add(title, BorderLayout.NORTH);
+        backButton = new JButton("BACK");
+        ImageIcon backImg = new ImageIcon("./images/backarrow.png");
+        Image scaledEditImg = backImg.getImage().getScaledInstance(15, 15,
+                Image.SCALE_AREA_AVERAGING);
+        backButton.setIcon(new ImageIcon(scaledEditImg));
+        backButton.setFont(new Font("Arial", Font.BOLD, 10));
+        backButton.setBackground(Color.white);
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(this);
 
-        JPanel labelPanel = new JPanel(new GridLayout(20,0,0,10));
-        labelPanel.setBackground(Color.white);
-        JPanel plantName = new JPanel(new BorderLayout());
-        plantName.setBackground(Color.white);
+        //gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 0; // row
+        gbc.gridwidth = 1; // specify the num of cols
+        gbc.gridheight = 1; // specify the number of rows
+        gbc.weighty = 2; // separate space between rows
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        editPanel.add(backButton, gbc);
+
+        JButton saveButton = new JButton();
+        saveButton.setPreferredSize(new Dimension(120, 45));
+        ImageIcon saveImg = new ImageIcon("./images/save-icon.png");
+        Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 25,
+                Image.SCALE_AREA_AVERAGING);
+
+        saveButton.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //saveButton.setIcon(new ImageIcon(scaledEditImage));
+        JLabel iconLabel = new JLabel(new ImageIcon(scaledEditImage));
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        JLabel textLabel = new JLabel("SAVE");
+        saveButton.add(iconLabel);
+        saveButton.add(textLabel);
+        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        //saveButton.setIconTextGap(5);
+        //saveButton.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+        //saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        //saveButton.setText("SAVE");
+        //saveButton.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        saveButton.setBackground(Color.white);
+        saveButton.setFont(new Font("Arial", Font.BOLD, 10));
+        gbc.gridx = 4; // col
+        gbc.gridy = 25; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.weightx = 0; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        editPanel.add(saveButton, gbc);
+
+        JLabel title = new JLabel("ENTER PLANT DETAILS");
+        title.setFont(new Font("Calibri light", Font.BOLD, 25));
+        title.setBounds(10, 10, 10, 10);
+        //gbc.fill = GridBagConstraints.CENTER;// if the component's da is larger
+        // than component's requested size to resize the component.
+        gbc.gridx = 4; // col
+        gbc.gridy = 3; // row
+        gbc.weighty = 5; // separate space between rows
+        gbc.gridwidth = 1; // specify the num of cols
+        gbc.gridheight = 1; // specify the num of rows
+        gbc.anchor = GridBagConstraints.CENTER;
+        editPanel.add(title, gbc);
+
         JLabel plantLabel = new JLabel("Plant: ");
         plantLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        plantName.add(plantLabel, BorderLayout.WEST);
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 7; // row
+        gbc.weighty = 15;  // separate space between rows
+        gbc.gridheight = 2;  // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(plantLabel, gbc);
 
         JTextField plantTF = new JTextField();
-        plantTF.setPreferredSize(new Dimension(200, 18));
-        plantName.add(plantTF, BorderLayout.EAST);
-
-        labelPanel.add(plantName);
-
-        JPanel nicknamePanel = new JPanel(new BorderLayout());
-        nicknamePanel.setBackground(Color.white);
+        plantTF.setPreferredSize(new Dimension(275, 30));
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 6; // col
+        gbc.gridy = 7; // row
+        gbc.weighty = 150; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.EAST;
+        editPanel.add(plantTF, gbc);
 
         JLabel nicknameLabel = new JLabel("Nickname (optional): ");
         nicknameLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        nicknamePanel.add(nicknameLabel, BorderLayout.WEST);
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 10; // row
+        gbc.weighty = 15; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(nicknameLabel, gbc);
 
         JTextField nicknameTF = new JTextField();
-        nicknameTF.setPreferredSize(new Dimension(200, 18));
-        nicknamePanel.add(nicknameTF, BorderLayout.EAST);
-        labelPanel.add(nicknamePanel);
-
-        JPanel sizePanel = new JPanel();
-        sizePanel.setBackground(Color.white);
-
-        JLabel sizeLabel = new JLabel("Size: ");
-        sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        sizePanel.add(sizeLabel, BorderLayout.WEST);
-
-        JPanel picPanel = new JPanel();
-
-        picPanel.setBackground(Color.white);
-        ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
-        Image image = imageIcon.getImage();
-        Image smallimg = image.getScaledInstance(30,25,  java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(smallimg);
-
-        ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
-        Image image2 = imageIcon2.getImage();
-        Image mediumimg = image2.getScaledInstance(55, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIcon2 = new ImageIcon(mediumimg);
-
-        ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
-        Image image3 = imageIcon3.getImage();
-        Image largeimg = image3.getScaledInstance(75, 70,  java.awt.Image.SCALE_SMOOTH);
-        imageIcon3 = new ImageIcon(largeimg);
-
-        JButton button1 = new JButton(imageIcon);
-        button1.setBackground(Color.white);
-        button1.setBorderPainted(false);
-        button1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("small");
-            }
-        });
-
-        JButton button2 = new JButton(imageIcon2);
-        button2.setBackground(Color.white);
-        button2.setBorderPainted(false);
-        button2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("medium");
-            }
-        });
-
-        JButton button3 = new JButton(imageIcon3);
-        button3.setBackground(Color.white);
-        button3.setBorderPainted(false);
-        button3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("bik");
-            }
-        });
-
-        picPanel.add(button1);
-        picPanel.add(button2);
-        picPanel.add(button3);
-
-        sizePanel.add(picPanel, BorderLayout.EAST);
-
-        labelPanel.add(sizePanel, BorderLayout.CENTER);
-
-        JPanel climatePanel = new JPanel(new BorderLayout());
-        climatePanel.setBackground(Color.white);
+        nicknameTF.setPreferredSize(new Dimension(275, 30));
+        gbc.gridx = 6; // col
+        gbc.gridy = 10; // row
+        gbc.weighty = 150; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.EAST;
+        editPanel.add(nicknameTF, gbc);
 
         JLabel climateLabel = new JLabel("Climate: ");
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        climatePanel.add(climateLabel, BorderLayout.WEST);
+        gbc.gridx = 0; // col
+        gbc.gridy = 17; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.weightx = 2; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(climateLabel, gbc);
 
         String[] choices = {"Inside", "Outside"};
         JComboBox<String> climateMenu = new JComboBox<String>(choices);
         climateMenu.setBackground(Color.white);
-        climateMenu.setPreferredSize(new Dimension(200, 18));
-        climatePanel.add(climateMenu, BorderLayout.EAST);
-        labelPanel.add(climatePanel);
+        climateMenu.setPreferredSize(new Dimension(275, 30));
+        gbc.gridx = 6; // col
+        gbc.gridy = 17; // row
+        gbc.weighty = 5; // separate space between rows
+        gbc.weightx = 2; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.EAST;
+        editPanel.add(climateMenu, gbc);
 
-        JPanel savePanel = new JPanel(new BorderLayout());
-        savePanel.setBackground(Color.white);
+        JLabel sizeLabel = new JLabel("Size: ");
+        sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
+        //gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 11; // row
+        gbc.weighty = 3; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(sizeLabel, gbc);
 
-        JButton saveButton = new JButton("Save");
-        savePanel.add(saveButton, BorderLayout.SOUTH);
-        editPanel.add(savePanel, BorderLayout.SOUTH);
+        ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
+        Image image = imageIcon.getImage();
+        Image smallimg = image.getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(smallimg);
 
-        editPanel.add(labelPanel, BorderLayout.CENTER);
+        ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
+        Image image2 = imageIcon2.getImage();
+        Image mediumimg = image2.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+        imageIcon2 = new ImageIcon(mediumimg);
+
+        ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
+        Image image3 = imageIcon3.getImage();
+        Image largeimg = image3.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+        imageIcon3 = new ImageIcon(largeimg);
+
+        smallButton = new JToggleButton(imageIcon);
+        smallButton.setBackground(Color.white);
+        smallButton.setFocusPainted(false);
+        smallButton.setBorderPainted(false);
+        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
+        gbc.gridx = 6; // col
+        gbc.gridy = 11; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.weightx = 0; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rowsg
+        gbc.anchor = GridBagConstraints.LINE_START;
+        editPanel.add(smallButton, gbc);
+
+        smallButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("small");
+                //myButtonGroup.add(smallButton);
+                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
+                SwingUtilities.updateComponentTreeUI(smallButton);
+            }
+        });
+
+        mediumButton = new JToggleButton(imageIcon2);
+        mediumButton.setBackground(Color.white);
+        mediumButton.setBorderPainted(false);
+        mediumButton.setFocusPainted(false);
+        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
+        gbc.gridx = 6; // col
+        gbc.gridy = 11; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.weightx = 0; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.CENTER;
+        editPanel.add(mediumButton, gbc);
+
+        mediumButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("medium");
+                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
+                SwingUtilities.updateComponentTreeUI(mediumButton);
+                //myButtonGroup.add(mediumButton);
+            }
+        });
+
+        largeButton = new JToggleButton(imageIcon3);
+        largeButton.setBackground(Color.white);
+        largeButton.setBorderPainted(false);
+        largeButton.setFocusPainted(false);
+        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
+        gbc.gridx = 6; // col
+        gbc.gridy = 11; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.weightx = 0; // separate space between cols
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.LINE_END;
+        editPanel.add(largeButton, gbc);
+
+        largeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("bik");
+                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
+                SwingUtilities.updateComponentTreeUI(largeButton);
+                //myButtonGroup.add(largeButton);
+            }
+        });
 
         add(editPanel);
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == backButton) {
+            controller.buttonPushed("plantList");
+        }
+    }
+
+
+    /*ButtonGroup myButtonGroup = new ButtonGroup() {
+
+        @Override
+        public void setSelected(ButtonModel model, boolean selected) {
+            if (selected) {
+                super.setSelected(model, selected);
+
+            } else
+                clearSelection();
+        }
+    };*/
 }
+

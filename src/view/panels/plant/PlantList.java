@@ -2,6 +2,7 @@ package view.panels.plant;
 
 import controller.Controller;
 import model.Plant;
+import view.panels.plant.PlantPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
