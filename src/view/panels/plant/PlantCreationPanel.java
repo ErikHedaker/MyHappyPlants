@@ -26,7 +26,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         this.controller = controller;
         createPanelEdit();
     }
-
+    /** Fandog was here **/
     public void createPanelEdit() {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
