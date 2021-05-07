@@ -20,12 +20,13 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     private JToggleButton smallButton;
     private JToggleButton mediumButton;
     private JToggleButton largeButton;
+    private JTextField waterTF;
 
     public PlantCreationPanel(Controller controller) {
         this.controller = controller;
         createPanelEdit();
     }
-
+    /** Fandog was here **/
     public void createPanelEdit() {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
@@ -33,7 +34,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 100, 25, 8);
+        gbc.insets = new Insets(5, 100, 15, 8);
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         editPanel.setBorder(border);
@@ -272,6 +273,27 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             }
         });
 
+        JLabel waterLabel = new JLabel("Time for water: ");
+        waterLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 19; // row
+        gbc.weighty = 15; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(waterLabel, gbc);
+
+        waterTF = new JTextField();
+        waterTF.setPreferredSize(new Dimension(275, 30));
+        gbc.gridx = 6; // col
+        gbc.gridy = 19; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.EAST;
+        editPanel.add(waterTF, gbc);
+
         add(editPanel);
 
     }
@@ -284,7 +306,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     }
 
 
-    /*ButtonGroup myButtonGroup = new ButtonGroup() {
+    ButtonGroup myButtonGroup = new ButtonGroup() {
 
         @Override
         public void setSelected(ButtonModel model, boolean selected) {
@@ -294,6 +316,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             } else
                 clearSelection();
         }
-    };*/
+    };
 }
 
