@@ -331,10 +331,10 @@ public class Database {
 
     public ArrayList<String> searchPlant( String name, int limit ) {
         final String SQL =
-                "SELECT common_name " +
-                        "FROM plant_trefle_data " +
-                        "WHERE common_name LIKE ? " +
-                        "LIMIT ?";
+            "SELECT common_name " +
+            "FROM plant_trefle_data " +
+            "WHERE common_name LIKE ? " +
+            "LIMIT ?";
         ArrayList<String> plantNames = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
@@ -362,10 +362,10 @@ public class Database {
 
     public ArrayList<HashMap<String,String>> searchPlantFull(String name, int limit ) {
         final String SQL =
-                "SELECT common_name " +
-                        "FROM plant_trefle_data " +
-                        "WHERE common_name LIKE ? " +
-                        "LIMIT ?";
+            "SELECT common_name " +
+            "FROM plant_trefle_data " +
+            "WHERE common_name LIKE ? " +
+            "LIMIT ?";
         ArrayList<HashMap<String,String>> plants = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
