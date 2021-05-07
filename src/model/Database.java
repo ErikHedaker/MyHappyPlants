@@ -328,9 +328,43 @@ public class Database {
         }
     }
 
+    public ArrayList<String> searchPlant( String name, int limit ) {
+        final String SQL =
+            "SELECT common_name " +
+            "FROM plant_trefle_data " +
+            "WHERE common_name LIKE ? " +
+            "LIMIT ?";
+        ArrayList<String> plantNames = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, limit);
+            if( limit < 0 ) {
+                preparedStatement.setNull(2, Types.INTEGER);
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    plantNames.add(resultSet.getString("common_name"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return plantNames;
+    }
+    public ArrayList<String> searchPlant( String name ) {
+        return searchPlant( name, -1 );
+    }
+
     public static void main(String[] args) {
         Database database = new Database();
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
+        for( String name : database.searchPlant("%rose%"))
+        {
+            System.out.println(name);
+        }
     }
 }

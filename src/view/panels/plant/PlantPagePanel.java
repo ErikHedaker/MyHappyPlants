@@ -3,7 +3,6 @@ package view.panels.plant;
 import controller.Controller;
 import controller.Utility;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -12,20 +11,15 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.regex.Pattern;
 
 public class PlantPagePanel extends JPanel {
-
     private JPanel plantPanel;
     private Controller controller;
     private JLabel title;
     private JTextPane description;
     private JButton addPlantBtn;
 
-    public  PlantPagePanel(Controller controller) {
+    public PlantPagePanel(Controller controller) {
         this.controller = controller;
 
         setBackground(new Color(245, 245, 245));
@@ -46,7 +40,6 @@ public class PlantPagePanel extends JPanel {
         title = new JLabel("", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 27));
         header.add(title, BorderLayout.CENTER);
-
         plantPanel.add(header, BorderLayout.NORTH);
 
         description = new JTextPane();
