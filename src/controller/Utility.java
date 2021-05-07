@@ -32,6 +32,15 @@ public class Utility {
         return sb.toString();
     }
 
+    public static int getStringToInt(String value) {
+        int number = 0;
+        try {
+            number = Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+        }
+        return number;
+    }
+
     public static String splitParagraph(String text, int maxLength) {
         int i = 0;
         String[] parts = text.split(Pattern.quote(" "));

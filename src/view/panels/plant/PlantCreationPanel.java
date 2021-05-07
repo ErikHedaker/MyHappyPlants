@@ -20,13 +20,17 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     private JToggleButton smallButton;
     private JToggleButton mediumButton;
     private JToggleButton largeButton;
+    private JButton saveButton;
+    private JTextField plantTF;
+    private JTextField nicknameTF;
     private JTextField waterTF;
+    boolean creationMode = false;
 
     public PlantCreationPanel(Controller controller) {
         this.controller = controller;
         createPanelEdit();
     }
-
+    /** Fandog was here **/
     public void createPanelEdit() {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
@@ -34,7 +38,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 100, 15, 8);
+        gbc.insets = new Insets(5, 100, 25, 8);
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         editPanel.setBorder(border);
@@ -53,7 +57,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         backButton.setFocusPainted(false);
         backButton.addActionListener(this);
 
-        //gbc.fill = GridBagConstraints.VERTICAL;
         gbc.gridx = 0; // col
         gbc.gridy = 0; // row
         gbc.gridwidth = 1; // specify the num of cols
@@ -62,14 +65,13 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         editPanel.add(backButton, gbc);
 
-        JButton saveButton = new JButton();
+        saveButton = new JButton();
         saveButton.setPreferredSize(new Dimension(120, 45));
         ImageIcon saveImg = new ImageIcon("./images/save-icon.png");
         Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 25,
                 Image.SCALE_AREA_AVERAGING);
 
         saveButton.setLayout(new FlowLayout(FlowLayout.LEFT));
-        //saveButton.setIcon(new ImageIcon(scaledEditImage));
         JLabel iconLabel = new JLabel(new ImageIcon(scaledEditImage));
         iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         JLabel textLabel = new JLabel("SAVE");
@@ -77,12 +79,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         saveButton.add(textLabel);
         textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
-        //saveButton.setIconTextGap(5);
-        //saveButton.setHorizontalAlignment(SwingConstants.HORIZONTAL);
-        //saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        //saveButton.setText("SAVE");
-        //saveButton.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         saveButton.setBackground(Color.white);
+        saveButton.addActionListener(this);
         saveButton.setFont(new Font("Arial", Font.BOLD, 10));
         gbc.gridx = 4; // col
         gbc.gridy = 25; // row
@@ -96,8 +94,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JLabel title = new JLabel("ENTER PLANT DETAILS");
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
         title.setBounds(10, 10, 10, 10);
-        //gbc.fill = GridBagConstraints.CENTER;// if the component's da is larger
-        // than component's requested size to resize the component.
         gbc.gridx = 4; // col
         gbc.gridy = 3; // row
         gbc.weighty = 5; // separate space between rows
@@ -116,7 +112,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.anchor = GridBagConstraints.WEST;
         editPanel.add(plantLabel, gbc);
 
-        JTextField plantTF = new JTextField();
+        plantTF = new JTextField();
         plantTF.setPreferredSize(new Dimension(275, 30));
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.gridx = 6; // col
@@ -138,7 +134,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.anchor = GridBagConstraints.WEST;
         editPanel.add(nicknameLabel, gbc);
 
-        JTextField nicknameTF = new JTextField();
+        nicknameTF = new JTextField();
         nicknameTF.setPreferredSize(new Dimension(275, 30));
         gbc.gridx = 6; // col
         gbc.gridy = 10; // row
@@ -172,9 +168,29 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.anchor = GridBagConstraints.EAST;
         editPanel.add(climateMenu, gbc);
 
+        JLabel waterLabel = new JLabel("Interval Between Watering: ");
+        waterLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0; // col
+        gbc.gridy = 19; // row
+        gbc.weighty = 15; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.WEST;
+        editPanel.add(waterLabel, gbc);
+
+        waterTF = new JTextField();
+        waterTF.setPreferredSize(new Dimension(275, 30));
+        gbc.gridx = 6; // col
+        gbc.gridy = 19; // row
+        gbc.weighty = 0; // separate space between rows
+        gbc.gridwidth = 1; // specify num of cols
+        gbc.gridheight = 1; // specify num of rows
+        gbc.anchor = GridBagConstraints.EAST;
+        editPanel.add(waterTF, gbc);
+
         JLabel sizeLabel = new JLabel("Size: ");
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        //gbc.fill = GridBagConstraints.VERTICAL;
         gbc.gridx = 0; // col
         gbc.gridy = 11; // row
         gbc.weighty = 3; // separate space between rows
@@ -202,7 +218,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         smallButton.setBackground(Color.white);
         smallButton.setFocusPainted(false);
         smallButton.setBorderPainted(false);
-        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
         gbc.gridx = 6; // col
         gbc.gridy = 11; // row
         gbc.weighty = 0; // separate space between rows
@@ -217,7 +232,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("small");
-                //myButtonGroup.add(smallButton);
                 UIManager.put("ToggleButton.select", new Color(220, 229, 185));
                 SwingUtilities.updateComponentTreeUI(smallButton);
             }
@@ -227,7 +241,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         mediumButton.setBackground(Color.white);
         mediumButton.setBorderPainted(false);
         mediumButton.setFocusPainted(false);
-        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
         gbc.gridx = 6; // col
         gbc.gridy = 11; // row
         gbc.weighty = 0; // separate space between rows
@@ -244,7 +257,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
                 System.out.println("medium");
                 UIManager.put("ToggleButton.select", new Color(220, 229, 185));
                 SwingUtilities.updateComponentTreeUI(mediumButton);
-                //myButtonGroup.add(mediumButton);
             }
         });
 
@@ -252,7 +264,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         largeButton.setBackground(Color.white);
         largeButton.setBorderPainted(false);
         largeButton.setFocusPainted(false);
-        //gbc.fill = GridBagConstraints.BELOW_BASELINE_TRAILING;
         gbc.gridx = 6; // col
         gbc.gridy = 11; // row
         gbc.weighty = 0; // separate space between rows
@@ -269,44 +280,33 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
                 System.out.println("bik");
                 UIManager.put("ToggleButton.select", new Color(220, 229, 185));
                 SwingUtilities.updateComponentTreeUI(largeButton);
-                //myButtonGroup.add(largeButton);
             }
         });
 
-        JLabel waterLabel = new JLabel("Time for water: ");
-        waterLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.gridx = 0; // col
-        gbc.gridy = 19; // row
-        gbc.weighty = 15; // separate space between rows
-        gbc.gridwidth = 1; // specify num of cols
-        gbc.gridheight = 1; // specify num of rows
-        gbc.anchor = GridBagConstraints.WEST;
-        editPanel.add(waterLabel, gbc);
-
-        waterTF = new JTextField();
-        waterTF.setPreferredSize(new Dimension(275, 30));
-        gbc.gridx = 6; // col
-        gbc.gridy = 19; // row
-        gbc.weighty = 0; // separate space between rows
-        gbc.gridwidth = 1; // specify num of cols
-        gbc.gridheight = 1; // specify num of rows
-        gbc.anchor = GridBagConstraints.EAST;
-        editPanel.add(waterTF, gbc);
-
         add(editPanel);
 
+    }
+
+    public void setCreationMode(boolean creationMode) {
+        this.creationMode = creationMode;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
             controller.buttonPushed("plantList");
+        } else  if (e.getSource() == saveButton) {
+            if (creationMode) {
+                controller.createPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
+                creationMode = false;
+            } else {
+                controller.editSelectedPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
+            }
         }
     }
 
 
-    ButtonGroup myButtonGroup = new ButtonGroup() {
+    /*ButtonGroup myButtonGroup = new ButtonGroup() {
 
         @Override
         public void setSelected(ButtonModel model, boolean selected) {
@@ -316,6 +316,5 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             } else
                 clearSelection();
         }
-    };
+    };*/
 }
-

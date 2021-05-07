@@ -94,6 +94,10 @@ public class MainFrame{
         JOptionPane.showMessageDialog(null, "API Down. Please try again later.");
     }
 
+    public void setCreationMode(boolean creationMode) {
+        panel.setCreationMode(creationMode);
+    }
+
     public void setSelectedImageIcon(ImageIcon imageIcon) {
         panel.setSelectedImageIcon(imageIcon);
     }

@@ -111,6 +111,10 @@ public class MainPanel extends JPanel {
         repaint();
     }
 
+    public void setCreationMode(boolean creationMode) {
+        plantCreationPanel.setCreationMode(creationMode);
+    }
+
     public String getSearchInput() {
         return northPanel.getSearchField().getText();
     }

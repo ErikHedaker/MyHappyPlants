@@ -18,32 +18,32 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     public PlantSelectionPanel(Controller controller) {
         this.controller = controller;
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(360,360));
+        setPreferredSize(new Dimension(360, 360));
         setBorder(BorderFactory.createEmptyBorder(150, 0, 150, 0));
 
         JPanel borderPanel = new JPanel(new BorderLayout());
 
-        borderPanel.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+        borderPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         borderPanel.setBackground(Color.white);
 
         JPanel selectionPanel = new JPanel(new BorderLayout());
 
         selectionPanel.setBackground(Color.white);
-        selectionPanel.setPreferredSize(new Dimension(270,270));
+        selectionPanel.setPreferredSize(new Dimension(270, 270));
 
         title = new JLabel("", JLabel.CENTER);
         title.setFont(new Font("Times New Roman", Font.PLAIN, 25));
-        title.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.BLACK));
+        title.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
         title.setVisible(false);
         selectionPanel.add(title, BorderLayout.NORTH);
 
         image = new JLabel("", JLabel.CENTER);
-        image.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+        image.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         selectionPanel.add(image, BorderLayout.CENTER);
-        JPanel buttons = new JPanel(new GridLayout(0,2,0,0));
+        JPanel buttons = new JPanel(new GridLayout(0, 2, 0, 0));
         buttons.setBackground(Color.white);
-        buttons.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+        buttons.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         waterBtn = new JButton("water");
         ImageIcon waterImg = new ImageIcon("./images/water-icon.png");
@@ -57,7 +57,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         waterBtn.setBackground(new Color(220, 229, 185));
         waterBtn.setForeground(Color.darkGray);
         waterBtn.setFocusable(false);
-        waterBtn.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.BLACK));
+        waterBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
         waterBtn.setVisible(false);
         buttons.add(waterBtn);
 
@@ -68,7 +68,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
                 Image.SCALE_SMOOTH);
         editBtn.setIcon(new ImageIcon(scaledEditImg));
         editBtn.addActionListener(this);
-        editBtn.setBorder(BorderFactory.createMatteBorder(0,1,1,0, Color.BLACK));
+        editBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, Color.BLACK));
         editBtn.setFocusable(false);
         editBtn.setFont(new Font("Arial", Font.BOLD, 18));
         editBtn.setBackground(new Color(220, 229, 185));
@@ -103,6 +103,8 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editBtn) {
             controller.buttonPushed("show plant creation page");
+        } else if (e.getSource() == waterBtn) {
+            controller.buttonPushed("water plant");
         }
     }
 }

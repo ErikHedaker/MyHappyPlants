@@ -3,6 +3,7 @@ package model;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The Database class which handle the connection and all queries to a PostgreSQL database
@@ -328,9 +329,82 @@ public class Database {
         }
     }
 
+    public ArrayList<String> searchPlant( String name, int limit ) {
+        final String SQL =
+                "SELECT common_name " +
+                        "FROM plant_trefle_data " +
+                        "WHERE common_name LIKE ? " +
+                        "LIMIT ?";
+        ArrayList<String> plantNames = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, limit);
+            if( limit < 0 ) {
+                preparedStatement.setNull(2, Types.INTEGER);
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    plantNames.add(resultSet.getString("common_name"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return plantNames;
+    }
+
+    public ArrayList<String> searchPlant( String name ) {
+        return searchPlant( name, -1 );
+    }
+
+    public ArrayList<HashMap<String,String>> searchPlantFull(String name, int limit ) {
+        final String SQL =
+                "SELECT common_name " +
+                        "FROM plant_trefle_data " +
+                        "WHERE common_name LIKE ? " +
+                        "LIMIT ?";
+        ArrayList<HashMap<String,String>> plants = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, limit);
+            if( limit < 0 ) {
+                preparedStatement.setNull(2, Types.INTEGER);
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                ResultSetMetaData meta = resultSet.getMetaData();
+                while (resultSet.next()) {
+                    HashMap<String,String> plant = new HashMap<>();
+                    for (int i = 1; i <= meta.getColumnCount(); i++) {
+                        String key = meta.getColumnName(i);
+                        String value = resultSet.getString(key);
+                        plant.put(key, value);
+                    }
+                    plants.add(plant);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return plants;
+    }
+
+    public ArrayList<HashMap<String,String>> searchPlantFull( String name ) {
+        return searchPlantFull( name, -1 );
+    }
+
     public static void main(String[] args) {
         Database database = new Database();
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
+        for( HashMap<String,String> plant : database.searchPlantFull("%rose%"))
+        {
+            System.out.println(plant.get("common_name"));
+        }
     }
 }
