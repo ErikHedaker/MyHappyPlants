@@ -31,23 +31,25 @@ public class PlantSearchPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
 
-        plantPanel = new JPanel(new BorderLayout());
-
+        plantPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         plantPanel.setBorder(border);
-
         Border margin1 = new EmptyBorder(50,50,50,50);
         plantPanel.setBorder(new CompoundBorder(plantPanel.getBorder(), margin1));
         plantPanel.setPreferredSize(new Dimension(600,400));
         plantPanel.setBackground(Color.white);
 
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(Color.white);
+        //JPanel header = new JPanel(new BorderLayout());
+        //header.setBackground(Color.white);
         title = new JLabel("", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 27));
-        header.add(title, BorderLayout.CENTER);
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        //header.add(title, BorderLayout.CENTER);
 
-        plantPanel.add(header, BorderLayout.NORTH);
+        plantPanel.add(title, gbc);
 
         description = new JTextPane();
         description.setEditable(false);
@@ -58,11 +60,17 @@ public class PlantSearchPanel extends JPanel {
         description.setPreferredSize(new Dimension(200,200));
         description.setFont(new Font("Calibri", Font.BOLD, 15));
         description.setBorder(BorderFactory.createEmptyBorder(0,0,200,0));
-        plantPanel.add(description, BorderLayout.CENTER);
+        gbc.gridx = 3;
+        gbc.gridy = 6;
+        gbc.anchor = GridBagConstraints.CENTER;
+        plantPanel.add(description, gbc);
 
         addPlantBtn = new JButton("ADD PLANT");
         addPlantBtn.addActionListener(new Action());
-        plantPanel.add(addPlantBtn, BorderLayout.SOUTH);
+        gbc.gridx = 3;
+        gbc.gridy = 15;
+        gbc.anchor = GridBagConstraints.CENTER;
+        plantPanel.add(addPlantBtn, gbc);
 
         add(plantPanel);
     }
