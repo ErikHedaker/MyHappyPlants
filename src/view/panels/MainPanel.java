@@ -4,7 +4,7 @@ import controller.Controller;
 import view.panels.plant.PlantCreationPanel;
 import view.panels.plant.PlantList;
 import view.panels.login.LoginPanel;
-import view.panels.plant.PlantPagePanel;
+import view.panels.plant.PlantSearchPanel;
 import view.panels.plant.PlantSelectionPanel;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     private Controller controller;
     private PlantList plantList;
     private LoginPanel loginPanel;
-    private PlantPagePanel plantPagePanel;
+    private PlantSearchPanel plantSearchPanel;
     private CardLayout cardLayout;
     private JPanel panelCenter;
     private NorthPanel northPanel;
@@ -36,8 +36,8 @@ public class MainPanel extends JPanel {
 
         loginPanel = new LoginPanel(controller);
         panelCenter.add(loginPanel, "signIn");
-        plantPagePanel = new PlantPagePanel(controller);
-        panelCenter.add(plantPagePanel, "plant page");
+        plantSearchPanel = new PlantSearchPanel(controller);
+        panelCenter.add(plantSearchPanel, "plant page");
         plantCreationPanel = new PlantCreationPanel(controller);
         panelCenter.add(plantCreationPanel, "plant creation page");
 
@@ -87,7 +87,7 @@ public class MainPanel extends JPanel {
     }
 
     public void setTitle(String title) {
-        plantPagePanel.setTitle(title);
+        plantSearchPanel.setTitle(title);
     }
 
     public void showLoginError(boolean show) {
@@ -99,11 +99,11 @@ public class MainPanel extends JPanel {
     }
 
     public void setDescription(String txt) {
-        plantPagePanel.setDescription(txt);
+        plantSearchPanel.setDescription(txt);
     }
 
     public void showButton(boolean show) {
-        plantPagePanel.showButton(show);
+        plantSearchPanel.showButton(show);
     }
 
     public void setCardLayout(String constraint) {

@@ -30,6 +30,8 @@ public class PlantPanel extends JPanel {
         setSize(200,200);
         setPreferredSize(new Dimension(200,200));
         setLayout(new BorderLayout());
+
+
         JLabel label = new JLabel( Utility.centerText("Watering Status", 90));
         label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
         label.setBorder(BorderFactory.createEmptyBorder(0,0,4,0));

@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class PlantPagePanel extends JPanel {
+public class PlantSearchPanel extends JPanel {
 
     private JPanel plantPanel;
     private Controller controller;
@@ -25,7 +25,7 @@ public class PlantPagePanel extends JPanel {
     private JTextPane description;
     private JButton addPlantBtn;
 
-    public  PlantPagePanel(Controller controller) {
+    public  PlantSearchPanel(Controller controller) {
         this.controller = controller;
 
         setBackground(new Color(245, 245, 245));
