@@ -12,6 +12,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -40,6 +41,19 @@ public class Utility {
         } catch (NumberFormatException e) {
         }
         return number;
+    }
+
+    public static String getMatchingString(ArrayList<String> values, String target){
+        int distance = values.size();
+        String nearestString = null;
+        for (String compareValue : values) {
+            int currentDistance = Arrays.compare(compareValue.toCharArray(), target.toCharArray());
+            if (currentDistance < distance) {
+                distance = currentDistance;
+                nearestString = compareValue;
+            }
+        }
+        return nearestString;
     }
 
     public static String splitParagraph(String text, int maxLength) {

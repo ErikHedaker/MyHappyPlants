@@ -30,7 +30,7 @@ public class PlantSearchPanel extends JPanel {
 
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
-
+        setLayout(new BorderLayout());
         plantPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
@@ -51,6 +51,9 @@ public class PlantSearchPanel extends JPanel {
 
         plantPanel.add(title, gbc);
 
+        JLabel imageLabel = new JLabel();
+        imageLabel.setIcon(new ImageIcon(""));
+
         description = new JTextPane();
         description.setEditable(false);
         StyledDocument doc = description.getStyledDocument();
@@ -61,14 +64,20 @@ public class PlantSearchPanel extends JPanel {
         description.setFont(new Font("Calibri", Font.BOLD, 15));
         description.setBorder(BorderFactory.createEmptyBorder(0,0,200,0));
         gbc.gridx = 3;
-        gbc.gridy = 6;
+        gbc.gridy = 5;
+        gbc.weighty = 1;
+        gbc.ipadx = 220;
+        gbc.ipady = 70;
         gbc.anchor = GridBagConstraints.CENTER;
         plantPanel.add(description, gbc);
 
         addPlantBtn = new JButton("ADD PLANT");
         addPlantBtn.addActionListener(new Action());
         gbc.gridx = 3;
-        gbc.gridy = 15;
+        gbc.gridy = 6;
+
+        gbc.ipadx = 50;
+        gbc.ipady = 15;
         gbc.anchor = GridBagConstraints.CENTER;
         plantPanel.add(addPlantBtn, gbc);
 
@@ -92,7 +101,7 @@ public class PlantSearchPanel extends JPanel {
     }
 
     public void setDescription(String txt) {
-        description.setText(Utility.splitParagraph(txt, 10));
+        description.setText(txt);
     }
 
     public void setTitle(String title) {

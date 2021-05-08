@@ -14,10 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static controller.Utility.*;
 
@@ -110,10 +107,11 @@ public class Controller {
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput());
+                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
 
                     try {
-                        plantSearchInputName = searchResults.get(0);
+                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
+
                     } catch (IndexOutOfBoundsException e) {
 
                     }
