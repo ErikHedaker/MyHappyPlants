@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import static controller.Utility.*;
 
@@ -32,10 +33,11 @@ public class Controller {
     private MainFrame view;
     private PlantAPI plantAPI;
     private byte[] imageDefault;
-    public int indexTemp;
+    public int selectedPlantIndex;
     private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
+    private List<List<String>> records = new ArrayList<>();
 
     public Controller() {
         this.database = new Database();
@@ -50,8 +52,19 @@ public class Controller {
         return getPlantList().get(index);
     }
 
-    public void setSelectedPlantFromIndex(int plantIndex) {
+    public void editSelectedPlant(String name, String wikiName, String hoursBetweenWatering) {
+        Plant plant = getPlantFromIndex(selectedPlantIndex);
+        plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
+        plant.setNameWiki(wikiName.length() < 1 ? plant.getNameWiki() : wikiName);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        plant.setImageIcon(plant.getImageIcon());
+        refreshPlantListGUI();
+        view.setCreationMode(false);
+    }
 
+
+    public void setSelectedPlantFromIndex(int plantIndex) {
+        selectedPlantIndex = plantIndex;
         Plant plant = getPlantFromIndex(plantIndex);
         view.setSelectedPlantName(plant.getNameAlias());
         ImageIcon imageIcon = plant.getImageIcon();
@@ -97,43 +110,43 @@ public class Controller {
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
-                    plantAPI = new PlantAPI(this);
-                    //setCardLayout("loading-screen");
-                    plantAPI.beginSearch(view.getSearchInput());
-                    plantSearchInputName = plantAPI.getPlantAlias();
+                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput());
+
+                    try {
+                        plantSearchInputName = searchResults.get(0);
+                    } catch (IndexOutOfBoundsException e) {
+
+                    }
 
                     displayPlantSearchPage();
                     view.setCardLayout("plant page");
                 }
                 break;
             case "show plant creation page":
+                view.setCreationMode(true);
                 view.setCardLayout("plant creation page");
-                break;
-            case "Add Plant":
-                System.out.println("Add Plant");
-                Plant plant = new Plant()
-                    .setImageIcon(new ImageIcon(imageDefault))
-                    .setNameAlias("Temp")
-                    .setNameWiki("Rose")
-                    .setHoursBetweenWatering(10);
-                addPlant(plant);
-                refreshPlantListGUI();
                 break;
             case "Remove Plant":
                 System.out.println("Remove Plant");
-                if(validPlantIndex(indexTemp)) {
-                    removePlant(activeProfile.getPlants().get(indexTemp));
+                if(validPlantIndex(selectedPlantIndex)) {
+                    removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
                 }
                 break;
-            case "Water Plant":
-                System.out.println("Water Plant");
-                if(validPlantIndex(indexTemp)) {
-                    waterPlant(activeProfile.getPlants().get(indexTemp));
-                    refreshPlantListGUI();
-                }
+            case "water plant":
+                waterSelectedPlant();
                 break;
         }
+    }
+
+    public void createPlant(String name, String wikiName, String hoursBetweenWatering) {
+        Plant plant = new Plant().setImageIcon(new ImageIcon(imageDefault))
+                .setNameAlias(name)
+                .setNameWiki(wikiName)
+                .setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        addPlant(plant);
+        refreshPlantListGUI();
+        view.setCreationMode(false);
     }
 
     public void setCardLayout(String layout) {
@@ -151,12 +164,13 @@ public class Controller {
         return index >= 0 && index < activeProfile.getPlants().size();
     }
 
-    public void waterPlant( Plant plant ) {
+    public void waterSelectedPlant() {
+        Plant plant = getPlantFromIndex(selectedPlantIndex);
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
     }
 
-    public void addPlant( Plant plant ) {
+    public void addPlant(Plant plant) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
         activeProfile.addPlant(plant);
@@ -173,6 +187,10 @@ public class Controller {
         } else {
             showPlantPage(false);
         }
+    }
+
+    public void setCreationMode(boolean creationMode) {
+        view.setCreationMode(creationMode);
     }
 
     public void showPlantPage(boolean isPlantFound) {
@@ -281,9 +299,9 @@ public class Controller {
     public Profile createProfile(String name, String password) {
         byte[] salt = generateRandomSalt(20);
         Profile profile = new Profile()
-            .setName(name)
-            .setPasswordHash(generatePasswordHash(password, salt))
-            .setPasswordSalt(salt);
+                .setName(name)
+                .setPasswordHash(generatePasswordHash(password, salt))
+                .setPasswordSalt(salt);
         int id = database.insertProfile(profile);
         profile.setDatabaseID(id);
         return id != -1 ? profile : null;

@@ -86,7 +86,7 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource().equals(searchBtn)) {
 
             if (searchField == null) {
-                searchField = new JTextField("krokus");
+                searchField = new JTextField("tomato");
                 searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
 
                 JPanel search = new JPanel();

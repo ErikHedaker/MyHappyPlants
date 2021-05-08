@@ -3,14 +3,15 @@ package controller;
 import model.Plant;
 import org.apache.commons.codec.binary.Base64;
 
-import java.awt.*;
-import java.io.File;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -32,6 +33,15 @@ public class Utility {
         return sb.toString();
     }
 
+    public static int getStringToInt(String value) {
+        int number = 0;
+        try {
+            number = Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+        }
+        return number;
+    }
+
     public static String splitParagraph(String text, int maxLength) {
         int i = 0;
         String[] parts = text.split(Pattern.quote(" "));
@@ -46,6 +56,20 @@ public class Utility {
             }
         }
         return sb.toString();
+    }
+
+    public static ArrayList<String[]> loadFileCSV(String fileName) {
+        ArrayList<String[]> data = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line = br.readLine();
+            while (line != null) {
+                data.add(line.split("\\t", -1));
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
     /**
