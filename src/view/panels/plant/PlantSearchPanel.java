@@ -24,6 +24,7 @@ public class PlantSearchPanel extends JPanel {
     private JLabel title;
     private JTextPane description;
     private JButton addPlantBtn;
+    private JLabel imageLabel;
 
     public  PlantSearchPanel(Controller controller) {
         this.controller = controller;
@@ -43,7 +44,7 @@ public class PlantSearchPanel extends JPanel {
         //JPanel header = new JPanel(new BorderLayout());
         //header.setBackground(Color.white);
         title = new JLabel("", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 27));
+        title.setFont(new Font("Calibri Light", Font.BOLD, 27));
         gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -51,8 +52,14 @@ public class PlantSearchPanel extends JPanel {
 
         plantPanel.add(title, gbc);
 
-        JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(new ImageIcon(""));
+        imageLabel = new JLabel();
+        ImageIcon icon = new ImageIcon("./images/plant.jpg");
+        Image scaledImage = icon.getImage().getScaledInstance(105,100, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(scaledImage));
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        plantPanel.add(imageLabel, gbc);
 
         description = new JTextPane();
         description.setEditable(false);
@@ -61,13 +68,13 @@ public class PlantSearchPanel extends JPanel {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         description.setPreferredSize(new Dimension(200,200));
-        description.setFont(new Font("Calibri", Font.BOLD, 15));
+        description.setFont(new Font("Calibri Light", Font.PLAIN, 17));
         description.setBorder(BorderFactory.createEmptyBorder(0,0,200,0));
         gbc.gridx = 3;
         gbc.gridy = 5;
         gbc.weighty = 1;
         gbc.ipadx = 220;
-        gbc.ipady = 70;
+        gbc.ipady = 40;
         gbc.anchor = GridBagConstraints.CENTER;
         plantPanel.add(description, gbc);
 
@@ -102,6 +109,10 @@ public class PlantSearchPanel extends JPanel {
 
     public void setDescription(String txt) {
         description.setText(txt);
+    }
+
+    public void setImageLabel() {
+
     }
 
     public void setTitle(String title) {
