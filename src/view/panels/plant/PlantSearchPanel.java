@@ -53,8 +53,9 @@ public class PlantSearchPanel extends JPanel {
         plantPanel.add(title, gbc);
 
         imageLabel = new JLabel();
+        imageLabel.setIcon(controller.getImageIcon());
         gbc.gridx = 3;
-        gbc.gridy = 4;
+        gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         plantPanel.add(imageLabel, gbc);
 
@@ -64,14 +65,12 @@ public class PlantSearchPanel extends JPanel {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        description.setPreferredSize(new Dimension(200,200));
+
         description.setFont(new Font("Calibri Light", Font.PLAIN, 17));
-        description.setBorder(BorderFactory.createEmptyBorder(0,0,200,0));
         gbc.gridx = 3;
-        gbc.gridy = 5;
+        gbc.gridy = 2;
         gbc.weighty = 1;
-        gbc.ipadx = 220;
-        gbc.ipady = 40;
+        gbc.ipadx = 250;
         gbc.anchor = GridBagConstraints.CENTER;
         plantPanel.add(description, gbc);
 
