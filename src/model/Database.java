@@ -18,6 +18,7 @@ public class Database {
     public Database(String connectionURL) {
         this.connectionURL = connectionURL;
     }
+
     public Database() {
         this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
     }

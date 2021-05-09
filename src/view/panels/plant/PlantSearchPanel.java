@@ -30,7 +30,7 @@ public class PlantSearchPanel extends JPanel {
         this.controller = controller;
 
         setBackground(new Color(245, 245, 245));
-        setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
+        setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 340));
         setLayout(new BorderLayout());
         plantPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
