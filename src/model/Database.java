@@ -19,7 +19,7 @@ public class Database {
         this.connectionURL = connectionURL;
     }
     public Database() {
-        this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=" + Utility.readFile("./files/password"));
+        this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
     }
 
     /**
