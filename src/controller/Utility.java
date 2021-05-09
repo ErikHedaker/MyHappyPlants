@@ -33,6 +33,21 @@ public class Utility {
         return sb.toString();
     }
 
+    public static String readFile(String filePath) {
+        String data = null;
+        try {
+            File myObj = new File(filePath);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     public static int getStringToInt(String value) {
         int number = 0;
         try {
