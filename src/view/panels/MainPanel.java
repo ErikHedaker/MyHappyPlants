@@ -41,7 +41,6 @@ public class MainPanel extends JPanel {
         plantCreationPanel = new PlantCreationPanel(controller);
         panelCenter.add(plantCreationPanel, "plant creation page");
 
-        setOpaque(false);
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
         JLabel label = new JLabel("Loading...", JLabel.CENTER);
@@ -49,6 +48,7 @@ public class MainPanel extends JPanel {
         panel.add(label, BorderLayout.CENTER);
         panelCenter.add(panel, "loading-screen");
         add(panelCenter);
+
     }
 
 

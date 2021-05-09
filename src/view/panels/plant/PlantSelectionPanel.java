@@ -31,7 +31,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0,3,6,3);
         selectionPanel.setBackground(Color.white);
-        selectionPanel.setPreferredSize(new Dimension(270, 300));
+        selectionPanel.setPreferredSize(new Dimension(270, 305));
 
         title = new JLabel("", JLabel.CENTER);
         title.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -48,7 +48,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         selectionPanel.add(image, gbc);
         JPanel buttons = new JPanel(new GridLayout(0, 2, 0, 0));
         buttons.setBackground(Color.white);
-        buttons.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        buttons.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
 
         waterBtn = new JButton("water");
         ImageIcon waterImg = new ImageIcon("./images/water-icon.png");
@@ -61,8 +61,8 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         waterBtn.addActionListener(this);
         waterBtn.setBackground(new Color(220, 229, 185));
         waterBtn.setForeground(Color.darkGray);
-        waterBtn.setFocusable(false);
-        waterBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        waterBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(93, 118, 77)));
+        waterBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         waterBtn.setVisible(false);
         buttons.add(waterBtn);
 
@@ -73,10 +73,10 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
                 Image.SCALE_SMOOTH);
         editBtn.setIcon(new ImageIcon(scaledEditImg));
         editBtn.addActionListener(this);
-        editBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, Color.BLACK));
-        editBtn.setFocusable(false);
+        editBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, new Color(93, 118, 77)));
         editBtn.setFont(new Font("Arial", Font.BOLD, 18));
         editBtn.setBackground(new Color(220, 229, 185));
+        editBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         editBtn.setForeground(Color.darkGray);
 
         editBtn.setVisible(false);
@@ -89,13 +89,15 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
 
         deleteBtn = new JButton("remove");
         deleteBtn.setBackground(new Color(212, 79, 63, 255));
-        deleteBtn.setForeground(Color.WHITE);
-        deleteBtn.setBorder(null);
+        deleteBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        deleteBtn.setForeground(Color.white);
         deleteBtn.addActionListener(this);
+        deleteBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        deleteBtn.setBorder(null);
         deleteBtn.setVisible(false);
         gbc.gridx = 2;
         gbc.gridy = 5;
-        gbc.ipadx = 30;
+        gbc.ipadx = 20;
         gbc.weighty = 1;
         gbc.ipady = 10;
         selectionPanel.add(deleteBtn, gbc);

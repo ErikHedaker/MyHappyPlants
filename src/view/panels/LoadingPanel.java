@@ -18,7 +18,7 @@ public class LoadingPanel extends JPanel {
     public void createLoadingPanel(){
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(50, 340, 50, 340));
-
+        setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
