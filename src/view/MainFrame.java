@@ -86,6 +86,10 @@ public class MainFrame{
         panel.createPlantList();
     }
 
+    public void setImageLabel(ImageIcon imageIcon) {
+        panel.setImageLabel(imageIcon);
+    }
+
     public void setSelectedPlantName(String plantName) {
         panel.setSelectedPlantName(plantName);
     }

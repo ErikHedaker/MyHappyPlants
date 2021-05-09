@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -28,13 +29,12 @@ public class Controller {
     private Database database;
     private Profile activeProfile;
     private MainFrame view;
-    private PlantAPI plantAPI;
     private byte[] imageDefault;
     public int selectedPlantIndex;
     private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
-    private List<List<String>> records = new ArrayList<>();
+    private String wikiPlantImageURL;
 
     public Controller() {
         this.database = new Database();
@@ -59,6 +59,9 @@ public class Controller {
         view.setCreationMode(false);
     }
 
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 
     public void setSelectedPlantFromIndex(int plantIndex) {
         selectedPlantIndex = plantIndex;
@@ -111,9 +114,7 @@ public class Controller {
 
                     try {
                         plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-
                     } catch (IndexOutOfBoundsException e) {
-
                     }
 
                     displayPlantSearchPage();
@@ -195,11 +196,23 @@ public class Controller {
         if (isPlantFound) {
             view.showButton(true);
             view.setTitle(plantSearchInputName);
-            new Thread(() -> view.setDescription(wikiPlantDescription)).start();
+            new Thread(() -> upsertSearchDetails()).start();
+
         } else  {
             view.setTitle("No plant was found.");
             view.setDescription("");
             view.showButton(false);
+            view.setImageLabel(null);
+        }
+    }
+
+    private void upsertSearchDetails() {
+        view.setDescription(wikiPlantDescription);
+
+        try {
+            URL wikiImageURL = new URL(wikiPlantImageURL);
+            view.setImageLabel(new ImageIcon(wikiImageURL));
+        } catch (MalformedURLException e) {
         }
     }
 
@@ -208,6 +221,7 @@ public class Controller {
         if (!(plantSearchInputName == "" || wiki.getText() == null
                 || wiki.getText().equalsIgnoreCase("null may refer to:"))) {
             wikiPlantDescription = wiki.getText();
+            wikiPlantImageURL = wiki.getImageURL();
             return true;
         }
         return false;

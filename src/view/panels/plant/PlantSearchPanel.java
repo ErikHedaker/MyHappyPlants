@@ -53,9 +53,6 @@ public class PlantSearchPanel extends JPanel {
         plantPanel.add(title, gbc);
 
         imageLabel = new JLabel();
-        ImageIcon icon = new ImageIcon("./images/plant.jpg");
-        Image scaledImage = icon.getImage().getScaledInstance(105,100, Image.SCALE_SMOOTH);
-        imageLabel.setIcon(new ImageIcon(scaledImage));
         gbc.gridx = 3;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -97,7 +94,6 @@ public class PlantSearchPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource().equals(addPlantBtn)) {
-                controller.buttonPushed("add plant");
                 controller.buttonPushed("show plant creation page");
             }
         }
@@ -111,8 +107,12 @@ public class PlantSearchPanel extends JPanel {
         description.setText(txt);
     }
 
-    public void setImageLabel() {
-
+    public void setImageLabel(ImageIcon imageIcon) {
+        if (imageIcon == null) {
+            imageIcon = controller.getImageIcon();
+        }
+        Image scaledImage = imageIcon.getImage().getScaledInstance(105,100, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(scaledImage));
     }
 
     public void setTitle(String title) {

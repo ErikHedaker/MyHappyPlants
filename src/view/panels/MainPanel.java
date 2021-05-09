@@ -111,6 +111,10 @@ public class MainPanel extends JPanel {
         repaint();
     }
 
+    public void setImageLabel(ImageIcon imageIcon) {
+        plantSearchPanel.setImageLabel(imageIcon);
+    }
+
     public void setCreationMode(boolean creationMode) {
         plantCreationPanel.setCreationMode(creationMode);
     }
