@@ -104,7 +104,6 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
 
         borderPanel.add(selectionPanel);
 
-
         add(borderPanel);
     }
 

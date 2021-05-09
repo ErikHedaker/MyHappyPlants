@@ -1,18 +1,24 @@
 package view.panels;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MessageDialog {
 
     public MessageDialog() {
-        JFrame p = new JFrame("TEST");
-        p.setUndecorated(true);
-        p.setDefaultLookAndFeelDecorated(true);
-        JLabel lable = new JLabel("test");
-        p.add(lable);
+        JOptionPane.showConfirmDialog(null,
+                new JLabel("tihi"),
+                "JOptionPane Example : ",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
-        JOptionPane.showConfirmDialog(p, "dasda", "test", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
     }
 
 }
