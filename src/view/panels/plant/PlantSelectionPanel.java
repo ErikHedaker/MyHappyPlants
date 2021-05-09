@@ -35,7 +35,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         title.setFont(new Font("Times New Roman", Font.PLAIN, 25));
         title.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
         title.setVisible(false);
-        selectionPanel.add(title, BorderLayout.NORTH);
+        selectionPanel.add(title, BorderLayout.PAGE_START);
 
         image = new JLabel("", JLabel.CENTER);
         image.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));

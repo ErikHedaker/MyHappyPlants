@@ -81,6 +81,7 @@ public class PlantSearchPanel extends JPanel {
         addPlantBtn.setFont(new Font("Arial", Font.BOLD, 10));
         addPlantBtn.addActionListener(new Action());
         gbc.gridx = 3;
+        gbc.gridy = 6;
         gbc.gridy = 3;
 
         gbc.ipadx = 50;

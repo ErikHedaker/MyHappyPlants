@@ -1,6 +1,7 @@
 package view.panels.plant;
 
 import controller.Controller;
+import controller.Utility;
 import model.Plant;
 import view.panels.plant.PlantPanel;
 
@@ -30,10 +31,10 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
             JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.white);
 
-            JLabel label = new JLabel(plant.getNameAlias() + " (" + plant.getNameWiki().toLowerCase() + ")");
-            label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+            JLabel label = new JLabel(Utility.centerText(plant.getNameAlias() + " (" + plant.getNameWiki().toLowerCase() + ")",25));
+            label.setBorder(BorderFactory.createEmptyBorder(15, 5, 0, 0));
             label.setForeground(Color.darkGray);
-            label.setFont(new Font("Arial", Font.BOLD, 19));
+            label.setFont(new Font("Calibri", Font.PLAIN, 19));
             panel.add(label, BorderLayout.NORTH);
 
             plantPanel = new PlantPanel(plant);
@@ -61,7 +62,7 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
         list = new JList(model);
         list.setBorder(BorderFactory.createLineBorder(Color.white, 30));
         list.setBackground(Color.white);
-        list.setFixedCellHeight(150);
+        list.setFixedCellHeight(170);
         list.setSelectedIndex(-1);
         list.addListSelectionListener(this);
         PanelRenderer p = new PanelRenderer();

@@ -106,6 +106,10 @@ public class MainPanel extends JPanel {
         plantSearchPanel.showButton(show);
     }
 
+    public void showSearch() {
+        northPanel.showSearch();
+    }
+
     public void setCardLayout(String constraint) {
         cardLayout.show(panelCenter, constraint);
         repaint();
@@ -117,6 +121,10 @@ public class MainPanel extends JPanel {
 
     public void setCreationMode(boolean creationMode) {
         plantCreationPanel.setCreationMode(creationMode);
+    }
+
+    public void updatePlantWateringComponents(int index) {
+        plantList.getPlantPanels().get(index).updateWateringComponents();
     }
 
     public String getSearchInput() {
