@@ -102,6 +102,14 @@ public class MainFrame{
         panel.setCreationMode(creationMode);
     }
 
+    public void updatePlantWateringComponents(int index) {
+        panel.updatePlantWateringComponents(index);
+    }
+
+    public void showSearchField() {
+        panel.showSearch();
+    }
+
     public void setSelectedImageIcon(ImageIcon imageIcon) {
         panel.setSelectedImageIcon(imageIcon);
     }

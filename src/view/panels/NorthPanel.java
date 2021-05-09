@@ -15,6 +15,7 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
     private JTextField searchField;
     private Controller controller;
     private JPanel searchPanel;
+    private JPanel search;
 
     public NorthPanel(Controller controller) {
         this.controller = controller;
@@ -44,9 +45,35 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchBtn.setBorder(null);
         searchBtn.setBackground(new Color(176, 194, 147));
         searchBtn.addActionListener(this);
-
-
         searchBtn.setVisible(false);
+
+        searchField = new JTextField("tomato");
+        searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+
+        search = new JPanel();
+        search.setBackground(new Color(173, 193, 124));
+
+        searchField.setBorder(BorderFactory.createMatteBorder(1,1,3,1, new Color(93, 118, 77)));
+        searchField.setFont(new Font("Arial", Font.BOLD, 20));
+        searchField.setForeground(new Color(93, 118, 77));
+        searchField.addKeyListener(this);
+        searchField.setPreferredSize(new Dimension(200, 40));
+        searchField.setBackground(new Color(173, 193, 124));
+
+        searchField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                searchField.setBackground(Color.WHITE);
+                controller.buttonPushed("plantList");
+                searchField.setText("");
+            }
+        });
+        search.setVisible(false);
+        search.add(searchField, BorderLayout.WEST);
+
+        searchPanel.add(search, BorderLayout.WEST);
+
         Border margin2 = new EmptyBorder(100, 0, 0, 40);
         setBorder(new CompoundBorder(getBorder(), margin2));
 
@@ -62,6 +89,10 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     public JTextField getSearchField() {
         return searchField;
+    }
+
+    public void showSearch() {
+        search.setVisible(true);
     }
 
     @Override
@@ -84,40 +115,11 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(searchBtn)) {
-
-            if (searchField == null) {
-                searchField = new JTextField("tomato");
-                searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
-
-                JPanel search = new JPanel();
-                search.setBackground(new Color(173, 193, 124));
-
-                searchField.setBorder(BorderFactory.createMatteBorder(1,1,3,1, new Color(93, 118, 77)));
-                searchField.setFont(new Font("Arial", Font.BOLD, 20));
-                searchField.setForeground(new Color(93, 118, 77));
-                searchField.addKeyListener(this);
-                searchField.setPreferredSize(new Dimension(200, 40));
-
-                search.add(searchField, BorderLayout.WEST);
-
-                searchPanel.add(search, BorderLayout.WEST);
-                revalidate();
-                repaint();
-
-
+            if (!searchField.getBackground().equals(Color.WHITE)) {
+                searchField.setBackground(Color.WHITE);
             } else {
-                if (searchField.getMouseListeners().length != 4) {
-                    searchField.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            controller.buttonPushed("plantList");
-                            searchField.setText("");
-                        }
-                    });
-                }
                 new Thread(() -> controller.buttonPushed("search")).start();
             }
-
         }
     }
 

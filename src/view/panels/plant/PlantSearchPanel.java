@@ -78,7 +78,6 @@ public class PlantSearchPanel extends JPanel {
         addPlantBtn.addActionListener(new Action());
         gbc.gridx = 3;
         gbc.gridy = 6;
-
         gbc.ipadx = 50;
         gbc.ipady = 15;
         gbc.anchor = GridBagConstraints.CENTER;

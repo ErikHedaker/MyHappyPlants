@@ -101,6 +101,7 @@ public class Controller {
             case "plantList":
                 view.setCardLayout("plantList");
                 view.showSearch(true);
+                view.showSearchField();
                 new Thread(() -> loadPlantImagesFromDatabase()).start();
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                     if (!panel.getLoadingThread().isAlive()) {
@@ -167,6 +168,7 @@ public class Controller {
         Plant plant = getPlantFromIndex(selectedPlantIndex);
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
+        view.updatePlantWateringComponents(selectedPlantIndex);
     }
 
     public void addPlant(Plant plant) {
@@ -248,7 +250,7 @@ public class Controller {
             while (it.hasNext()) {
                 Plant plant = it.next();
                 byte[] image = database.getPlantImage(plant.getDatabaseID());
-                plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
+                plant.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
             }
         }
 
