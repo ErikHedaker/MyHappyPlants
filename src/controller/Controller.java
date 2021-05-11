@@ -49,16 +49,6 @@ public class Controller {
         return getPlantList().get(index);
     }
 
-    public void editSelectedPlant(String name, String wikiName, String hoursBetweenWatering) {
-        Plant plant = getPlantFromIndex(selectedPlantIndex);
-        plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
-        plant.setNameWiki(wikiName.length() < 1 ? plant.getNameWiki() : wikiName);
-        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
-        plant.setImageIcon(plant.getImageIcon());
-        refreshPlantListGUI();
-        view.setCreationMode(false);
-    }
-
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
@@ -139,11 +129,28 @@ public class Controller {
     }
 
     public void createPlant(String name, String wikiName, String hoursBetweenWatering) {
-        Plant plant = new Plant().setImageIcon(new ImageIcon(imageDefault))
-                .setNameAlias(name)
-                .setNameWiki(wikiName)
-                .setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        Plant plant = new Plant();
+        plant.setNameAlias(name);
+        plant.setNameWiki(wikiName);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         addPlant(plant);
+
+        JWiki wiki = new JWiki(name);
+        byte[] icon = fetchImageFromURL(wiki.getImageURL());
+
+        plant.setImageIcon(new ImageIcon(icon));
+        new Thread(() -> database.upsertPlantImage(plant.getDatabaseID(), icon)).start();
+
+        refreshPlantListGUI();
+        view.setCreationMode(false);
+    }
+
+    public void editSelectedPlant(String name, String wikiName, String hoursBetweenWatering) {
+        Plant plant = getPlantFromIndex(selectedPlantIndex);
+        plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
+        plant.setNameWiki(wikiName.length() < 1 ? plant.getNameWiki() : wikiName);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        database.updatePlant(plant);
         refreshPlantListGUI();
         view.setCreationMode(false);
     }
@@ -154,7 +161,6 @@ public class Controller {
 
     public void refreshPlantListGUI()
     {
-        //TEMPORÄR LÖSNING
         createPlantList();
         view.setCardLayout("plantList");
     }
@@ -229,16 +235,6 @@ public class Controller {
     }
 
     /**
-     * Fetches images from Wikipedia with JWiki and upsert them into the database
-     */
-    public void upsertPlantImagesFromWikipediaToDatabase() {
-        for (Plant plant : activeProfile.getPlants()) {
-            JWiki wiki = new JWiki(plant.getNameWiki());
-            database.upsertPlantImage(plant.getDatabaseID(), fetchImageFromURL(wiki.getImageURL()));
-        }
-    }
-
-    /**
      * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
     public synchronized void loadPlantImagesFromDatabase() {
@@ -271,7 +267,7 @@ public class Controller {
      * @return An image in the byte array format
      */
     public byte[] fetchImageFromURL(String imageURL) {
-        if (imageURL != null) {
+        if(imageURL !=null) {
             try (ByteArrayOutputStream baoStream = new ByteArrayOutputStream()) {
                 String extension = imageURL.substring(imageURL.lastIndexOf(".") + 1);
                 ImageIO.write(ImageIO.read(new URL(imageURL)), extension, baoStream);

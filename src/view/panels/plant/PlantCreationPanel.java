@@ -24,7 +24,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     private JTextField plantTF;
     private JTextField nicknameTF;
     private JTextField waterTF;
-    boolean creationMode = false;
+    boolean creationMode = true;
 
     public PlantCreationPanel(Controller controller) {
         this.controller = controller;
@@ -298,7 +298,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == saveButton) {
             if (creationMode) {
                 controller.createPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
-                creationMode = false;
             } else {
                 controller.editSelectedPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
             }

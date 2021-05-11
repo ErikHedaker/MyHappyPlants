@@ -6,9 +6,6 @@ import java.awt.event.ActionEvent;
 import controller.Controller;
 
 import java.awt.event.ActionListener;
-import java.util.Locale;
-import static javax.swing.SwingConstants.CENTER;
-
 
 public class MessageDialog implements ActionListener {
     private JLabel image;
@@ -87,11 +84,6 @@ public class MessageDialog implements ActionListener {
 
 
         dialog.setVisible(false);
-
-
-        /*JOptionPane.showMessageDialog(null,
-                getPanel(),
-                "JOptionPane Example : ", JOptionPane.PLAIN_MESSAGE);*/
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -100,21 +92,5 @@ public class MessageDialog implements ActionListener {
         } else if (e.getSource() == noBtn) {
             controller.buttonPushed("plantList");
         }
-
-
-
-    /*public void setImageIcon(ImageIcon imageIcon) {
-        Image img = imageIcon.getImage().getScaledInstance(150, 145,
-                Image.SCALE_SMOOTH);
-
-        image.setIcon(new ImageIcon(img));
-    }*/
-
-    /*public JPanel getPanel() {
-        JPanel panel = new JPanel();
-        JButton btn = new JButton("TEST");
-        panel.add(btn);
-        return panel;
-    }*/
     }
 }
