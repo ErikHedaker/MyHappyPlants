@@ -110,12 +110,12 @@ public class Controller {
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput());
-
+                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
+                    System.out.println(view.getSearchInput());
                     try {
                         plantSearchInputName = searchResults.get(0);
                     } catch (IndexOutOfBoundsException e) {
-
+                        e.printStackTrace();
                     }
 
                     displayPlantSearchPage();
@@ -182,11 +182,7 @@ public class Controller {
     }
 
     public void displayPlantSearchPage() {
-        if (plantFound()) {
-            showPlantPage(true);
-        } else {
-            showPlantPage(false);
-        }
+        showPlantPage(plantFound());
     }
 
     public void setCreationMode(boolean creationMode) {

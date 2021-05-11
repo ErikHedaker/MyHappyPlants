@@ -333,7 +333,7 @@ public class Database {
         final String SQL =
             "SELECT common_name " +
             "FROM plant_trefle_data " +
-            "WHERE common_name LIKE ? " +
+            "WHERE common_name ILIKE ? " +
             "LIMIT ?";
         ArrayList<String> plantNames = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
@@ -362,9 +362,9 @@ public class Database {
 
     public ArrayList<HashMap<String,String>> searchPlantFull(String name, int limit ) {
         final String SQL =
-            "SELECT common_name " +
+            "SELECT * " +
             "FROM plant_trefle_data " +
-            "WHERE common_name LIKE ? " +
+            "WHERE common_name ILIKE ? " +
             "LIMIT ?";
         ArrayList<HashMap<String,String>> plants = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
@@ -402,9 +402,9 @@ public class Database {
         Database database = new Database();
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
-        for( HashMap<String,String> plant : database.searchPlantFull("%rose%"))
+        for( HashMap<String,String> plant : database.searchPlantFull("rose"))
         {
-            System.out.println(plant.get("common_name"));
+            System.out.println(plant.get("scientific_name"));
         }
     }
 }
