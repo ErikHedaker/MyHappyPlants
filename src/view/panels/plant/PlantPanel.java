@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * The PlantPanel class handles the visual elements of plants, this class is made to be multiplied into multiple instances in a list for each plant.
@@ -18,8 +20,8 @@ public class PlantPanel extends JPanel {
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
-    private int x = 330;
-    private JButton waterBtn;
+    private int startPosX = 330;
+    private JLabel previousWaterLabel, nextWaterLabel;
 
     /**
      * Constructs labels for JPanel that tells about watering status.
@@ -27,28 +29,30 @@ public class PlantPanel extends JPanel {
      */
     public PlantPanel(Plant plant) {
         this.plant = plant;
-        setSize(200,200);
         setPreferredSize(new Dimension(200,200));
         setLayout(new BorderLayout());
-        JLabel label = new JLabel( Utility.centerText("Watering Status", 90));
-        label.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
-        label.setBorder(BorderFactory.createEmptyBorder(0,0,4,0));
-        label.setForeground(Color.darkGray);
-        JLabel label1 = new JLabel( Utility.centerText("Previous: " + 0 + "d ago", 90)
-                + "                     Next: " + plant.getHoursBetweenWatering() + " days left");
-        label1.setBorder(BorderFactory.createEmptyBorder(0,0,30,0));
-        label1.setForeground(Color.darkGray);
-        label1.setFont(new Font("Times New Roman", Font.HANGING_BASELINE + Font.BOLD, 17));
 
-        waterBtn = new JButton("Water");
-        waterBtn.setVisible(false);
-        add(label, BorderLayout.CENTER);
-        add(label1, BorderLayout.SOUTH);
-        add(waterBtn, BorderLayout.EAST);
+        JPanel waterStatusPanel = new JPanel(new BorderLayout());
+        waterStatusPanel.setOpaque(false);
+        previousWaterLabel = new JLabel("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
+        previousWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
+
+        nextWaterLabel = new JLabel("Water me in: " + plant.getTimeRemaining() + " day(s)");
+        nextWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
+
+        nextWaterLabel.setBorder(BorderFactory.createEmptyBorder(0,170,15,0));
+
+        waterStatusPanel.add(nextWaterLabel, BorderLayout.NORTH);
+        waterStatusPanel.add(previousWaterLabel, BorderLayout.SOUTH);
+        waterStatusPanel.setBorder(BorderFactory.createEmptyBorder(0,140,35,0));
+
+
+        add(waterStatusPanel, BorderLayout.SOUTH);
     }
 
-    public void showWaterBtn(boolean visibility) {
-        waterBtn.setVisible(visibility);
+    public void updateWateringComponents() {
+        nextWaterLabel.setText("Water me in: " + plant.getHoursBetweenWatering() + " day(s)");
+        previousWaterLabel.setText("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
     }
 
     /**
@@ -75,17 +79,17 @@ public class PlantPanel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
 
         graphics2D.setColor(Color.darkGray);
-        graphics2D.drawRoundRect(140, 45, 330, 20, 15, 15);
-        graphics2D.setColor(new Color(16, 219 - x / 5, 219));
+        graphics2D.drawRoundRect(140, 50, 330, 20, 15, 15);
+        graphics2D.setColor(new Color(16, startPosX/2, 219));
 
-        if (x > 1)
-            graphics2D.drawRoundRect(140, 45, x, 20, 15, 15);
+        if (startPosX > 1) {
+            graphics2D.drawRoundRect(140, 50, new BigDecimal(startPosX).intValue(), 20, 15, 15);
+        }
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
             icon = new ImageIcon("./images/plant.jpg");
         }
-        graphics2D.drawImage(icon.getImage(), 05, 05, 105, 100, null);
-
+        graphics2D.drawImage(icon.getImage(), 17, 10, 105, 100, null);
     }
 
 
@@ -93,9 +97,16 @@ public class PlantPanel extends JPanel {
         @Override
         public void run() {
             while (true) {
-                int daysLeft = plant.getHoursBetweenWatering();
-                if (x > ((daysLeft) * (plant.getHoursBetweenWatering() == 0 ? 20 : 5/*plant.getDaysWithoutWater()*/)))
-                    x--;
+
+                int daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
+                int maxDays = plant.getHoursBetweenWatering() == 0 ? 1 : plant.getHoursBetweenWatering();
+                double scale = (330/maxDays) * daysLeft;
+
+                if (daysLeft == maxDays && startPosX <= 330) {
+                    startPosX++;
+                } else if (scale >= 140 && startPosX >= scale) {
+                    startPosX--;
+                }
 
                 repaint();
                 propertyChangeSupport.firePropertyChange("update", null, null);

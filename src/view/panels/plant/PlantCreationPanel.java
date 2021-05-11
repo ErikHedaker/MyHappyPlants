@@ -295,7 +295,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
             controller.buttonPushed("plantList");
-        } else  if (e.getSource() == saveButton) {
+        } else if (e.getSource() == saveButton) {
             if (creationMode) {
                 controller.createPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
                 creationMode = false;

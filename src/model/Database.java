@@ -1,5 +1,7 @@
 package model;
 
+import controller.Utility;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Database {
     public Database(String connectionURL) {
         this.connectionURL = connectionURL;
     }
+
     public Database() {
         this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
     }

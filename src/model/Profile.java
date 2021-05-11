@@ -20,9 +20,9 @@ public class Profile
      *
      * @param plant The plant that gets added
      */
-    public void addPlant( Plant plant )
+    public void addPlant(Plant plant)
     {
-        this.plants.add( plant );
+        this.plants.add(plant);
     }
 
     /**
@@ -31,27 +31,27 @@ public class Profile
      * Param is the private attribute being set
      * @return A reference to the current object, in order to chain method calls
      */
-    public synchronized Profile setPlants( ArrayList<Plant> plants )
+    public synchronized Profile setPlants(ArrayList<Plant> plants)
     {
         this.plants = plants;
         return this;
     }
-    public Profile setDatabaseID( int databaseID )
+    public Profile setDatabaseID(int databaseID)
     {
         this.databaseID = databaseID;
         return this;
     }
-    public Profile setName( String name )
+    public Profile setName(String name)
     {
         this.name = name;
         return this;
     }
-    public Profile setPasswordHash( byte[] passwordHash )
+    public Profile setPasswordHash(byte[] passwordHash)
     {
         this.passwordHash = passwordHash;
         return this;
     }
-    public Profile setPasswordSalt( byte[] passwordSalt )
+    public Profile setPasswordSalt(byte[] passwordSalt)
     {
         this.passwordSalt = passwordSalt;
         return this;

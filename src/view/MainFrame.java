@@ -86,6 +86,10 @@ public class MainFrame{
         panel.createPlantList();
     }
 
+    public void setImageLabel(ImageIcon imageIcon) {
+        panel.setImageLabel(imageIcon);
+    }
+
     public void setSelectedPlantName(String plantName) {
         panel.setSelectedPlantName(plantName);
     }
@@ -96,6 +100,14 @@ public class MainFrame{
 
     public void setCreationMode(boolean creationMode) {
         panel.setCreationMode(creationMode);
+    }
+
+    public void updatePlantWateringComponents(int index) {
+        panel.updatePlantWateringComponents(index);
+    }
+
+    public void showSearchField() {
+        panel.showSearch();
     }
 
     public void setSelectedImageIcon(ImageIcon imageIcon) {

@@ -1,7 +1,10 @@
 package model;
 
 import javax.swing.*;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The Plant class represents a plant that the profile has and tracks
@@ -18,33 +21,37 @@ public class Plant
     private ImageIcon imageIcon;
     private String description;
 
+    public Plant() {
+        lastTimeWatered = LocalDateTime.now();
+    }
+
     /**
      * All Setter methods
      *
      * Param is the private attribute being set
      * @return A reference to the current object, in order to chain method calls
      */
-    public Plant setDatabaseID( int databaseID )
+    public Plant setDatabaseID(int databaseID)
     {
         this.databaseID = databaseID;
         return this;
     }
-    public Plant setNameAlias( String nameAlias )
+    public Plant setNameAlias(String nameAlias)
     {
         this.nameAlias = nameAlias;
         return this;
     }
-    public Plant setNameWiki( String nameWiki )
+    public Plant setNameWiki(String nameWiki)
     {
         this.nameWiki = nameWiki;
         return this;
     }
-    public Plant setHoursBetweenWatering( int hoursBetweenWatering )
+    public Plant setHoursBetweenWatering(int hoursBetweenWatering)
     {
         this.hoursBetweenWatering = hoursBetweenWatering;
         return this;
     }
-    public Plant setLastTimeWatered( LocalDateTime wateringHappenedLast )
+    public Plant setLastTimeWatered(LocalDateTime wateringHappenedLast)
     {
         this.lastTimeWatered = wateringHappenedLast;
         return this;
@@ -76,9 +83,26 @@ public class Plant
     public int getHoursBetweenWatering() {
         return hoursBetweenWatering;
     }
+
+    public int getTimeRemaining() {
+        int timeRemaining = hoursBetweenWatering - getLastTimeWateredInterval();
+        return timeRemaining;
+    }
+
     public LocalDateTime getLastTimeWatered() {
         return lastTimeWatered;
     }
+
+    public int getLastTimeWateredInterval() {
+        if (lastTimeWatered == null) {
+            return 0;
+        }
+        LocalDateTime date1 = lastTimeWatered;
+        LocalDateTime date2 = LocalDateTime.now();
+        int daysBetween = (int) Duration.between(date1, date2).toDays();
+        return daysBetween;
+    }
+
     public String getDescription() {
         return description;
     }

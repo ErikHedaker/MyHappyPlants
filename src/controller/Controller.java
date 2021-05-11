@@ -1,5 +1,6 @@
 package controller;
 
+import com.squareup.okhttp.internal.framed.Settings;
 import model.Database;
 import model.api.JWiki;
 import model.Plant;
@@ -11,13 +12,13 @@ import view.panels.plant.PlantPanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import javax.sound.sampled.*;
 
 import static controller.Utility.*;
 
@@ -31,13 +32,12 @@ public class Controller {
     private Database database;
     private Profile activeProfile;
     private MainFrame view;
-    private PlantAPI plantAPI;
     private byte[] imageDefault;
     public int selectedPlantIndex;
     private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
-    private List<List<String>> records = new ArrayList<>();
+    private String wikiPlantImageURL;
 
     public Controller() {
         this.database = new Database();
@@ -62,6 +62,9 @@ public class Controller {
         view.setCreationMode(false);
     }
 
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 
     public void setSelectedPlantFromIndex(int plantIndex) {
         selectedPlantIndex = plantIndex;
@@ -101,6 +104,7 @@ public class Controller {
             case "plantList":
                 view.setCardLayout("plantList");
                 view.showSearch(true);
+                view.showSearchField();
                 new Thread(() -> loadPlantImagesFromDatabase()).start();
                 for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                     if (!panel.getLoadingThread().isAlive()) {
@@ -111,11 +115,10 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
-                    System.out.println(view.getSearchInput());
+
                     try {
-                        plantSearchInputName = searchResults.get(0);
+                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
                     } catch (IndexOutOfBoundsException e) {
-                        e.printStackTrace();
                     }
 
                     displayPlantSearchPage();
@@ -125,16 +128,18 @@ public class Controller {
             case "show plant creation page":
                 view.setCreationMode(true);
                 view.setCardLayout("plant creation page");
+                playSound(new File("sounds/WaterDrop.wav"));
                 break;
-            case "Remove Plant":
-                System.out.println("Remove Plant");
+            case "remove plant":
                 if(validPlantIndex(selectedPlantIndex)) {
                     removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
+                    playSound(new File("sounds/GlassBreak1.wav"));
                 }
                 break;
             case "water plant":
                 waterSelectedPlant();
+                playSound(new File("sounds/WaterSound.wav"));
                 break;
         }
     }
@@ -168,7 +173,14 @@ public class Controller {
         Plant plant = getPlantFromIndex(selectedPlantIndex);
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
+        view.updatePlantWateringComponents(selectedPlantIndex);
+
+
+
+
     }
+
+
 
     public void addPlant(Plant plant) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
@@ -182,7 +194,11 @@ public class Controller {
     }
 
     public void displayPlantSearchPage() {
-        showPlantPage(plantFound());
+        if (plantFound()) {
+            showPlantPage(true);
+        } else {
+            showPlantPage(false);
+        }
     }
 
     public void setCreationMode(boolean creationMode) {
@@ -193,11 +209,23 @@ public class Controller {
         if (isPlantFound) {
             view.showButton(true);
             view.setTitle(plantSearchInputName);
-            new Thread(() -> view.setDescription(wikiPlantDescription)).start();
+            new Thread(() -> upsertSearchDetails()).start();
+
         } else  {
             view.setTitle("No plant was found.");
             view.setDescription("");
             view.showButton(false);
+            view.setImageLabel(null);
+        }
+    }
+
+    private void upsertSearchDetails() {
+        view.setDescription(wikiPlantDescription);
+
+        try {
+            URL wikiImageURL = new URL(wikiPlantImageURL);
+            view.setImageLabel(new ImageIcon(wikiImageURL));
+        } catch (MalformedURLException e) {
         }
     }
 
@@ -206,6 +234,7 @@ public class Controller {
         if (!(plantSearchInputName == "" || wiki.getText() == null
                 || wiki.getText().equalsIgnoreCase("null may refer to:"))) {
             wikiPlantDescription = wiki.getText();
+            wikiPlantImageURL = wiki.getImageURL();
             return true;
         }
         return false;
@@ -230,9 +259,12 @@ public class Controller {
         {
             Iterator<Plant> it = activeProfile.getPlants().iterator();
             while (it.hasNext()) {
-                Plant plant = it.next();
-                byte[] image = database.getPlantImage(plant.getDatabaseID());
-                plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
+                try {
+                    Plant plant = it.next();
+                    byte[] image = database.getPlantImage(plant.getDatabaseID());
+                    plant.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
+                } catch (ConcurrentModificationException e) {
+                }
             }
         }
 
@@ -262,6 +294,33 @@ public class Controller {
             }
         }
         return imageDefault;
+    }
+
+    public void playSound(File file){
+        AudioInputStream as = null;
+        try {
+            as = AudioSystem.getAudioInputStream(file);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        try {
+            clip.open(as);
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        clip.start();
     }
 
     /**
