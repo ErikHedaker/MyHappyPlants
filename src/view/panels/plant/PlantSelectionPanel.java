@@ -130,7 +130,8 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == waterBtn) {
             controller.buttonPushed("water plant");
         } else  if (e.getSource() == deleteBtn) {
-            new MessageDialog(controller);
+            controller.buttonPushed("remove plant");
+            //new MessageDialog(controller);
         }
     }
 }

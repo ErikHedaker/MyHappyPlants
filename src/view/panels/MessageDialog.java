@@ -8,29 +8,24 @@ import java.awt.event.ActionListener;
 
 
 
-public class MessageDialog implements ActionListener {
+public class MessageDialog extends JLayeredPane implements ActionListener {
     private JButton yesBtn, noBtn;
     private Controller controller;
-    private JDialog dialog;
+    private JLayeredPane dialog;
 
     public MessageDialog(Controller controller){
         this.controller = controller;
          MessageDialogPanel();
     }
     public void MessageDialogPanel() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = (int) dim.getWidth();
-        int screenHeight = (int) dim.getHeight();
+        Dimension toolkit = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(500, 150);
+        setLocation((toolkit.width/3)-150, toolkit.height/3);
+        setBackground(Color.white);
+        setLayout(new BorderLayout());
 
-        dialog = new JDialog();
-        dialog.setSize(500, 200);
-        dialog.setBackground(Color.white);
-        dialog.setLocation(screenWidth / 2 - 250, screenHeight / 2 - 100);
-        dialog.setLayout(new GridBagLayout());
-        dialog.setUndecorated(true);
-        dialog.getRootPane ().setOpaque (false);
-        dialog.getContentPane ().setBackground (Color.white);
-        dialog.setBackground (Color.white);
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBackground(Color.white);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 3,15,3);
 
@@ -42,7 +37,7 @@ public class MessageDialog implements ActionListener {
         gbc.gridy = 0;
         gbc.gridwidth = 150;
         gbc.anchor = GridBagConstraints.LINE_START;
-        dialog.add(label, gbc);
+        contentPanel.add(label, gbc);
 
         yesBtn = new JButton("YES");
         yesBtn.setVisible(true);
@@ -58,7 +53,7 @@ public class MessageDialog implements ActionListener {
         gbc.gridy = 8;
         gbc.ipadx = 50;
         gbc.anchor = GridBagConstraints.WEST;
-        dialog.add(yesBtn, gbc);
+        contentPanel.add(yesBtn, gbc);
 
         noBtn = new JButton("NO");
         noBtn.setVisible(true);
@@ -74,9 +69,9 @@ public class MessageDialog implements ActionListener {
         gbc.gridy = 8;
         gbc.ipadx = 50;
         gbc.anchor = GridBagConstraints.EAST;
-        dialog.add(noBtn, gbc);
+        contentPanel.add(noBtn, gbc);
 
-        dialog.setVisible(true);
+        add(contentPanel);
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -1,5 +1,7 @@
 package model;
 
+import controller.Utility;
+
 import javax.swing.*;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -22,7 +24,7 @@ public class Plant
     private String description;
 
     public Plant() {
-        lastTimeWatered = LocalDateTime.now();
+
     }
 
     /**
@@ -100,6 +102,7 @@ public class Plant
         LocalDateTime date1 = lastTimeWatered;
         LocalDateTime date2 = LocalDateTime.now();
         int daysBetween = (int) Duration.between(date1, date2).toDays();
+
         return daysBetween;
     }
 

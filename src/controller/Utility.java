@@ -94,7 +94,7 @@ public class Utility {
      */
     public static long getNextWateringCountdown(Plant plant) {
         try {
-            return ChronoUnit.HOURS.between(LocalDateTime.now(), getNextWateringDate(plant));
+            return ChronoUnit.DAYS.between(LocalDateTime.now(), getNextWateringDate(plant));
         } catch (NullPointerException e) {
             return 0;
         }
@@ -108,7 +108,7 @@ public class Utility {
      */
     public static LocalDateTime getNextWateringDate(Plant plant) {
         try {
-            return plant.getLastTimeWatered().plusHours(plant.getHoursBetweenWatering());
+            return plant.getLastTimeWatered().plusDays(plant.getHoursBetweenWatering());
         } catch (NullPointerException e) {
             return null;
         }

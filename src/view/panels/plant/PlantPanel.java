@@ -51,7 +51,7 @@ public class PlantPanel extends JPanel {
     }
 
     public void updateWateringComponents() {
-        nextWaterLabel.setText("Water me in: " + plant.getHoursBetweenWatering() + " day(s)");
+        nextWaterLabel.setText("Water me in: " + plant.getTimeRemaining() + " day(s)");
         previousWaterLabel.setText("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
     }
 

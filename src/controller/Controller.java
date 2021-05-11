@@ -121,14 +121,15 @@ public class Controller {
                 playSound(new File("sounds/WaterDrop.wav"));
                 break;
             case "remove plant":
-                if(validPlantIndex(selectedPlantIndex)) {
+                view.showMessageDialog(true);
+                /*if(validPlantIndex(selectedPlantIndex)) {
                     removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
                     playSound(new File("sounds/GlassBreak1.wav"));
-                }
+                }*/
                 break;
             case "water plant":
-                waterSelectedPlant();
+                waterPlant(getPlantFromIndex(selectedPlantIndex));
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
         }
@@ -146,7 +147,7 @@ public class Controller {
 
         plant.setImageIcon(new ImageIcon(icon));
         new Thread(() -> database.upsertPlantImage(plant.getDatabaseID(), icon)).start();
-
+        waterPlant(plant);
         refreshPlantListGUI();
         view.setCreationMode(false);
     }
@@ -175,15 +176,12 @@ public class Controller {
         return index >= 0 && index < activeProfile.getPlants().size();
     }
 
-    public void waterSelectedPlant() {
-        Plant plant = getPlantFromIndex(selectedPlantIndex);
+    public void waterPlant(Plant plant) {
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
-        view.updatePlantWateringComponents(selectedPlantIndex);
-
-
-
-
+        if (view.getPlantList().getPlantPanels().size() > 0) {
+            view.updatePlantWateringComponents(selectedPlantIndex);
+        }
     }
 
 
