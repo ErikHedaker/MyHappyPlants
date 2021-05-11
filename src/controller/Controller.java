@@ -1,5 +1,6 @@
 package controller;
 
+import com.squareup.okhttp.internal.framed.Settings;
 import model.Database;
 import model.api.JWiki;
 import model.Plant;
@@ -11,11 +12,13 @@ import view.panels.plant.PlantPanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
+import javax.sound.sampled.*;
 
 import static controller.Utility.*;
 
@@ -125,15 +128,18 @@ public class Controller {
             case "show plant creation page":
                 view.setCreationMode(true);
                 view.setCardLayout("plant creation page");
+                playSound(new File("sounds/WaterDrop.wav"));
                 break;
             case "remove plant":
                 if(validPlantIndex(selectedPlantIndex)) {
                     removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
+                    playSound(new File("sounds/GlassBreak1.wav"));
                 }
                 break;
             case "water plant":
                 waterSelectedPlant();
+                playSound(new File("sounds/WaterSound.wav"));
                 break;
         }
     }
@@ -168,7 +174,13 @@ public class Controller {
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
         view.updatePlantWateringComponents(selectedPlantIndex);
+
+
+
+
     }
+
+
 
     public void addPlant(Plant plant) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
@@ -282,6 +294,33 @@ public class Controller {
             }
         }
         return imageDefault;
+    }
+
+    public void playSound(File file){
+        AudioInputStream as = null;
+        try {
+            as = AudioSystem.getAudioInputStream(file);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        try {
+            clip.open(as);
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        clip.start();
     }
 
     /**
