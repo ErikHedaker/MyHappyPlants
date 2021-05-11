@@ -2,10 +2,9 @@ package view.panels;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import controller.Controller;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
+import controller.Controller;
 
 
 public class MessageDialog implements ActionListener {
@@ -31,6 +30,14 @@ public class MessageDialog implements ActionListener {
         dialog.getRootPane ().setOpaque (false);
         dialog.getContentPane ().setBackground (Color.white);
         dialog.setBackground (Color.white);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                super.windowDeactivated(e);
+                dialog.toFront();
+            }
+        });
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 3,15,3);
 
