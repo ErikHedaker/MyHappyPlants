@@ -4,7 +4,6 @@ import controller.Controller;
 import view.menus.MenuBar;
 import view.menus.PopupMenu;
 import view.panels.MainPanel;
-import view.panels.MessageDialog;
 import view.panels.plant.PlantList;
 
 import javax.swing.*;
@@ -16,7 +15,6 @@ public class MainFrame{
     private Controller controllerRef;
     private MainPanel panel;
     private view.menus.PopupMenu popupMenu;
-    private MessageDialog messageDialog;
     private JFrame frame;
 
     public MainFrame( Controller controllerRef ) {
@@ -41,10 +39,6 @@ public class MainFrame{
         logoLabel.setOpaque(false);
 
         frame.add(panel.getNorthPanel(), BorderLayout.NORTH);
-
-        messageDialog = new MessageDialog(controllerRef);
-        messageDialog.setVisible(false);
-        frame.add(messageDialog);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int sizeWidth = (dim.width +1080)/ 2;
@@ -137,11 +131,6 @@ public class MainFrame{
 
     public String getSearchInput() {
         return panel.getSearchInput();
-    }
-
-    public void showMessageDialog(boolean visibility) {
-        messageDialog.setVisible(visibility);
-        frame.repaint();
     }
 
 }

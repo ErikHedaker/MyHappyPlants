@@ -1,7 +1,8 @@
 package view.panels.plant;
 
 import controller.Controller;
-import view.panels.MessageDialog;
+import view.dialog.ConfirmationDialog;
+import view.dialog.DialogType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,10 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     private JButton editBtn;
     private Controller controller;
     private JButton deleteBtn;
+    private ConfirmationDialog confirmationDialog;
 
     public PlantSelectionPanel(Controller controller) {
+        confirmationDialog = new ConfirmationDialog(controller);
         this.controller = controller;
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(360, 360));
@@ -128,10 +131,11 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         if (e.getSource() == editBtn) {
             controller.buttonPushed("show plant creation page");
         } else if (e.getSource() == waterBtn) {
-            controller.buttonPushed("water plant");
+            confirmationDialog.setConfirmationMessage("Do you want to water: " + title.getText() + "?");
+            confirmationDialog.showConfirmationDialog(DialogType.WATER_CONFIRMATION_DIALOG);
         } else  if (e.getSource() == deleteBtn) {
-            controller.buttonPushed("remove plant");
-            //new MessageDialog(controller);
+            confirmationDialog.setConfirmationMessage("Do you want to remove: " + title.getText() + "?");
+            confirmationDialog.showConfirmationDialog(DialogType.REMOVE_CONFIRMATION_DIALOG);
         }
     }
 }

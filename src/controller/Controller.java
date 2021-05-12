@@ -1,11 +1,9 @@
 package controller;
 
-import com.squareup.okhttp.internal.framed.Settings;
 import model.Database;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
-import model.api.trefle.PlantAPI;
 import view.MainFrame;
 import view.panels.plant.PlantPanel;
 
@@ -121,12 +119,11 @@ public class Controller {
                 playSound(new File("sounds/WaterDrop.wav"));
                 break;
             case "remove plant":
-                view.showMessageDialog(true);
-                /*if(validPlantIndex(selectedPlantIndex)) {
+                if(validPlantIndex(selectedPlantIndex)) {
                     removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
                     playSound(new File("sounds/GlassBreak1.wav"));
-                }*/
+                }
                 break;
             case "water plant":
                 waterPlant(getPlantFromIndex(selectedPlantIndex));
