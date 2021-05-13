@@ -102,8 +102,8 @@ public class PlantPanel extends JPanel {
                 int maxDays = plant.getHoursBetweenWatering() == 0 ? 1 : plant.getHoursBetweenWatering();
                 double scale = (365/maxDays) * daysLeft;
 
-                boolean increasePos = daysLeft == maxDays && startPosX <= scale;
-                boolean decreasePos = scale >= 140 && (startPosX >= scale);
+                boolean increasePos = daysLeft == maxDays && startPosX <= 365;
+                boolean decreasePos = scale >= 140 && startPosX >= scale;
 
                 if (!(increasePos && decreasePos)) {
                     if (increasePos) {

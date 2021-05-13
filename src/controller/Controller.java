@@ -1,6 +1,7 @@
 package controller;
 
 import model.Database;
+import model.api.Buffer;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
@@ -37,7 +38,6 @@ public class Controller {
     private String plantSearchInputName;
     private String wikiPlantDescription;
     private String wikiPlantImageURL;
-    private ImageIcon loadingIcon;
 
     public Controller() {
         this.database = new Database();
@@ -46,10 +46,6 @@ public class Controller {
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         imageIcon = new ImageIcon(imageDefault);
         createPlantList();
-    }
-
-    public ImageIcon getLoadingIcon() {
-        return loadingIcon;
     }
 
     public Plant getPlantFromIndex(int index) {
@@ -96,15 +92,19 @@ public class Controller {
                 view.setCardLayout("signIn");
                 break;
             case "plantList":
-                view.setCardLayout("plantList");
-                view.showSearch(true);
-                view.showSearchField();
-                new Thread(() -> loadPlantImagesFromDatabase()).start();
-                for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
-                    if (!panel.getLoadingThread().isAlive()) {
-                        panel.getLoadingThread().start();
+                if (view.getPlantList().getPlantPanels().size() < 1) {
+                    view.setCardLayout("welcome info");
+                } else {
+                    view.setCardLayout("plantList");
+                    new Thread(() -> loadPlantImagesFromDatabase()).start();
+                    for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
+                        if (!panel.getLoadingThread().isAlive()) {
+                            panel.getLoadingThread().start();
+                        }
                     }
                 }
+                view.showSearch(true);
+                view.showSearchField();
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
@@ -172,7 +172,7 @@ public class Controller {
     public void refreshPlantListGUI()
     {
         createPlantList();
-        view.setCardLayout("plantList");
+        buttonPushed("plantList");
     }
 
     public boolean validPlantIndex(int index) {
@@ -187,8 +187,6 @@ public class Controller {
         }
     }
 
-
-
     public void addPlant(Plant plant) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
@@ -196,8 +194,8 @@ public class Controller {
     }
 
     public void removePlant( Plant plant ) {
-        database.deletePlant(plant.getDatabaseID());
         activeProfile.getPlants().remove(plant);
+        database.deletePlant(plant.getDatabaseID());
     }
 
     public void displayPlantSearchPage() {
@@ -206,10 +204,6 @@ public class Controller {
         } else {
             showPlantPage(false);
         }
-    }
-
-    public void setCreationMode(boolean creationMode) {
-        view.setCreationMode(creationMode);
     }
 
     public void showPlantPage(boolean isPlantFound) {

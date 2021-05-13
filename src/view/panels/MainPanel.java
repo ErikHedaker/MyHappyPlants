@@ -1,11 +1,8 @@
 package view.panels;
 
 import controller.Controller;
-import view.panels.plant.PlantCreationPanel;
-import view.panels.plant.PlantList;
+import view.panels.plant.*;
 import view.panels.login.LoginPanel;
-import view.panels.plant.PlantSearchPanel;
-import view.panels.plant.PlantSelectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,6 +45,7 @@ public class MainPanel extends JPanel {
         label.setBorder(BorderFactory.createEmptyBorder(0,0,150,0));
         panel.add(label, BorderLayout.CENTER);
         panelCenter.add(panel, "loading-screen");
+        panelCenter.add(new PlantInfoPanel(), "welcome info");
         add(panelCenter);
 
     }
@@ -61,6 +59,8 @@ public class MainPanel extends JPanel {
 
         plantList = new PlantList(controller.getPlantList(), panelPlantList, controller);
         panelCenter.add(panelPlantList, "plantList");
+        panelPlantList.revalidate();
+        panelPlantList.repaint();
     }
 
     public void setSelectedPlantName(String plantName) {
