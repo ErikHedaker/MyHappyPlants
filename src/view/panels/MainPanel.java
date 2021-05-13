@@ -43,8 +43,9 @@ public class MainPanel extends JPanel {
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
-        JLabel label = new JLabel("Loading...", JLabel.CENTER);
-        label.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        ImageIcon loadingGif = new ImageIcon("./images/loading_screen.gif");
+        JLabel label = new JLabel(loadingGif);
+        label.setBorder(BorderFactory.createEmptyBorder(0,0,150,0));
         panel.add(label, BorderLayout.CENTER);
         panelCenter.add(panel, "loading-screen");
         add(panelCenter);

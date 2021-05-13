@@ -9,6 +9,7 @@ import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Controller {
     private String plantSearchInputName;
     private String wikiPlantDescription;
     private String wikiPlantImageURL;
+    private ImageIcon loadingIcon;
 
     public Controller() {
         this.database = new Database();
@@ -44,6 +46,10 @@ public class Controller {
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         imageIcon = new ImageIcon(imageDefault);
         createPlantList();
+    }
+
+    public ImageIcon getLoadingIcon() {
+        return loadingIcon;
     }
 
     public Plant getPlantFromIndex(int index) {
@@ -132,14 +138,14 @@ public class Controller {
         }
     }
 
-    public void createPlant(String name, String wikiName, String hoursBetweenWatering) {
+    public void createPlant(String name, String hoursBetweenWatering) {
         Plant plant = new Plant();
         plant.setNameAlias(name);
-        plant.setNameWiki(wikiName);
+        plant.setNameWiki(plantSearchInputName);
         plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         addPlant(plant);
 
-        JWiki wiki = new JWiki(name);
+        JWiki wiki = new JWiki(plantSearchInputName);
         byte[] icon = fetchImageFromURL(wiki.getImageURL());
 
         plant.setImageIcon(new ImageIcon(icon));

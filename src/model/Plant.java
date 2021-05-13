@@ -7,14 +7,15 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The Plant class represents a plant that the profile has and tracks
  *
  * @author Erik Hedåker, Viktor Johansson
  */
-public class Plant
-{
+public class Plant {
     private int databaseID;
     private String nameAlias;
     private String nameWiki;

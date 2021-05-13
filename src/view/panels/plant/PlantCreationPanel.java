@@ -39,7 +39,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10, 340, 0, 340));
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 100, 25, 8);
+        gbc.insets = new Insets(0, 20, 20, 8);
 
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         editPanel.setBorder(border);
@@ -83,8 +83,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         saveButton.setBackground(Color.white);
         saveButton.addActionListener(this);
         saveButton.setFont(new Font("Arial", Font.BOLD, 10));
-        gbc.gridx = 4; // col
-        gbc.gridy = 25; // row
+        gbc.gridx = 3; // col
+        gbc.gridy = 20; // row
         gbc.weighty = 0; // separate space between rows
         gbc.weightx = 0; // separate space between cols
         gbc.gridwidth = 1; // specify num of cols
@@ -95,40 +95,17 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JLabel title = new JLabel("ENTER PLANT DETAILS");
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
         title.setBounds(10, 10, 10, 10);
-        gbc.gridx = 4;
         gbc.gridy = 3;
+        gbc.gridx = 3;
         gbc.weighty = 5;
-        gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
         editPanel.add(title, gbc);
-
-        JLabel plantLabel = new JLabel("Plant: ");
-        plantLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.weighty = 15;
-        gbc.gridheight = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        editPanel.add(plantLabel, gbc);
-
-        plantTF = new JTextField();
-        plantTF.setPreferredSize(new Dimension(275, 30));
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.gridx = 6;
-        gbc.gridy = 7;
-        gbc.weighty = 150;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        editPanel.add(plantTF, gbc);
 
         JLabel nicknameLabel = new JLabel("Nickname (optional): ");
         nicknameLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridy = 13;
         gbc.weighty = 15;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -137,8 +114,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         nicknameTF = new JTextField();
         nicknameTF.setPreferredSize(new Dimension(275, 30));
-        gbc.gridx = 6;
-        gbc.gridy = 10;
+        gbc.gridx = 4;
+        gbc.gridy = 13;
         gbc.weighty = 150;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -148,7 +125,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JLabel climateLabel = new JLabel("Climate: ");
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 17;
+        gbc.gridy = 14;
         gbc.weighty = 0;
         gbc.weightx = 2;
         gbc.gridwidth = 1;
@@ -160,8 +137,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JComboBox<String> climateMenu = new JComboBox<String>(choices);
         climateMenu.setBackground(Color.white);
         climateMenu.setPreferredSize(new Dimension(275, 30));
-        gbc.gridx = 6;
-        gbc.gridy = 17;
+        gbc.gridx = 4;
+        gbc.gridy = 14;
         gbc.weighty = 5;
         gbc.weightx = 2;
         gbc.gridwidth = 1;
@@ -173,7 +150,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         waterLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.gridx = 0;
-        gbc.gridy = 19;
+        gbc.gridy = 15;
         gbc.weighty = 15;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -182,8 +159,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         waterTF = new JTextField();
         waterTF.setPreferredSize(new Dimension(275, 30));
-        gbc.gridx = 6;
-        gbc.gridy = 19;
+        gbc.gridx = 4;
+        gbc.gridy = 15;
         gbc.weighty = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -193,7 +170,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JLabel sizeLabel = new JLabel("Size: ");
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 11;
+        gbc.gridy = 16;
         gbc.weighty = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -219,8 +196,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         smallButton.setBackground(Color.white);
         smallButton.setFocusPainted(false);
         smallButton.setBorderPainted(false);
-        gbc.gridx = 6;
-        gbc.gridy = 11;
+        gbc.gridx = 4;
+        gbc.gridy = 16;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
@@ -242,8 +219,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         mediumButton.setBackground(Color.white);
         mediumButton.setBorderPainted(false);
         mediumButton.setFocusPainted(false);
-        gbc.gridx = 6;
-        gbc.gridy = 11;
+        gbc.gridx = 4;
+        gbc.gridy = 16;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
@@ -265,8 +242,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         largeButton.setBackground(Color.white);
         largeButton.setBorderPainted(false);
         largeButton.setFocusPainted(false);
-        gbc.gridx = 6;
-        gbc.gridy = 11;
+        gbc.gridx = 4;
+        gbc.gridy = 16;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
@@ -303,7 +280,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             controller.buttonPushed("plantList");
         } else if (e.getSource() == saveButton) {
             if (creationMode) {
-                controller.createPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
+                controller.createPlant(nicknameTF.getText(), waterTF.getText());
             } else {
                 controller.editSelectedPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
             }
