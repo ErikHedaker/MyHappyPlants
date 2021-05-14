@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
     }
 
     public void setSelectedImageIcon(ImageIcon imageIcon) {
-        plantSelectionPanel.setImageIcon(imageIcon);
+        new Thread(() -> plantSelectionPanel.setImageIcon(imageIcon)).start();
     }
 
     public PlantList getPlantList() {

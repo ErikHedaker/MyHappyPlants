@@ -55,7 +55,7 @@ public class PlantSearchPanel extends JPanel {
         plantPanel.add(title, gbc);
 
         imageLabel = new JLabel();
-        imageLabel.setIcon(controller.getImageIcon());
+        setImageLabel(new ImageIcon("./images/plant.jpg"));
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -79,8 +79,7 @@ public class PlantSearchPanel extends JPanel {
 
         addPlantBtn = new JButton("ADD PLANT");
         addPlantBtn.setBackground(new Color(220, 229, 185));
-        addPlantBtn.setBorderPainted(false);
-        addPlantBtn.setFocusPainted(false);
+        addPlantBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addPlantBtn.setFont(new Font("Arial", Font.BOLD, 10));
         addPlantBtn.addActionListener(new Action());
         gbc.gridx = 3;
@@ -100,6 +99,7 @@ public class PlantSearchPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource().equals(addPlantBtn)) {
+                controller.setPlantCreationMode(true);
                 controller.buttonPushed("show plant creation page");
             }
         }
@@ -115,10 +115,14 @@ public class PlantSearchPanel extends JPanel {
 
     public void setImageLabel(ImageIcon imageIcon) {
         if (imageIcon == null) {
-            imageIcon = controller.getImageIcon();
+            imageIcon = new ImageIcon("images/plant.jpg");
         }
+
         Image scaledImage = imageIcon.getImage().getScaledInstance(105,100, Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(scaledImage));
+        if (addPlantBtn != null) {
+            getRootPane().setDefaultButton(addPlantBtn);
+        }
     }
 
     public void setTitle(String title) {

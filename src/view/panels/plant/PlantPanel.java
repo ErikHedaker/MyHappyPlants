@@ -111,10 +111,9 @@ public class PlantPanel extends JPanel {
                     } else if (decreasePos) {
                         startPosX--;
                     }
-                    repaint();
-                    propertyChangeSupport.firePropertyChange("update", null, null);
                 }
-
+                repaint();
+                propertyChangeSupport.firePropertyChange("update", null, null);
                 try {
                     Thread.sleep(15);
                 } catch (InterruptedException e) {

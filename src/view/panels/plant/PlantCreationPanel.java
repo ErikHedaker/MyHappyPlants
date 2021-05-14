@@ -21,7 +21,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     private JToggleButton mediumButton;
     private JToggleButton largeButton;
     private JButton saveButton;
-    private JTextField plantTF;
     private JTextField nicknameTF;
     private JTextField waterTF;
     boolean creationMode = true;
@@ -68,6 +67,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         saveButton = new JButton();
         saveButton.setPreferredSize(new Dimension(120, 45));
+        saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         ImageIcon saveImg = new ImageIcon("./images/save-icon.png");
         Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 25,
                 Image.SCALE_AREA_AVERAGING);
@@ -279,11 +279,19 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         if (e.getSource() == backButton) {
             controller.buttonPushed("plantList");
         } else if (e.getSource() == saveButton) {
-            if (creationMode) {
-                controller.createPlant(nicknameTF.getText(), waterTF.getText());
-            } else {
-                controller.editSelectedPlant(plantTF.getText(), nicknameTF.getText(), waterTF.getText());
-            }
+            new Thread(() -> upsertPlantDetails()).start();
+        }
+    }
+
+    public void upsertPlantDetails() {
+        controller.setCardLayout("loading-screen");
+        if (creationMode) {
+            controller.createPlant(nicknameTF.getText(), waterTF.getText());
+        } else {
+            controller.editSelectedPlant(nicknameTF.getText(), waterTF.getText());
+        }
+        if (saveButton != null) {
+            getRootPane().setDefaultButton(saveButton);
         }
     }
 
