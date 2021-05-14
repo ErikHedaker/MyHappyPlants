@@ -14,6 +14,7 @@ public class ConfirmationDialog implements ActionListener {
     private JDialog dialog;
     private JLabel message;
     private DialogType type;
+    private Cursor cursor;
 
     public ConfirmationDialog(Controller controller){
         this.controller = controller;
@@ -83,6 +84,17 @@ public class ConfirmationDialog implements ActionListener {
         noBtn.setFocusable(false);
         noBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        try {
+            // These coordinates are screen coordinates
+            int xCoord = 850;
+            int yCoord = 450;
+
+            // Move the cursor
+            Robot robot = new Robot();
+            robot.mouseMove(xCoord, yCoord);
+
+        } catch (AWTException e) {
+        }
         gbc.anchor = GridBagConstraints.WEST;
         buttons.add(noBtn, BorderLayout.EAST);
         gbc.insets = new Insets(15,125,5,0);
@@ -91,6 +103,7 @@ public class ConfirmationDialog implements ActionListener {
         gbc.ipadx = 50;
         gbc.weightx = 1;
         dialog.add(buttons, gbc);
+
     }
 
     public void showConfirmationDialog(DialogType dialogType) {
