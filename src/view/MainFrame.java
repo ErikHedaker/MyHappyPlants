@@ -113,6 +113,18 @@ public class MainFrame{
         panel.setSelectedImageIcon(imageIcon);
     }
 
+    public void setWaterTF(String text) {
+        panel.setWaterTF(text);
+    }
+
+    public void setNicknameTF(String text) {
+        panel.setNicknameTF(text);
+    }
+
+    public boolean isCreationMode() {
+        return panel.isCreationMode();
+    }
+
     public void setTitle(String title) {
         panel.setTitle(title);
     }

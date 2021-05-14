@@ -283,6 +283,18 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         }
     }
 
+    public void setWaterTF(String text) {
+        waterTF.setText(text);
+    }
+
+    public void setNicknameTF(String text) {
+        nicknameTF.setText(text);
+    }
+
+    public boolean isCreationMode() {
+        return creationMode;
+    }
+
     public void upsertPlantDetails() {
         controller.setCardLayout("loading-screen");
         if (creationMode) {

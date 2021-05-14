@@ -71,6 +71,18 @@ public class MainPanel extends JPanel {
         new Thread(() -> plantSelectionPanel.setImageIcon(imageIcon)).start();
     }
 
+    public boolean isCreationMode() {
+        return plantCreationPanel.isCreationMode();
+    }
+
+    public void setWaterTF(String text) {
+        plantCreationPanel.setWaterTF(text);
+    }
+
+    public void setNicknameTF(String text) {
+        plantCreationPanel.setNicknameTF(text);
+    }
+
     public PlantList getPlantList() {
         return plantList;
     }
