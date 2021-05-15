@@ -191,8 +191,10 @@ public class Controller {
     public void waterPlant(Plant plant) {
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
-        if (view.getPlantList().getPlantPanels().size() > 0) {
-            view.updatePlantWateringComponents(selectedPlantIndex);
+        if (validPlantIndex(selectedPlantIndex)) {
+            if (view.getPlantList().getPlantPanels().size() > 0) {
+                view.updatePlantWateringComponents(selectedPlantIndex);
+            }
         }
     }
 
