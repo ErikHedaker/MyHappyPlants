@@ -33,7 +33,7 @@ public class Controller {
     private Profile activeProfile;
     private MainFrame view;
     private byte[] imageDefault;
-    public int selectedPlantIndex = Integer.MIN_VALUE;
+    public int selectedPlantIndex;
     private String plantSearchInputName;
     private String wikiPlantDescription;
     private String wikiPlantImageURL;
@@ -185,7 +185,7 @@ public class Controller {
     }
 
     public boolean validPlantIndex(int index) {
-        return index > -1 && index < activeProfile.getPlants().size();
+        return index >= 0 && index < activeProfile.getPlants().size();
     }
 
     public void waterPlant(Plant plant) {
