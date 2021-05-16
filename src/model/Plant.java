@@ -1,18 +1,21 @@
 package model;
 
+import controller.Utility;
+
 import javax.swing.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The Plant class represents a plant that the profile has and tracks
  *
  * @author Erik Hedåker, Viktor Johansson
  */
-public class Plant
-{
+public class Plant {
     private int databaseID;
     private String nameAlias;
     private String nameWiki;
@@ -22,7 +25,7 @@ public class Plant
     private String description;
 
     public Plant() {
-        lastTimeWatered = LocalDateTime.now();
+
     }
 
     /**
@@ -100,6 +103,7 @@ public class Plant
         LocalDateTime date1 = lastTimeWatered;
         LocalDateTime date2 = LocalDateTime.now();
         int daysBetween = (int) Duration.between(date1, date2).toDays();
+
         return daysBetween;
     }
 

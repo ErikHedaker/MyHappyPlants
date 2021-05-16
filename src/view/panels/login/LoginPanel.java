@@ -119,9 +119,9 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
         signInBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         signInBtn.setFont(new Font("Calibri", Font.PLAIN, 21));
         signInBtn.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
-        signInBtn.setBackground(new Color(51, 51, 52));
+        signInBtn.setBackground(Color.darkGray);
         signInBtn.setForeground(Color.white);
-        signInBtn.setPreferredSize(new Dimension(150, 50));
+        signInBtn.setPreferredSize(new Dimension(150, 40));
         signInBtn.addActionListener(this);
         buttons.add(signInBtn, BorderLayout.CENTER);
 
@@ -132,7 +132,7 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
 
         registerBtn = new JButton("Create One");
         registerBtn.setForeground(new Color(26, 122, 169));
-        registerBtn.setBorder(null);
+        registerBtn.setBorder(BorderFactory.createLineBorder(Color.white));
         registerBtn.setBackground(Color.white);
         registerBtn.addActionListener(this);
         registerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));

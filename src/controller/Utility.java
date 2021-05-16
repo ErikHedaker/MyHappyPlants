@@ -55,34 +55,19 @@ public class Utility {
         return nearestString;
     }
 
-    public static String splitParagraph(String text, int maxLength) {
+    public static String getShortStr(String text) {
         int i = 0;
         String[] parts = text.split(Pattern.quote(" "));
-        StringBuilder sb = new StringBuilder();
+        String fixedText = "";
         for (String p : parts) {
-            i++;
-            if (i == maxLength) {
-                sb.append(p + "\n");
-                i = 0;
+            if (i < 2) {
+                fixedText += " " + p;
+                i++;
             } else {
-                sb.append(p + " ");
+                fixedText += "...";
             }
         }
-        return sb.toString();
-    }
-
-    public static ArrayList<String[]> loadFileCSV(String fileName) {
-        ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line = br.readLine();
-            while (line != null) {
-                data.add(line.split("\\t", -1));
-                line = br.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
+        return fixedText;
     }
 
     /**
@@ -93,7 +78,11 @@ public class Utility {
      * @return The amount of hours left
      */
     public static long getNextWateringCountdown(Plant plant) {
-        return plant != null ? ChronoUnit.HOURS.between(LocalDateTime.now(), getNextWateringDate(plant)) : 0;
+        try {
+            return ChronoUnit.DAYS.between(LocalDateTime.now(), getNextWateringDate(plant));
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     /**
@@ -103,7 +92,11 @@ public class Utility {
      * @return A LocalDateTime which is the specific date in the future when the plant has to be watered
      */
     public static LocalDateTime getNextWateringDate(Plant plant) {
-        return plant != null ? plant.getLastTimeWatered().plusHours(plant.getHoursBetweenWatering()) : null;
+        try {
+            return plant.getLastTimeWatered().plusDays(plant.getHoursBetweenWatering());
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     /**

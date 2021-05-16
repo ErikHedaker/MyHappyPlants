@@ -1,16 +1,16 @@
 package controller;
 
-import com.squareup.okhttp.internal.framed.Settings;
 import model.Database;
+import model.api.Buffer;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
-import model.api.trefle.PlantAPI;
 import view.MainFrame;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,6 @@ public class Controller {
     private MainFrame view;
     private byte[] imageDefault;
     public int selectedPlantIndex;
-    private ImageIcon imageIcon;
     private String plantSearchInputName;
     private String wikiPlantDescription;
     private String wikiPlantImageURL;
@@ -44,7 +43,6 @@ public class Controller {
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
-        imageIcon = new ImageIcon(imageDefault);
         createPlantList();
     }
 
@@ -52,29 +50,11 @@ public class Controller {
         return getPlantList().get(index);
     }
 
-    public void editSelectedPlant(String name, String wikiName, String hoursBetweenWatering) {
-        Plant plant = getPlantFromIndex(selectedPlantIndex);
-        plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
-        plant.setNameWiki(wikiName.length() < 1 ? plant.getNameWiki() : wikiName);
-        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
-        plant.setImageIcon(plant.getImageIcon());
-        refreshPlantListGUI();
-        view.setCreationMode(false);
-    }
-
-    public ImageIcon getImageIcon() {
-        return imageIcon;
-    }
-
     public void setSelectedPlantFromIndex(int plantIndex) {
         selectedPlantIndex = plantIndex;
         Plant plant = getPlantFromIndex(plantIndex);
-        view.setSelectedPlantName(plant.getNameAlias());
+        view.setSelectedPlantName(plant.getNameWiki());
         ImageIcon imageIcon = plant.getImageIcon();
-
-        if (imageIcon == null) {
-            imageIcon = this.imageIcon;
-        }
 
         view.setSelectedImageIcon(imageIcon);
     }
@@ -102,18 +82,23 @@ public class Controller {
                 view.setCardLayout("signIn");
                 break;
             case "plantList":
-                view.setCardLayout("plantList");
-                view.showSearch(true);
-                view.showSearchField();
-                new Thread(() -> loadPlantImagesFromDatabase()).start();
-                for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
-                    if (!panel.getLoadingThread().isAlive()) {
-                        panel.getLoadingThread().start();
+                if (view.getPlantList().getPlantPanels().size() < 1) {
+                    view.setCardLayout("welcome info");
+                } else {
+                    view.setCardLayout("plantList");
+                    new Thread(() -> loadPlantImagesFromDatabase()).start();
+                    for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
+                        if (!panel.getLoadingThread().isAlive()) {
+                            panel.getLoadingThread().start();
+                        }
                     }
                 }
+                view.showSearch(true);
+                view.showSearchField();
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
+                    view.setCardLayout("loading-screen");
                     ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
 
                     try {
@@ -126,32 +111,67 @@ public class Controller {
                 }
                 break;
             case "show plant creation page":
-                view.setCreationMode(true);
+
+                view.setNicknameTF("");
+                view.setWaterTF("");
+
+                if (!view.isCreationMode()) {
+                    Plant plant = getPlantFromIndex(selectedPlantIndex);
+                    view.setNicknameTF(plant.getNameAlias());
+                    view.setWaterTF(String.valueOf(plant.getHoursBetweenWatering()));
+                }
+
                 view.setCardLayout("plant creation page");
                 playSound(new File("sounds/WaterDrop.wav"));
                 break;
             case "remove plant":
-                if(validPlantIndex(selectedPlantIndex)) {
-                    removePlant(activeProfile.getPlants().get(selectedPlantIndex));
+                if (validPlantIndex(selectedPlantIndex)) {
+                    Plant plant = getPlantFromIndex(selectedPlantIndex);
+                    activeProfile.getPlants().remove(plant);
                     refreshPlantListGUI();
                     playSound(new File("sounds/GlassBreak1.wav"));
+                    new Thread(() -> database.deletePlant(plant.getDatabaseID())).start();
                 }
                 break;
             case "water plant":
-                waterSelectedPlant();
+                waterPlant(getPlantFromIndex(selectedPlantIndex));
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
         }
     }
 
-    public void createPlant(String name, String wikiName, String hoursBetweenWatering) {
-        Plant plant = new Plant().setImageIcon(new ImageIcon(imageDefault))
-                .setNameAlias(name)
-                .setNameWiki(wikiName)
-                .setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
-        addPlant(plant);
+    public void setPlantCreationMode(boolean enabled) {
+        view.setCreationMode(enabled);
+    }
+
+    public void createPlant(String name, String hoursBetweenWatering) {
+        Plant plant = new Plant();
+        plant.setNameAlias(name);
+        plant.setNameWiki(plantSearchInputName);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        activeProfile.addPlant(plant);
         refreshPlantListGUI();
+
+        JWiki wiki = new JWiki(plantSearchInputName);
+        byte[] icon = fetchImageFromURL(wiki.getImageURL());
+        plant.setImageIcon(new ImageIcon(icon));
+
+        new Thread(() -> upsertPlantDetails(plant, icon)).start();
         view.setCreationMode(false);
+    }
+
+    private void upsertPlantDetails(Plant plant, byte[] icon) {
+        plant.setImageIcon(new ImageIcon(icon));
+        addPlant(plant);
+        database.upsertPlantImage(plant.getDatabaseID(), icon);
+    }
+
+    public void editSelectedPlant(String name, String hoursBetweenWatering) {
+        Plant plant = getPlantFromIndex(selectedPlantIndex);
+        plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        database.updatePlant(plant);
+        refreshPlantListGUI();
     }
 
     public void setCardLayout(String layout) {
@@ -160,37 +180,28 @@ public class Controller {
 
     public void refreshPlantListGUI()
     {
-        //TEMPORÄR LÖSNING
         createPlantList();
-        view.setCardLayout("plantList");
+        buttonPushed("plantList");
     }
 
     public boolean validPlantIndex(int index) {
         return index >= 0 && index < activeProfile.getPlants().size();
     }
 
-    public void waterSelectedPlant() {
-        Plant plant = getPlantFromIndex(selectedPlantIndex);
+    public void waterPlant(Plant plant) {
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
-        view.updatePlantWateringComponents(selectedPlantIndex);
-
-
-
-
+        if (validPlantIndex(selectedPlantIndex)) {
+            if (view.getPlantList().getPlantPanels().size() > 0) {
+                view.updatePlantWateringComponents(selectedPlantIndex);
+            }
+        }
     }
-
-
 
     public void addPlant(Plant plant) {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
-        activeProfile.addPlant(plant);
-    }
-
-    public void removePlant( Plant plant ) {
-        database.deletePlant(plant.getDatabaseID());
-        activeProfile.getPlants().remove(plant);
+        waterPlant(plant);
     }
 
     public void displayPlantSearchPage() {
@@ -199,10 +210,6 @@ public class Controller {
         } else {
             showPlantPage(false);
         }
-    }
-
-    public void setCreationMode(boolean creationMode) {
-        view.setCreationMode(creationMode);
     }
 
     public void showPlantPage(boolean isPlantFound) {
@@ -241,16 +248,6 @@ public class Controller {
     }
 
     /**
-     * Fetches images from Wikipedia with JWiki and upsert them into the database
-     */
-    public void upsertPlantImagesFromWikipediaToDatabase() {
-        for (Plant plant : activeProfile.getPlants()) {
-            JWiki wiki = new JWiki(plant.getNameWiki());
-            database.upsertPlantImage(plant.getDatabaseID(), fetchImageFromURL(wiki.getImageURL()));
-        }
-    }
-
-    /**
      * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
     public synchronized void loadPlantImagesFromDatabase() {
@@ -283,7 +280,7 @@ public class Controller {
      * @return An image in the byte array format
      */
     public byte[] fetchImageFromURL(String imageURL) {
-        if (imageURL != null) {
+        if(imageURL !=null) {
             try (ByteArrayOutputStream baoStream = new ByteArrayOutputStream()) {
                 String extension = imageURL.substring(imageURL.lastIndexOf(".") + 1);
                 ImageIO.write(ImageIO.read(new URL(imageURL)), extension, baoStream);

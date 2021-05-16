@@ -1,6 +1,9 @@
 package view.panels.plant;
 
 import controller.Controller;
+import controller.Utility;
+import view.dialog.ConfirmationDialog;
+import view.dialog.DialogType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +18,10 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     private JButton editBtn;
     private Controller controller;
     private JButton deleteBtn;
+    private ConfirmationDialog confirmationDialog;
 
     public PlantSelectionPanel(Controller controller) {
+        confirmationDialog = new ConfirmationDialog(controller);
         this.controller = controller;
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(360, 360));
@@ -108,7 +113,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     }
 
     public void setPlantName(String plantName) {
-        title.setText(plantName.toUpperCase());
+        title.setText(Utility.getShortStr(plantName.toUpperCase()));
         waterBtn.setVisible(true);
         editBtn.setVisible(true);
         title.setVisible(true);
@@ -116,6 +121,9 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
+        if (imageIcon == null) {
+            imageIcon = new ImageIcon("images/plant.jpg");
+        }
         Image img = imageIcon.getImage().getScaledInstance(150, 145,
                 Image.SCALE_SMOOTH);
 
@@ -125,11 +133,14 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editBtn) {
+            controller.setPlantCreationMode(false);
             controller.buttonPushed("show plant creation page");
         } else if (e.getSource() == waterBtn) {
-            controller.buttonPushed("water plant");
+            confirmationDialog.setConfirmationMessage("Are you sure you want to water: " + title.getText() + "?");
+            confirmationDialog.showConfirmationDialog(DialogType.WATER_CONFIRMATION_DIALOG);
         } else  if (e.getSource() == deleteBtn) {
-            controller.buttonPushed("remove plant");
+            confirmationDialog.setConfirmationMessage("Are you sure you want to remove: " + title.getText() + "?");
+            confirmationDialog.showConfirmationDialog(DialogType.REMOVE_CONFIRMATION_DIALOG);
         }
     }
 }

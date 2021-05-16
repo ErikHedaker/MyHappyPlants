@@ -80,7 +80,6 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchPanel.add(searchBtn, BorderLayout.EAST);
 
         add(searchPanel, BorderLayout.EAST);
-
     }
 
     public JButton getSearchBtn() {

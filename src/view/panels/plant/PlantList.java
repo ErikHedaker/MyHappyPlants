@@ -12,6 +12,9 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PlantList implements PropertyChangeListener, ListSelectionListener {
 
@@ -26,12 +29,16 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
     public PlantList(ArrayList<Plant> plants, JPanel container, Controller controller) {
         this.controller = controller;
         this.container = container;
-        container.setPreferredSize(new Dimension(200,200));
+        container.setPreferredSize(new Dimension(200, 200));
+
+        Comparator<Plant> orderByTime = Comparator.comparingInt(Plant::getTimeRemaining);
+        Collections.sort(plants, orderByTime);
+
         for (Plant plant : plants) {
             JPanel panel = new JPanel(new BorderLayout());
             panel.setBackground(Color.white);
 
-            JLabel label = new JLabel(Utility.centerText(plant.getNameAlias() + " (" + plant.getNameWiki().toLowerCase() + ")",25));
+            JLabel label = new JLabel(Utility.centerText(plant.getNameAlias().length() <= 1 ? plant.getNameWiki() : plant.getNameAlias() + " (" + plant.getNameWiki().toLowerCase() + ")", 25));
             label.setBorder(BorderFactory.createEmptyBorder(15, 5, 0, 0));
             label.setForeground(Color.darkGray);
             label.setFont(new Font("Calibri", Font.PLAIN, 19));
@@ -42,6 +49,7 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
             plantPanel.addListener(this);
             panel.add(plantPanel, BorderLayout.CENTER);
             panels.add(panel);
+
 
         }
         showItemList(panels, container);
@@ -56,7 +64,7 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
         container.setBorder(BorderFactory.createEmptyBorder(0, 340, 0, 0));
         container.setBackground(Color.WHITE);
 
-        for (JPanel pane: paneList) {
+        for (JPanel pane : paneList) {
             model.addElement(pane);
         }
         list = new JList(model);

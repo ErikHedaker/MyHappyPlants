@@ -20,7 +20,7 @@ public class PlantPanel extends JPanel {
     private Plant plant;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Thread loadingThread = new Thread(new Loading());
-    private int startPosX = 330;
+    private int startPosX = 365;
     private JLabel previousWaterLabel, nextWaterLabel;
 
     /**
@@ -40,7 +40,7 @@ public class PlantPanel extends JPanel {
         nextWaterLabel = new JLabel("Water me in: " + plant.getTimeRemaining() + " day(s)");
         nextWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
 
-        nextWaterLabel.setBorder(BorderFactory.createEmptyBorder(0,170,15,0));
+        nextWaterLabel.setBorder(BorderFactory.createEmptyBorder(0,205,15,0));
 
         waterStatusPanel.add(nextWaterLabel, BorderLayout.NORTH);
         waterStatusPanel.add(previousWaterLabel, BorderLayout.SOUTH);
@@ -51,7 +51,7 @@ public class PlantPanel extends JPanel {
     }
 
     public void updateWateringComponents() {
-        nextWaterLabel.setText("Water me in: " + plant.getHoursBetweenWatering() + " day(s)");
+        nextWaterLabel.setText("Water me in: " + plant.getTimeRemaining() + " day(s)");
         previousWaterLabel.setText("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
     }
 
@@ -79,11 +79,11 @@ public class PlantPanel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
 
         graphics2D.setColor(Color.darkGray);
-        graphics2D.drawRoundRect(140, 50, 330, 20, 15, 15);
+        graphics2D.drawRoundRect(140, 50, 365, 20, 15, 15);
         graphics2D.setColor(new Color(16, startPosX/2, 219));
 
         if (startPosX > 1) {
-            graphics2D.drawRoundRect(140, 50, new BigDecimal(startPosX).intValue(), 20, 15, 15);
+            graphics2D.drawRoundRect(140, 50, startPosX, 20, 15, 15);
         }
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
@@ -96,18 +96,22 @@ public class PlantPanel extends JPanel {
     class Loading implements Runnable {
         @Override
         public void run() {
-            while (true) {
+            while (!Thread.interrupted()) {
 
                 int daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
                 int maxDays = plant.getHoursBetweenWatering() == 0 ? 1 : plant.getHoursBetweenWatering();
-                double scale = (330/maxDays) * daysLeft;
+                double scale = (365/maxDays) * daysLeft;
 
-                if (daysLeft == maxDays && startPosX <= 330) {
-                    startPosX++;
-                } else if (scale >= 140 && startPosX >= scale) {
-                    startPosX--;
+                boolean increasePos = daysLeft == maxDays && startPosX <= 365;
+                boolean decreasePos = scale >= 140 && startPosX >= scale;
+
+                if (!(increasePos && decreasePos)) {
+                    if (increasePos) {
+                        startPosX++;
+                    } else if (decreasePos) {
+                        startPosX--;
+                    }
                 }
-
                 repaint();
                 propertyChangeSupport.firePropertyChange("update", null, null);
                 try {

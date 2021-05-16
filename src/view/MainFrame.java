@@ -15,6 +15,7 @@ public class MainFrame{
     private Controller controllerRef;
     private MainPanel panel;
     private view.menus.PopupMenu popupMenu;
+    private JFrame frame;
 
     public MainFrame( Controller controllerRef ) {
         this.controllerRef = controllerRef;
@@ -22,7 +23,7 @@ public class MainFrame{
     }
 
     public void setupFrame() {
-        JFrame frame = new JFrame("MyHappyPlants");
+        frame = new JFrame("MyHappyPlants");
 
         panel = new MainPanel(controllerRef);
         popupMenu = new PopupMenu();
@@ -36,8 +37,6 @@ public class MainFrame{
         Image scaledInstance = logo.getImage().getScaledInstance(165, 165, Image.SCALE_SMOOTH);
         logoLabel.setIcon(new ImageIcon(scaledInstance));
         logoLabel.setOpaque(false);
-
-
 
         frame.add(panel.getNorthPanel(), BorderLayout.NORTH);
 
@@ -112,6 +111,18 @@ public class MainFrame{
 
     public void setSelectedImageIcon(ImageIcon imageIcon) {
         panel.setSelectedImageIcon(imageIcon);
+    }
+
+    public void setWaterTF(String text) {
+        panel.setWaterTF(text);
+    }
+
+    public void setNicknameTF(String text) {
+        panel.setNicknameTF(text);
+    }
+
+    public boolean isCreationMode() {
+        return panel.isCreationMode();
     }
 
     public void setTitle(String title) {

@@ -1,11 +1,8 @@
 package view.panels;
 
 import controller.Controller;
-import view.panels.plant.PlantCreationPanel;
-import view.panels.plant.PlantList;
+import view.panels.plant.*;
 import view.panels.login.LoginPanel;
-import view.panels.plant.PlantSearchPanel;
-import view.panels.plant.PlantSelectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,10 +40,12 @@ public class MainPanel extends JPanel {
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
-        JLabel label = new JLabel("Loading...", JLabel.CENTER);
-        label.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        ImageIcon loadingGif = new ImageIcon("./images/loading_screen.gif");
+        JLabel label = new JLabel(loadingGif);
+        label.setBorder(BorderFactory.createEmptyBorder(0,0,150,0));
         panel.add(label, BorderLayout.CENTER);
         panelCenter.add(panel, "loading-screen");
+        panelCenter.add(new PlantInfoPanel(), "welcome info");
         add(panelCenter);
 
     }
@@ -60,6 +59,8 @@ public class MainPanel extends JPanel {
 
         plantList = new PlantList(controller.getPlantList(), panelPlantList, controller);
         panelCenter.add(panelPlantList, "plantList");
+        panelPlantList.revalidate();
+        panelPlantList.repaint();
     }
 
     public void setSelectedPlantName(String plantName) {
@@ -67,7 +68,19 @@ public class MainPanel extends JPanel {
     }
 
     public void setSelectedImageIcon(ImageIcon imageIcon) {
-        plantSelectionPanel.setImageIcon(imageIcon);
+        new Thread(() -> plantSelectionPanel.setImageIcon(imageIcon)).start();
+    }
+
+    public boolean isCreationMode() {
+        return plantCreationPanel.isCreationMode();
+    }
+
+    public void setWaterTF(String text) {
+        plantCreationPanel.setWaterTF(text);
+    }
+
+    public void setNicknameTF(String text) {
+        plantCreationPanel.setNicknameTF(text);
     }
 
     public PlantList getPlantList() {
