@@ -3,7 +3,6 @@ package controller;
 import model.Plant;
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**

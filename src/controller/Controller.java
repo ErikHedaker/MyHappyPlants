@@ -1,7 +1,7 @@
 package controller;
 
 import model.Database;
-import model.api.Buffer;
+import model.SimpleEncryption;
 import model.api.JWiki;
 import model.Plant;
 import model.Profile;
@@ -10,7 +10,6 @@ import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class Controller {
     private String wikiPlantImageURL;
 
     public Controller() {
-        this.database = new Database();
+        this.database = new Database(new SimpleEncryption().readFile());
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
@@ -99,11 +98,18 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
+                    /*
+                    String searchQuery = "%" + view.getSearchInput() + "%";
+                    System.out.println("searchQuery: " + searchQuery);
+                    ArrayList<HashMap<String, String>> searchResults = database.searchPlantFull(searchQuery);
+                    */
                     ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
 
                     try {
                         plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
+                        System.out.println("Test1");
                     } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Test2");
                     }
 
                     displayPlantSearchPage();

@@ -1,7 +1,5 @@
 package model;
 
-import controller.Utility;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,10 +15,6 @@ public class Database {
 
     public Database(String connectionURL) {
         this.connectionURL = connectionURL;
-    }
-
-    public Database() {
-        this("jdbc:postgresql://134.122.77.196:5432/MyHappyPlants?user=MyHappyPlantsUser&password=MyHappyPlantsPass");
     }
 
     /**
@@ -334,7 +328,7 @@ public class Database {
 
     public ArrayList<String> searchPlant( String name, int limit ) {
         final String SQL =
-            "SELECT common_name " +
+            "SELECT * " +
             "FROM plant_trefle_data " +
             "WHERE common_name ILIKE ? " +
             "LIMIT ?";
@@ -402,10 +396,10 @@ public class Database {
     }
 
     public static void main(String[] args) {
-        Database database = new Database();
+        Database database = new Database(new SimpleEncryption().readFile());
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
-        for( HashMap<String,String> plant : database.searchPlantFull("rose"))
+        for( HashMap<String,String> plant : database.searchPlantFull("%rose%"))
         {
             System.out.println(plant.get("scientific_name"));
         }
