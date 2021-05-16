@@ -98,18 +98,11 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-                    /*
-                    String searchQuery = "%" + view.getSearchInput() + "%";
-                    System.out.println("searchQuery: " + searchQuery);
-                    ArrayList<HashMap<String, String>> searchResults = database.searchPlantFull(searchQuery);
-                    */
                     ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
 
                     try {
                         plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-                        System.out.println("Test1");
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("Test2");
                     }
 
                     displayPlantSearchPage();
