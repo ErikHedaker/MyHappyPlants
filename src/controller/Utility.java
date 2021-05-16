@@ -93,11 +93,7 @@ public class Utility {
      * @return The amount of hours left
      */
     public static long getNextWateringCountdown(Plant plant) {
-        try {
-            return ChronoUnit.HOURS.between(LocalDateTime.now(), getNextWateringDate(plant));
-        } catch (NullPointerException e) {
-            return 0;
-        }
+        return plant != null ? ChronoUnit.HOURS.between(LocalDateTime.now(), getNextWateringDate(plant)) : 0;
     }
 
     /**
@@ -107,11 +103,7 @@ public class Utility {
      * @return A LocalDateTime which is the specific date in the future when the plant has to be watered
      */
     public static LocalDateTime getNextWateringDate(Plant plant) {
-        try {
-            return plant.getLastTimeWatered().plusHours(plant.getHoursBetweenWatering());
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return plant != null ? plant.getLastTimeWatered().plusHours(plant.getHoursBetweenWatering()) : null;
     }
 
     /**
