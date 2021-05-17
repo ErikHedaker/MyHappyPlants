@@ -111,8 +111,8 @@ public class Controller {
                     ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
                     HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
                     if (!searchResultsFull.isEmpty()) {
-                        String wikistuff = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
-                        JWiki wiki = new JWiki(wikistuff);
+                        String wikiName = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
+                        JWiki wiki = new JWiki(wikiName);
                         try {
                             URL wikiImageURL = new URL(wiki.getImageURL());
                             view.setImageLabel(new ImageIcon(wikiImageURL));
