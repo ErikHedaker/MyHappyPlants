@@ -400,9 +400,15 @@ public class Database {
         Database database = new Database(new SimpleEncryption().readFile());
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
+        /*
         for( HashMap<String,String> plant : database.searchPlantFull("%rose%"))
         {
             System.out.println(plant.get("scientific_name"));
+        }
+        */
+        for( String plant : database.searchPlant("%rose%"))
+        {
+            System.out.println(plant);
         }
     }
 }

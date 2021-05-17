@@ -98,14 +98,37 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput());
 
-
-                    System.out.println(searchResults);
-                    plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-
+                    /*
+                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
+                    try {
+                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
+                    } catch (IndexOutOfBoundsException e) {
+                    }
                     displayPlantSearchPage();
-                    System.out.println("done");
+                    */
+
+                    ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
+                    HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
+                    if (!searchResultsFull.isEmpty()) {
+                        String wikiName = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
+                        JWiki wiki = new JWiki(wikiName);
+                        try {
+                            URL wikiImageURL = new URL(wiki.getImageURL());
+                            view.setImageLabel(new ImageIcon(wikiImageURL));
+                        } catch(MalformedURLException e) {
+                            view.setImageLabel(new ImageIcon(imageDefault));
+                        }
+                        view.showButton(true);
+                        view.setTitle(plant.get("common_name"));
+                        view.setDescription(wiki.getText());
+                    } else  {
+                        view.setTitle("No plant was found.");
+                        view.setDescription("");
+                        view.showButton(false);
+                        view.setImageLabel(null);
+                    }
+
                     view.setCardLayout("plant page");
                 }
                 break;
