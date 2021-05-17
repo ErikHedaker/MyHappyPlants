@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -51,6 +52,19 @@ public class Utility {
             }
         }
         return nearestString;
+    }
+
+    public static HashMap<String, String> getMatchingStringHashMap(ArrayList<HashMap<String, String>> values, HashMap<String, String> target){
+        int distance = values.size();
+        HashMap<String, String> nearestHashMap = null;
+        for (HashMap<String, String> compareValue : values) {
+            int currentDistance = Arrays.compare(compareValue.get("common_name").toCharArray(), target.get("common_name").toCharArray());
+            if (currentDistance < distance) {
+                distance = currentDistance;
+                nearestHashMap = compareValue;
+            }
+        }
+        return nearestHashMap;
     }
 
     public static String getShortStr(String text) {
