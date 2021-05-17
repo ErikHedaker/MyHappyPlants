@@ -98,14 +98,14 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
+                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput());
 
-                    try {
-                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-                    } catch (IndexOutOfBoundsException e) {
-                    }
+
+                    System.out.println(searchResults);
+                    plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
 
                     displayPlantSearchPage();
+                    System.out.println("done");
                     view.setCardLayout("plant page");
                 }
                 break;
@@ -204,18 +204,19 @@ public class Controller {
     }
 
     public void displayPlantSearchPage() {
-        if (plantFound()) {
+        showPlantPage(true);
+        /*if (plantFound()) {
             showPlantPage(true);
         } else {
             showPlantPage(false);
-        }
+        }*/
     }
 
     public void showPlantPage(boolean isPlantFound) {
         if (isPlantFound) {
             view.showButton(true);
             view.setTitle(plantSearchInputName);
-            new Thread(() -> upsertSearchDetails()).start();
+            upsertSearchDetails();
 
         } else  {
             view.setTitle("No plant was found.");
@@ -226,10 +227,11 @@ public class Controller {
     }
 
     private void upsertSearchDetails() {
-        view.setDescription(wikiPlantDescription);
+        JWiki wiki = new JWiki(plantSearchInputName);
+        view.setDescription(wiki.getText());
 
         try {
-            URL wikiImageURL = new URL(wikiPlantImageURL);
+            URL wikiImageURL = new URL(wiki.getImageURL());
             view.setImageLabel(new ImageIcon(wikiImageURL));
         } catch (MalformedURLException e) {
         }

@@ -330,7 +330,7 @@ public class Database {
         final String SQL =
             "SELECT * " +
             "FROM plant_trefle_data " +
-            "WHERE common_name ILIKE ? " +
+            "WHERE common_name LIKE ? " +
             "LIMIT ?";
         ArrayList<String> plantNames = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
@@ -341,6 +341,7 @@ public class Database {
                 preparedStatement.setNull(2, Types.INTEGER);
             }
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                plantNames = new ArrayList<>();
                 while (resultSet.next()) {
                     plantNames.add(resultSet.getString("common_name"));
                 }
