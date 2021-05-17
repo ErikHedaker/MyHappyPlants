@@ -109,9 +109,11 @@ public class Controller {
                     */
 
                     ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
-                    HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
+
                     if (!searchResultsFull.isEmpty()) {
+                        HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
                         String wikiName = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
+                        System.out.println(wikiName);
                         JWiki wiki = new JWiki(wikiName);
                         try {
                             URL wikiImageURL = new URL(wiki.getImageURL());
