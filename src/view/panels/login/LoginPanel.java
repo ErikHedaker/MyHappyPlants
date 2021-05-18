@@ -118,8 +118,6 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
         signInBtn = new JButton("Sign in");
         signInBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         signInBtn.setFont(new Font("Calibri", Font.PLAIN, 21));
-        signInBtn.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
-        signInBtn.setBackground(Color.lightGray);
         signInBtn.setForeground(Color.black);
         signInBtn.setPreferredSize(new Dimension(150, 40));
         signInBtn.addActionListener(this);
