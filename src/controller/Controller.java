@@ -9,6 +9,7 @@ import view.MainFrame;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLHandshakeException;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -98,39 +99,36 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-
-                    /*
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
-                    try {
-                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-                    } catch (IndexOutOfBoundsException e) {
-                    }
-                    displayPlantSearchPage();
-                    */
-
                     ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
-
-                    if (!searchResultsFull.isEmpty()) {
-                        HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
-                        String wikiName = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
-                        System.out.println(wikiName);
-                        JWiki wiki = new JWiki(wikiName);
+                    JWiki wiki = new JWiki(view.getSearchInput());
+                    if (wiki.getDisplayTitle() != "" &&
+                        !wiki.getText().equalsIgnoreCase("null may refer to:")) {
+                        view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
+                        view.showButton(true);
+                        view.setTitle(wiki.getDisplayTitle());
+                        view.setDescription(wiki.getText());
+                    } else if (!searchResultsFull.isEmpty()) {
+                        HashMap<String, String> result = Utility.getShortestValue(searchResultsFull, "scientific_name");
+                        wiki = new JWiki(result.get("url_wikipedia_en").substring(result.get("url_wikipedia_en").lastIndexOf("/") + 1));
                         try {
-                            URL wikiImageURL = new URL(wiki.getImageURL());
-                            view.setImageLabel(new ImageIcon(wikiImageURL));
-                        } catch(MalformedURLException e) {
-                            view.setImageLabel(new ImageIcon(imageDefault));
+                            ImageIcon imageIcon = new ImageIcon(new URL(result.get("image_url")));
+                            if (imageIcon.getIconHeight() == -1 ||
+                                imageIcon.getIconWidth()  == -1 ) {
+                                throw new NullPointerException();
+                            }
+                            view.setImageLabel(imageIcon);
+                        } catch (Exception e) {
+                            view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(plant.get("common_name"));
+                        view.setTitle(searchResultsFull.size() + " results, most relevant: " + result.get("common_name") + " (" + result.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
-                    } else  {
+                    } else {
                         view.setTitle("No plant was found.");
                         view.setDescription("");
                         view.showButton(false);
                         view.setImageLabel(null);
                     }
-
                     view.setCardLayout("plant page");
                 }
                 break;
@@ -229,19 +227,18 @@ public class Controller {
     }
 
     public void displayPlantSearchPage() {
-        showPlantPage(true);
-        /*if (plantFound()) {
+        if (plantFound()) {
             showPlantPage(true);
         } else {
             showPlantPage(false);
-        }*/
+        }
     }
 
     public void showPlantPage(boolean isPlantFound) {
         if (isPlantFound) {
             view.showButton(true);
             view.setTitle(plantSearchInputName);
-            upsertSearchDetails();
+            new Thread(() -> upsertSearchDetails()).start();
 
         } else  {
             view.setTitle("No plant was found.");
@@ -252,11 +249,10 @@ public class Controller {
     }
 
     private void upsertSearchDetails() {
-        JWiki wiki = new JWiki(plantSearchInputName);
-        view.setDescription(wiki.getText());
+        view.setDescription(wikiPlantDescription);
 
         try {
-            URL wikiImageURL = new URL(wiki.getImageURL());
+            URL wikiImageURL = new URL(wikiPlantImageURL);
             view.setImageLabel(new ImageIcon(wikiImageURL));
         } catch (MalformedURLException e) {
         }
