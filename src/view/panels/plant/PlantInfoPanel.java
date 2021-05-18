@@ -45,9 +45,9 @@ public class PlantInfoPanel extends JPanel implements ActionListener {
         panelInfo.add(body, gbc);
 
         JButton helpBtn = new JButton("Learn More");
-        helpBtn.setBackground(Color.DARK_GRAY);
+        helpBtn.setBackground(Color.lightGray);
         helpBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        helpBtn.setForeground(Color.WHITE);
+        helpBtn.setForeground(Color.BLACK);
         helpBtn.addActionListener(this);
         gbc.gridy = 3;
         gbc.ipadx = 35;
