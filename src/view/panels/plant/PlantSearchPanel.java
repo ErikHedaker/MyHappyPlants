@@ -120,9 +120,6 @@ public class PlantSearchPanel extends JPanel {
 
         Image scaledImage = imageIcon.getImage().getScaledInstance(105,100, Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(scaledImage));
-        if (addPlantBtn != null) {
-            getRootPane().setDefaultButton(addPlantBtn);
-        }
     }
 
     public void setTitle(String title) {

@@ -103,6 +103,13 @@ public class ConfirmationDialog implements ActionListener {
             noBtn.setText("Cancel");
             yesBtn.setText("Confirm");
         }
+        else if (dialogType == DialogType.CHOICE_CONFIRMATION_DIALOG){
+            JList plantChoice = new JList();
+            noBtn.setVisible(false);
+            yesBtn.setVisible(false);
+            dialog.add(plantChoice);
+
+        }
         noBtn.getRootPane().setDefaultButton(noBtn);
         try {
             Robot robot = new Robot();
