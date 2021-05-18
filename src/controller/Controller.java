@@ -99,22 +99,19 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-
-                    /*
-                    ArrayList<String> searchResults = database.searchPlant("%" + view.getSearchInput() + "%");
-                    try {
-                        plantSearchInputName = Utility.getMatchingString(searchResults, view.getSearchInput());
-                    } catch (IndexOutOfBoundsException e) {
-                    }
-                    displayPlantSearchPage();
-                    */
-
                     ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
-                    HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
-                    if (!searchResultsFull.isEmpty()) {
-                        JWiki wiki = new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
+                    JWiki wiki = new JWiki(view.getSearchInput());
+                    if (wiki.getDisplayTitle() != "" &&
+                        !wiki.getText().equalsIgnoreCase("null may refer to:")) {
+                        view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
+                        view.showButton(true);
+                        view.setTitle(wiki.getDisplayTitle());
+                        view.setDescription(wiki.getText());
+                    } else if (!searchResultsFull.isEmpty()) {
+                        HashMap<String, String> result = Utility.getShortestValue(searchResultsFull, "scientific_name");
+                        wiki = new JWiki(result.get("url_wikipedia_en").substring(result.get("url_wikipedia_en").lastIndexOf("/") + 1));
                         try {
-                            ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
+                            ImageIcon imageIcon = new ImageIcon(new URL(result.get("image_url")));
                             if (imageIcon.getIconHeight() == -1 ||
                                 imageIcon.getIconWidth()  == -1 ) {
                                 throw new NullPointerException();
@@ -124,15 +121,14 @@ public class Controller {
                             view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(searchResultsFull.size() + " results, most relevant: " + plant.get("common_name") + " (" + plant.get("scientific_name") + ")");
+                        view.setTitle(searchResultsFull.size() + " results, most relevant: " + result.get("common_name") + " (" + result.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
-                    } else  {
+                    } else {
                         view.setTitle("No plant was found.");
                         view.setDescription("");
                         view.showButton(false);
                         view.setImageLabel(null);
                     }
-
                     view.setCardLayout("plant page");
                 }
                 break;

@@ -15,9 +15,10 @@ import java.io.IOException;
  * @author Viktor Johansson
  */
 public class JWiki {
-
-    private String displayTitle, imageURL, text = "";
     private final String BASE_URL = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+    private String displayTitle;
+    private String imageURL;
+    private String text;
 
     /**
      * Sends information requests to wikipedia with the specified subject
@@ -26,6 +27,9 @@ public class JWiki {
      * @param subject The subject you want information about.
      */
     public JWiki(String subject) {
+        this.displayTitle = "";
+        this.imageURL = "";
+        this.text = "";
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -39,7 +43,7 @@ public class JWiki {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(data);
 
-            displayTitle = (String) jsonObject.get("displaytitle");
+            displayTitle = (String)jsonObject.get("displaytitle");
 
             if (jsonObject.get("originalimage") != null) {
                 JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
@@ -47,6 +51,7 @@ public class JWiki {
             }
 
             text = (String) jsonObject.get("extract");
+            displayTitle = displayTitle != null ? displayTitle.replaceAll("<i>", "").replaceAll("</i>", "") : "";
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
@@ -58,8 +63,7 @@ public class JWiki {
      * @return returns the wikipedia title from chosen article.
      */
     public String getDisplayTitle() {
-        String title = displayTitle.replaceAll("<i>", "").replaceAll("</i>", "");
-        return title;
+        return displayTitle;
     }
 
     /**

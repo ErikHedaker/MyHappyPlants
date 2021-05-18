@@ -41,6 +41,16 @@ public class Utility {
         return number;
     }
 
+    public static HashMap<String, String> getShortestValue(ArrayList<HashMap<String, String>> values, String key){
+        HashMap<String, String> shortest = values.get(0);
+        for (HashMap<String, String> value : values) {
+            if (value.get(key).length() < shortest.get(key).length()) {
+                shortest = value;
+            }
+        }
+        return shortest;
+    }
+
     public static String getMatchingString(ArrayList<String> values, String target){
         int distance = values.size();
         String nearestString = null;
