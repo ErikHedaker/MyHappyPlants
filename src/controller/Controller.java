@@ -9,6 +9,7 @@ import view.MainFrame;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLHandshakeException;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -111,16 +112,19 @@ public class Controller {
                     ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
                     HashMap<String, String> plant = Utility.getMatchingStringHashMap(searchResultsFull, searchResultsFull.get(0));
                     if (!searchResultsFull.isEmpty()) {
-                        String wikiName = plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1);
-                        JWiki wiki = new JWiki(wikiName);
+                        JWiki wiki = new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
                         try {
-                            URL wikiImageURL = new URL(wiki.getImageURL());
-                            view.setImageLabel(new ImageIcon(wikiImageURL));
-                        } catch(MalformedURLException e) {
-                            view.setImageLabel(new ImageIcon(imageDefault));
+                            ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
+                            if (imageIcon.getIconHeight() == -1 ||
+                                imageIcon.getIconWidth()  == -1 ) {
+                                throw new NullPointerException();
+                            }
+                            view.setImageLabel(imageIcon);
+                        } catch (Exception e) {
+                            view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(plant.get("common_name"));
+                        view.setTitle(searchResultsFull.size() + " results, most relevant: " + plant.get("common_name") + " (" + plant.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
                     } else  {
                         view.setTitle("No plant was found.");
