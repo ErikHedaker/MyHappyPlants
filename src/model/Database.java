@@ -326,51 +326,23 @@ public class Database {
         }
     }
 
-    public ArrayList<String> searchPlant( String name, int limit ) {
+    public ArrayList<HashMap<String,String>> searchPlant(String name, int limit) {
         final String SQL =
-            "SELECT * " +
-            "FROM plant_trefle_data " +
-            "WHERE common_name LIKE ? " +
-            "LIMIT ?";
-        ArrayList<String> plantNames = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(connectionURL);
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, limit);
-            if( limit < 0 ) {
-                preparedStatement.setNull(2, Types.INTEGER);
-            }
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                plantNames = new ArrayList<>();
-                while (resultSet.next()) {
-                    plantNames.add(resultSet.getString("common_name"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return plantNames;
-    }
-
-    public ArrayList<String> searchPlant( String name ) {
-        return searchPlant( name, -1 );
-    }
-
-    public ArrayList<HashMap<String,String>> searchPlantFull(String name, int limit ) {
-        final String SQL =
-            "SELECT * " +
-            "FROM plant_trefle_data " +
-            "WHERE common_name ILIKE ? " +
-            "LIMIT ?";
+            "SELECT * FROM plant_trefle_data " +
+            "WHERE scientific_name ILIKE ? " +
+            "OR (common_name ILIKE ? " +
+            "AND NOT EXISTS (SELECT 1 FROm plant_trefle_data WHERE scientific_name ILIKE ?))" +
+            "ORDER BY LENGTH(scientific_name) ASC " +
+            "LIMIT ? ";
         ArrayList<HashMap<String,String>> plants = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(connectionURL);
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
             preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, limit);
-            if( limit < 0 ) {
-                preparedStatement.setNull(2, Types.INTEGER);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, name);
+            preparedStatement.setInt(4, limit);
+            if (limit < 0) {
+                preparedStatement.setNull(4, Types.INTEGER);
             }
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 ResultSetMetaData meta = resultSet.getMetaData();
@@ -392,23 +364,17 @@ public class Database {
         return plants;
     }
 
-    public ArrayList<HashMap<String,String>> searchPlantFull( String name ) {
-        return searchPlantFull( name, -1 );
+    public ArrayList<HashMap<String,String>> searchPlant(String name) {
+        return searchPlant(name, -1);
     }
 
     public static void main(String[] args) {
         Database database = new Database(new SimpleEncryption().readFile());
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
-        /*
-        for( HashMap<String,String> plant : database.searchPlantFull("%rose%"))
+        for( HashMap<String,String> plant : database.searchPlant("%rose%"))
         {
             System.out.println(plant.get("scientific_name"));
-        }
-        */
-        for( String plant : database.searchPlant("%rose%"))
-        {
-            System.out.println(plant);
         }
     }
 }

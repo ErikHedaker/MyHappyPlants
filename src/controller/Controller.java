@@ -9,7 +9,6 @@ import view.MainFrame;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
-import javax.net.ssl.SSLHandshakeException;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -99,19 +98,25 @@ public class Controller {
             case "search":
                 if (view.getSearchInput().length() > 0) {
                     view.setCardLayout("loading-screen");
-                    ArrayList<HashMap<String, String>> searchResultsFull = database.searchPlantFull("%" + view.getSearchInput() + "%");
-                    JWiki wiki = new JWiki(view.getSearchInput());
-                    if (wiki.getDisplayTitle() != "" &&
-                        !wiki.getText().equalsIgnoreCase("null may refer to:")) {
-                        view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
-                        view.showButton(true);
-                        view.setTitle(wiki.getDisplayTitle());
-                        view.setDescription(wiki.getText());
-                    } else if (!searchResultsFull.isEmpty()) {
-                        HashMap<String, String> result = Utility.getShortestValue(searchResultsFull, "scientific_name");
-                        wiki = new JWiki(result.get("url_wikipedia_en").substring(result.get("url_wikipedia_en").lastIndexOf("/") + 1));
+                    ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
+                    if (!searchResult.isEmpty()) {
+                        HashMap<String, String> plant = searchResult.get(0);
+                        String[] individualScientificName = plant.get("scientific_name").split(" ");
+                        JWiki wiki = new JWiki(plant.get("common_name"));
+                        if (!wiki.valid()) {
+                            wiki = new JWiki(plant.get("scientific_name"));
+                        }
+                        if (!wiki.valid()) {
+                            wiki = new JWiki(individualScientificName[0] + individualScientificName[1]);
+                        }
+                        if (!wiki.valid()) {
+                            wiki = new JWiki(individualScientificName[0]);
+                        }
+                        if (!wiki.valid()) {
+                            wiki = new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
+                        }
                         try {
-                            ImageIcon imageIcon = new ImageIcon(new URL(result.get("image_url")));
+                            ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
                             if (imageIcon.getIconHeight() == -1 ||
                                 imageIcon.getIconWidth()  == -1 ) {
                                 throw new NullPointerException();
@@ -121,7 +126,7 @@ public class Controller {
                             view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(searchResultsFull.size() + " results, most relevant: " + result.get("common_name") + " (" + result.get("scientific_name") + ")");
+                        view.setTitle(searchResult.size() + " results, most relevant: " + plant.get("common_name") + " (" + plant.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
                     } else {
                         view.setTitle("No plant was found.");
@@ -302,15 +307,13 @@ public class Controller {
      * @return An image in the byte array format
      */
     public byte[] fetchImageFromURL(String imageURL) {
-        if(imageURL !=null) {
+        if (imageURL != null) {
             try (ByteArrayOutputStream baoStream = new ByteArrayOutputStream()) {
                 String extension = imageURL.substring(imageURL.lastIndexOf(".") + 1);
                 ImageIO.write(ImageIO.read(new URL(imageURL)), extension, baoStream);
                 baoStream.flush();
                 return baoStream.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException ignored) { }
         }
         return imageDefault;
     }

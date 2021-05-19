@@ -84,4 +84,8 @@ public class JWiki {
     public String getText() {
         return text;
     }
+
+    public boolean valid() {
+        return displayTitle != "" && text != "" && !text.contains("may refer to:");
+    }
 }
