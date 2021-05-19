@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,8 +33,6 @@ public class Controller {
     private byte[] imageDefault;
     public int selectedPlantIndex;
     private String plantSearchInputName;
-    private String wikiPlantDescription;
-    private String wikiPlantImageURL;
 
     public Controller() {
         this.database = new Database(new SimpleEncryption().readFile());
@@ -103,18 +100,10 @@ public class Controller {
                         HashMap<String, String> plant = searchResult.get(0);
                         String[] individualScientificName = plant.get("scientific_name").split(" ");
                         JWiki wiki = new JWiki(plant.get("common_name"));
-                        if (!wiki.valid()) {
-                            wiki = new JWiki(plant.get("scientific_name"));
-                        }
-                        if (!wiki.valid()) {
-                            wiki = new JWiki(individualScientificName[0] + individualScientificName[1]);
-                        }
-                        if (!wiki.valid()) {
-                            wiki = new JWiki(individualScientificName[0]);
-                        }
-                        if (!wiki.valid()) {
-                            wiki = new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
-                        }
+                        wiki = wiki.valid() ? wiki : new JWiki(plant.get("scientific_name"));
+                        wiki = wiki.valid() ? wiki : new JWiki(individualScientificName[0] + individualScientificName[1]);
+                        wiki = wiki.valid() ? wiki : new JWiki(individualScientificName[0]);
+                        wiki = wiki.valid() ? wiki : new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
                         try {
                             ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
                             if (imageIcon.getIconHeight() == -1 ||
@@ -126,8 +115,9 @@ public class Controller {
                             view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(searchResult.size() + " results, most relevant: " + plant.get("common_name") + " (" + plant.get("scientific_name") + ")");
+                        view.setTitle(searchResult.size() + " results, most relevant: " + wiki.getDisplayTitle() + " (" + plant.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
+                        plantSearchInputName = wiki.getDisplayTitle();
                     } else {
                         view.setTitle("No plant was found.");
                         view.setDescription("");
@@ -229,49 +219,6 @@ public class Controller {
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
         waterPlant(plant);
-    }
-
-    public void displayPlantSearchPage() {
-        if (plantFound()) {
-            showPlantPage(true);
-        } else {
-            showPlantPage(false);
-        }
-    }
-
-    public void showPlantPage(boolean isPlantFound) {
-        if (isPlantFound) {
-            view.showButton(true);
-            view.setTitle(plantSearchInputName);
-            new Thread(() -> upsertSearchDetails()).start();
-
-        } else  {
-            view.setTitle("No plant was found.");
-            view.setDescription("");
-            view.showButton(false);
-            view.setImageLabel(null);
-        }
-    }
-
-    private void upsertSearchDetails() {
-        view.setDescription(wikiPlantDescription);
-
-        try {
-            URL wikiImageURL = new URL(wikiPlantImageURL);
-            view.setImageLabel(new ImageIcon(wikiImageURL));
-        } catch (MalformedURLException e) {
-        }
-    }
-
-    public boolean plantFound() {
-        JWiki wiki = new JWiki(plantSearchInputName);
-        if (!(plantSearchInputName == "" || wiki.getText() == null
-                || wiki.getText().equalsIgnoreCase("null may refer to:"))) {
-            wikiPlantDescription = wiki.getText();
-            wikiPlantImageURL = wiki.getImageURL();
-            return true;
-        }
-        return false;
     }
 
     /**
