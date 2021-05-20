@@ -8,18 +8,18 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     private JButton searchBtn;
-    //private JTextField searchField;
     private JComboBox searchField;
     private Controller controller;
     private JPanel searchPanel;
     private JPanel search;
-
 
     public NorthPanel(Controller controller) {
         this.controller = controller;
@@ -53,12 +53,13 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
         //searchField = new JTextField("tomato");
 
-        String[] blabla = {
-                "husk tomato",
-                "garden tomato",
-        };
-
-        searchField = new JComboBox(blabla);
+        searchField = new JComboBox(new String[] { "Husk Tomato" });
+        JTextComponent editor = (JTextComponent) searchField.getEditor().getEditorComponent();
+        editor.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent evt) {
+                new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
+            }
+        });
         searchField.setEditable(true);
 
         //searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
@@ -103,12 +104,16 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         return searchField;
     }*/
 
-    public JComboBox getSearchField(){
-        return searchField;
+    public String getSearchField(){
+        return searchField.getEditor().getItem().toString();
     }
 
     public void showSearch() {
         search.setVisible(true);
+    }
+
+    public void updateSearchResults(ArrayList<String> values) {
+        searchField.setModel(new DefaultComboBoxModel(values.toArray()));
     }
 
     @Override
@@ -141,13 +146,15 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
+        updateSearchResults(controller.getResultsArray());
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             new Thread(() -> controller.buttonPushed("search")).start();
+        } else {
+            new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
         }
     }
 

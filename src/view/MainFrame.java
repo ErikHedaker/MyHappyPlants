@@ -7,9 +7,15 @@ import view.panels.MainPanel;
 import view.panels.plant.PlantList;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MainFrame{
     private Controller controllerRef;
@@ -66,7 +72,6 @@ public class MainFrame{
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
     }
 
     public void setCardLayout(String cardLayout) {
@@ -91,6 +96,10 @@ public class MainFrame{
 
     public void setSelectedPlantName(String plantName) {
         panel.setSelectedPlantName(plantName);
+    }
+
+    public void updateSearchResults(ArrayList<String> values) {
+        panel.updateSearchResults(values);
     }
 
     public void showConnectivityError() {

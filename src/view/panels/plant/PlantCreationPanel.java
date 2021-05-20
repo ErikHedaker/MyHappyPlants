@@ -177,71 +177,21 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.anchor = GridBagConstraints.WEST;
         editPanel.add(sizeLabel, gbc);
 
-        ImageIcon imageIcon = new ImageIcon("./images/plant.jpg");
-        Image image = imageIcon.getImage();
-        Image smallimg = image.getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(smallimg);
+        DefaultListModel model = new DefaultListModel();
 
-        ImageIcon imageIcon2 = new ImageIcon("./images/plant.jpg");
-        Image image2 = imageIcon2.getImage();
-        Image mediumimg = image2.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-        imageIcon2 = new ImageIcon(mediumimg);
+        Image img1 = new ImageIcon("images/flower_small.png").getImage().getScaledInstance(70,110, Image.SCALE_SMOOTH);
+        Image img2 = new ImageIcon("images/flower_medium.png").getImage().getScaledInstance(80,120, Image.SCALE_SMOOTH);
+        Image img3 = new ImageIcon("images/flower_big.png").getImage().getScaledInstance(90,130, Image.SCALE_SMOOTH);
 
-        ImageIcon imageIcon3 = new ImageIcon("./images/plant.jpg");
-        Image image3 = imageIcon3.getImage();
-        Image largeimg = image3.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
-        imageIcon3 = new ImageIcon(largeimg);
+        model.addElement(new ImageIcon(img1));
+        model.addElement(new ImageIcon(img2));
+        model.addElement(new ImageIcon(img3));
 
-        smallButton = new JToggleButton(imageIcon);
-        smallButton.setBackground(Color.white);
-        smallButton.setFocusPainted(false);
-        smallButton.setBorderPainted(false);
-        gbc.gridx = 4;
-        gbc.gridy = 16;
-        gbc.weighty = 0;
-        gbc.weightx = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        editPanel.add(smallButton, gbc);
+        JList list = new JList(model);
 
-        smallButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("small");
-                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
-                SwingUtilities.updateComponentTreeUI(smallButton);
-            }
-        });
+        list.setVisibleRowCount(1);
+        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 
-        mediumButton = new JToggleButton(imageIcon2);
-        mediumButton.setBackground(Color.white);
-        mediumButton.setBorderPainted(false);
-        mediumButton.setFocusPainted(false);
-        gbc.gridx = 4;
-        gbc.gridy = 16;
-        gbc.weighty = 0;
-        gbc.weightx = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        editPanel.add(mediumButton, gbc);
-
-        mediumButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("medium");
-                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
-                SwingUtilities.updateComponentTreeUI(mediumButton);
-            }
-        });
-
-        largeButton = new JToggleButton(imageIcon3);
-        largeButton.setBackground(Color.white);
-        largeButton.setBorderPainted(false);
-        largeButton.setFocusPainted(false);
         gbc.gridx = 4;
         gbc.gridy = 16;
         gbc.weighty = 0;
@@ -249,17 +199,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
-        editPanel.add(largeButton, gbc);
-
-        largeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("bik");
-                UIManager.put("ToggleButton.select", new Color(220, 229, 185));
-                SwingUtilities.updateComponentTreeUI(largeButton);
-            }
-        });
+        editPanel.add(list, gbc);
 
         add(editPanel);
 

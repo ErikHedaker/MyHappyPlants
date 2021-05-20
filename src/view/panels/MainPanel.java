@@ -6,6 +6,7 @@ import view.panels.login.LoginPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainPanel extends JPanel {
     private Controller controller;
@@ -128,6 +129,10 @@ public class MainPanel extends JPanel {
         repaint();
     }
 
+    public void updateSearchResults(ArrayList<String> values) {
+        northPanel.updateSearchResults(values);
+    }
+
     public void setImageLabel(ImageIcon imageIcon) {
         plantSearchPanel.setImageLabel(imageIcon);
     }
@@ -145,6 +150,6 @@ public class MainPanel extends JPanel {
     }*/
 
     public String getSearchInput(){
-        return (String) northPanel.getSearchField().getSelectedItem();
+        return northPanel.getSearchField();
     }
 }
