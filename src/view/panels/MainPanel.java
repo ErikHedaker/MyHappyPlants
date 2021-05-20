@@ -140,7 +140,11 @@ public class MainPanel extends JPanel {
         plantList.getPlantPanels().get(index).updateWateringComponents();
     }
 
-    public String getSearchInput() {
+    /*public String getSearchInput() {
         return northPanel.getSearchField().getText();
+    }*/
+
+    public String getSearchInput(){
+        return (String) northPanel.getSearchField().getSelectedItem();
     }
 }

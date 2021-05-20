@@ -1,8 +1,7 @@
 package view.panels;
 
 import controller.Controller;
-import view.dialog.ConfirmationDialog;
-import view.dialog.DialogType;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,15 +13,15 @@ import java.awt.event.*;
 public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     private JButton searchBtn;
-    private JTextField searchField;
+    //private JTextField searchField;
+    private JComboBox searchField;
     private Controller controller;
     private JPanel searchPanel;
     private JPanel search;
-    private ConfirmationDialog dialog;
+
 
     public NorthPanel(Controller controller) {
         this.controller = controller;
-        this.dialog = new ConfirmationDialog(controller);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1500, 150));
 
@@ -51,8 +50,17 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchBtn.addActionListener(this);
         searchBtn.setVisible(false);
 
-        searchField = new JTextField("tomato");
-        searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+        //searchField = new JTextField("tomato");
+
+        String[] blabla = {
+                "husk tomato",
+                "garden tomato",
+        };
+
+        searchField = new JComboBox(blabla);
+        searchField.setEditable(true);
+
+        //searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
 
         search = new JPanel();
         search.setBackground(new Color(173, 193, 124));
@@ -70,7 +78,7 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
                 searchField.setBackground(Color.WHITE);
                 controller.buttonPushed("plantList");
-                searchField.setText("");
+                //searchField.setText("");
             }
         });
         search.setVisible(false);
@@ -90,7 +98,11 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         return searchBtn;
     }
 
-    public JTextField getSearchField() {
+    /*public JTextField getSearchField() {
+        return searchField;
+    }*/
+
+    public JComboBox getSearchField(){
         return searchField;
     }
 
@@ -120,7 +132,6 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource().equals(searchBtn)) {
             if (!searchField.getBackground().equals(Color.WHITE)) {
                 searchField.setBackground(Color.WHITE);
-                dialog.showConfirmationDialog(DialogType.CHOICE_CONFIRMATION_DIALOG);
             } else {
                 new Thread(() -> controller.buttonPushed("search")).start();
             }
