@@ -2,7 +2,6 @@ package view.panels;
 
 import controller.Controller;
 import view.dialog.ConfirmationDialog;
-import view.dialog.DialogType;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -120,7 +119,6 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource().equals(searchBtn)) {
             if (!searchField.getBackground().equals(Color.WHITE)) {
                 searchField.setBackground(Color.WHITE);
-                dialog.showConfirmationDialog(DialogType.CHOICE_CONFIRMATION_DIALOG);
             } else {
                 new Thread(() -> controller.buttonPushed("search")).start();
             }
