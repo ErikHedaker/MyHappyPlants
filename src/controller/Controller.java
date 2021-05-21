@@ -1,11 +1,9 @@
 package controller;
 
-import model.Database;
-import model.SimpleEncryption;
+import model.*;
 import model.api.JWiki;
-import model.Plant;
-import model.Profile;
 import view.MainFrame;
+import view.dialog.ConfirmationDialog;
 import view.dialog.MessageDialog;
 import view.panels.plant.PlantPanel;
 
@@ -34,6 +32,7 @@ public class Controller {
     private byte[] imageDefault;
     public int selectedPlantIndex;
     private String plantSearchInputName;
+    private boolean isUserReminded;
 
     public Controller() {
         this.database = new Database(new SimpleEncryption().readFile());
@@ -94,6 +93,7 @@ public class Controller {
                             panel.getLoadingThread().start();
                         }
                     }
+                    new Thread(new Reminder(this)).start();
                 }
                 view.showSearch(true);
                 view.showSearchField();
@@ -180,6 +180,17 @@ public class Controller {
 
     public void setPlantCreationMode(boolean enabled) {
         view.setCreationMode(enabled);
+    }
+
+    public void sendReminderMessage() {
+        ArrayList<Plant> plants = activeProfile.getPlants();
+        for (Plant plant : plants) {
+            if (plant.getTimeRemaining() <= 10 && plant.getImageIcon() != null && !isUserReminded) {
+                new Notification(plant.getImageIcon(), plant.getNameAlias() + " (" + plant.getNameWiki() + ")",
+                        "Needs to be watered soon (" + plant.getTimeRemaining() + " days left)").display();
+                isUserReminded = true;
+            }
+        }
     }
 
     public void createPlant(String name, String hoursBetweenWatering) {

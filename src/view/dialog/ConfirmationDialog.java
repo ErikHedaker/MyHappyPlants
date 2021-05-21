@@ -94,14 +94,17 @@ public class ConfirmationDialog implements ActionListener {
 
     }
 
-    public void showConfirmationDialog(DialogType dialogType) {
+    public ConfirmationDialog showConfirmationDialog(DialogType dialogType) {
         dialog.setVisible(true);
         if (dialogType == DialogType.REMOVE_CONFIRMATION_DIALOG) {
             noBtn.setText("KEEP");
             yesBtn.setText("REMOVE");
         } else if (dialogType == DialogType.WATER_CONFIRMATION_DIALOG) {
-            noBtn.setText("Cancel");
-            yesBtn.setText("Confirm");
+            noBtn.setText("CANCEL");
+            yesBtn.setText("CONFIRM");
+        } else {
+            noBtn.setText("STAY");
+            yesBtn.setText("CONFIRM");
         }
         noBtn.getRootPane().setDefaultButton(noBtn);
         try {
@@ -110,21 +113,33 @@ public class ConfirmationDialog implements ActionListener {
         } catch (AWTException e) {
         }
         type = dialogType;
+        return this;
     }
 
-    public void setConfirmationMessage(String messageTxt) {
+    public ConfirmationDialog setConfirmationMessage(String messageTxt) {
         message.setText(messageTxt);
+        return this;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == yesBtn) {
-            if (type == DialogType.REMOVE_CONFIRMATION_DIALOG) {
+        if (type == DialogType.REMOVE_CONFIRMATION_DIALOG) {
+            if (e.getSource() == yesBtn) {
                 controller.buttonPushed("remove plant");
-            } else if (type == DialogType.WATER_CONFIRMATION_DIALOG) {
-                controller.buttonPushed("water plant");
+            } else if (e.getSource() == noBtn) {
+                controller.buttonPushed("plantList");
             }
-        } else if (e.getSource() == noBtn) {
-            controller.buttonPushed("plantList");
+        } else if (type == DialogType.WATER_CONFIRMATION_DIALOG) {
+            if (e.getSource() == yesBtn) {
+                controller.buttonPushed("water plant");
+            } else if (e.getSource() == noBtn) {
+                controller.buttonPushed("plantList");
+            }
+        } else if (type == DialogType.PROCEED_BACK_CONFIRMATION_DIALOG) {
+            if (e.getSource() == yesBtn) {
+                controller.buttonPushed("plantList");
+            } else if (e.getSource() == noBtn) {
+                controller.buttonPushed("show plant creation page");
+            }
         }
         dialog.setVisible(false);
     }

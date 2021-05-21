@@ -1,6 +1,8 @@
 package view.panels.plant;
 
 import controller.Controller;
+import view.dialog.ConfirmationDialog;
+import view.dialog.DialogType;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -227,7 +229,9 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
-            controller.buttonPushed("plantList");
+            new ConfirmationDialog(controller)
+                    .setConfirmationMessage("Are you sure you want to go back?")
+                    .showConfirmationDialog(DialogType.PROCEED_BACK_CONFIRMATION_DIALOG);
         } else if (e.getSource() == saveButton) {
             new Thread(() -> upsertPlantDetails()).start();
         }

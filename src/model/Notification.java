@@ -28,13 +28,14 @@ public class Notification {
 
     /**
      * Constructs notifications with images from specified file-location.
-     * @param imagePath file-location
+     * @param imageIcon image
      * @param title title
      * @param message message to display
      */
-    public Notification(String imagePath, String title, String message) {
+    public Notification(ImageIcon imageIcon, String title, String message) {
         this(title, message);
-        icon = new TrayIcon(new ImageIcon(imagePath).getImage(), "tip");
+        icon = new TrayIcon(imageIcon.getImage(), "MyHappyPlants");
+        icon.setImageAutoSize(true);
     }
 
     /**
@@ -49,6 +50,8 @@ public class Notification {
                 e.printStackTrace();
             }
             icon.displayMessage(title, message, TrayIcon.MessageType.NONE);
+        } else {
+            System.out.println("Not supported.");
         }
     }
 }
