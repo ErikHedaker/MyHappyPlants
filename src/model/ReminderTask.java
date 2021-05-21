@@ -4,11 +4,11 @@ import controller.Controller;
 
 import javax.management.timer.Timer;
 
-public class Reminder implements Runnable {
+public class ReminderTask implements Runnable {
 
     private Controller controllerRef;
 
-    public Reminder(Controller controllerRef) {
+    public ReminderTask(Controller controllerRef) {
         this.controllerRef = controllerRef;
     }
 

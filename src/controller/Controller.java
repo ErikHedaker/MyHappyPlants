@@ -93,7 +93,7 @@ public class Controller {
                             panel.getLoadingThread().start();
                         }
                     }
-                    new Thread(new Reminder(this)).start();
+                    new Thread(new ReminderTask(this)).start();
                 }
                 view.showSearch(true);
                 view.showSearchField();
