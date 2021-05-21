@@ -188,6 +188,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         model.addElement(new ImageIcon(img3));
 
         JList list = new JList(model);
+        DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         list.setVisibleRowCount(1);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
