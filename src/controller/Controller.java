@@ -117,7 +117,7 @@ public class Controller {
                         view.showButton(true);
                         view.setTitle(searchResult.size() + " results, most relevant: " + wiki.getDisplayTitle() + " (" + plant.get("scientific_name") + ")");
                         view.setDescription(wiki.getText());
-                        plantSearchInputName = wiki.getDisplayTitle();
+                        plantSearchInputName = wiki.getDisplayTitle().toLowerCase();
                     } else {
                         view.setTitle("No plant was found.");
                         view.setDescription("");
@@ -163,7 +163,7 @@ public class Controller {
 
         ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
         if (!searchResult.isEmpty()) {
-            String plant = searchResult.get(1).get("common_name");
+            String plant = searchResult.get(0).get("common_name");
             results.add(plant);
         }
 
@@ -193,7 +193,9 @@ public class Controller {
 
     private void upsertPlantDetails(Plant plant, byte[] icon) {
         plant.setImageIcon(new ImageIcon(icon));
-        addPlant(plant);
+        int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
+        plant.setDatabaseID(id);
+        waterPlant(plant);
         database.upsertPlantImage(plant.getDatabaseID(), icon);
     }
 
@@ -227,12 +229,6 @@ public class Controller {
                 view.updatePlantWateringComponents(selectedPlantIndex);
             }
         }
-    }
-
-    public void addPlant(Plant plant) {
-        int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
-        plant.setDatabaseID(id);
-        waterPlant(plant);
     }
 
     /**

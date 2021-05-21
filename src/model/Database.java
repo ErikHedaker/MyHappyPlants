@@ -368,13 +368,38 @@ public class Database {
         return searchPlant(name, -1);
     }
 
+    public int getAverageWatering(String nameWiki) {
+        final String SQL =
+            "SELECT name_wiki, AVG(hours_between_watering) FROM plant " +
+            "WHERE name_wiki = ? " +
+            "GROUP BY name_wiki";
+        ArrayList<HashMap<String,String>> plants = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setString(1, nameWiki);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("avg");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         Database database = new Database(new SimpleEncryption().readFile());
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
+        /*
         for( HashMap<String,String> plant : database.searchPlant("%rose%"))
         {
             System.out.println(plant.get("scientific_name"));
         }
+        */
+        System.out.println(database.getAverageWatering("Carex sylvatica"));
     }
 }
