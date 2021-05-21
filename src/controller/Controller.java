@@ -157,6 +157,20 @@ public class Controller {
         }
     }
 
+    public ArrayList<String> getResultsArray() {
+        ArrayList<String> results = new ArrayList<>();
+        results.add(view.getSearchInput());
+
+        ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
+        if (!searchResult.isEmpty()) {
+            String plant = searchResult.get(1).get("common_name");
+            results.add(plant);
+        }
+
+        results.add("example2");
+        return results;
+    }
+
     public void setPlantCreationMode(boolean enabled) {
         view.setCreationMode(enabled);
     }

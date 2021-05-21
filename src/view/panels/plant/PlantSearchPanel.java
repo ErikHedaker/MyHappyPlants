@@ -125,4 +125,10 @@ public class PlantSearchPanel extends JPanel {
     public void setTitle(String title) {
         this.title.setText(title);
     }
+
+
 }
+
+
+
+
