@@ -17,9 +17,6 @@ import java.awt.event.*;
 public class PlantCreationPanel extends JPanel implements ActionListener {
     private Controller controller;
     private JButton backButton;
-    private JToggleButton smallButton;
-    private JToggleButton mediumButton;
-    private JToggleButton largeButton;
     private JButton saveButton;
     private JTextField nicknameTF;
     private JTextField waterTF;
@@ -83,18 +80,17 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         saveButton.setBackground(Color.white);
         saveButton.addActionListener(this);
         saveButton.setFont(new Font("Arial", Font.BOLD, 10));
-        gbc.gridx = 3; // col
-        gbc.gridy = 20; // row
-        gbc.weighty = 0; // separate space between rows
-        gbc.weightx = 0; // separate space between cols
-        gbc.gridwidth = 1; // specify num of cols
-        gbc.gridheight = 1; // specify num of rows
+        gbc.gridx = 3;
+        gbc.gridy = 20;
+        gbc.weighty = 0;
+        gbc.weightx = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.PAGE_END;
         editPanel.add(saveButton, gbc);
 
         JLabel title = new JLabel("ENTER PLANT DETAILS");
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
-        title.setBounds(10, 10, 10, 10);
         gbc.gridy = 3;
         gbc.gridx = 3;
         gbc.weighty = 5;
@@ -114,6 +110,12 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         nicknameTF = new JTextField();
         nicknameTF.setPreferredSize(new Dimension(275, 30));
+        nicknameTF.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nicknameTF.setText("");
+            }
+        });
         gbc.gridx = 4;
         gbc.gridy = 13;
         gbc.weighty = 150;
@@ -134,7 +136,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         editPanel.add(climateLabel, gbc);
 
         String[] choices = {"Inside", "Outside"};
-        JComboBox<String> climateMenu = new JComboBox<String>(choices);
+        JComboBox<String> climateMenu = new JComboBox<>(choices);
         climateMenu.setBackground(Color.white);
         climateMenu.setPreferredSize(new Dimension(275, 30));
         gbc.gridx = 4;
@@ -159,6 +161,12 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         waterTF = new JTextField();
         waterTF.setPreferredSize(new Dimension(275, 30));
+        waterTF.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                waterTF.setText("");
+            }
+        });
         gbc.gridx = 4;
         gbc.gridy = 15;
         gbc.weighty = 0;

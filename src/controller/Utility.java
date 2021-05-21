@@ -2,6 +2,7 @@ package controller;
 
 import model.Plant;
 import org.apache.commons.codec.binary.Base64;
+import view.dialog.MessageDialog;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

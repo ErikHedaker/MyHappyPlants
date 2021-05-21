@@ -54,12 +54,12 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         //searchField = new JTextField("tomato");
 
         searchField = new JComboBox(new String[] { "Husk Tomato" });
-        JTextComponent editor = (JTextComponent) searchField.getEditor().getEditorComponent();
+        /*JTextComponent editor = (JTextComponent) searchField.getEditor().getEditorComponent();
         editor.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent evt) {
                 new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
             }
-        });
+        });*/
         searchField.setEditable(true);
 
         //searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
@@ -154,7 +154,7 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             new Thread(() -> controller.buttonPushed("search")).start();
         } else {
-            new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
+            //new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
         }
     }
 

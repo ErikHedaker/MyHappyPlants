@@ -24,10 +24,6 @@ public class Plant {
     private ImageIcon imageIcon;
     private String description;
 
-    public Plant() {
-
-    }
-
     /**
      * All Setter methods
      *

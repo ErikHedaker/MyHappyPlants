@@ -6,6 +6,7 @@ import model.api.JWiki;
 import model.Plant;
 import model.Profile;
 import view.MainFrame;
+import view.dialog.MessageDialog;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
@@ -43,7 +44,12 @@ public class Controller {
     }
 
     public Plant getPlantFromIndex(int index) {
-        return getPlantList().get(index);
+        Plant plant = null;
+        try {
+            plant = getPlantList().get(index);
+        }catch (IndexOutOfBoundsException e) {
+        }
+        return plant;
     }
 
     public void setSelectedPlantFromIndex(int plantIndex) {
@@ -98,6 +104,7 @@ public class Controller {
                     ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
                     if (!searchResult.isEmpty()) {
                         HashMap<String, String> plant = searchResult.get(0);
+
                         String[] individualScientificName = plant.get("scientific_name").split(" ");
                         JWiki wiki = new JWiki(plant.get("common_name"));
                         wiki = wiki.valid() ? wiki : new JWiki(plant.get("scientific_name"));
@@ -115,7 +122,7 @@ public class Controller {
                             view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(searchResult.size() + " results, most relevant: " + wiki.getDisplayTitle() + " (" + plant.get("scientific_name") + ")");
+                        view.setTitle(plant.get("common_name") != null ? plant.get("common_name") + " (" + wiki.getDisplayTitle() + ")" : wiki.getDisplayTitle());
                         view.setDescription(wiki.getText());
                         plantSearchInputName = wiki.getDisplayTitle().toLowerCase();
                     } else {
@@ -176,10 +183,17 @@ public class Controller {
     }
 
     public void createPlant(String name, String hoursBetweenWatering) {
+        int timeBetweenWatering = Utility.getStringToInt(hoursBetweenWatering);
+        if (timeBetweenWatering == 0) {
+            new MessageDialog("Enter valid watering interval days.\nThis is needed to remind you whenever \nyour plants needs to be watered.");
+            view.setCardLayout("plant creation page");
+            return;
+        }
         Plant plant = new Plant();
         plant.setNameAlias(name);
         plant.setNameWiki(plantSearchInputName);
-        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+
+        plant.setHoursBetweenWatering(timeBetweenWatering);
         activeProfile.addPlant(plant);
         refreshPlantListGUI();
 
@@ -200,6 +214,10 @@ public class Controller {
     }
 
     public void editSelectedPlant(String name, String hoursBetweenWatering) {
+        if (hoursBetweenWatering.equals("0")) {
+            new MessageDialog("Enter a valid watering interval 0 days is too little.");
+            return;
+        }
         Plant plant = getPlantFromIndex(selectedPlantIndex);
         plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
         plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
