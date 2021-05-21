@@ -108,7 +108,7 @@ public class Controller {
                             ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
                             if (imageIcon.getIconHeight() == -1 ||
                                 imageIcon.getIconWidth()  == -1 ) {
-                                throw new NullPointerException();
+                                throw new Exception();
                             }
                             view.setImageLabel(imageIcon);
                         } catch (Exception e) {

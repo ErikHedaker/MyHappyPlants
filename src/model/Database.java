@@ -331,7 +331,7 @@ public class Database {
             "SELECT * FROM plant_trefle_data " +
             "WHERE scientific_name ILIKE ? " +
             "OR (common_name ILIKE ? " +
-            "AND NOT EXISTS (SELECT 1 FROm plant_trefle_data WHERE scientific_name ILIKE ?))" +
+            "AND NOT EXISTS (SELECT 1 FROM plant_trefle_data WHERE scientific_name ILIKE ?))" +
             "ORDER BY LENGTH(scientific_name) ASC " +
             "LIMIT ? ";
         ArrayList<HashMap<String,String>> plants = new ArrayList<>();
