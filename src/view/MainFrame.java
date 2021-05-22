@@ -22,6 +22,7 @@ public class MainFrame{
     private MainPanel panel;
     private view.menus.PopupMenu popupMenu;
     private JFrame frame;
+    private MenuBar menuBar;
 
     public MainFrame( Controller controllerRef ) {
         this.controllerRef = controllerRef;
@@ -34,7 +35,9 @@ public class MainFrame{
         panel = new MainPanel(controllerRef);
         popupMenu = new PopupMenu();
 
-        frame.setJMenuBar(new MenuBar());
+        menuBar = new MenuBar();
+        frame.setJMenuBar(menuBar);
+
         frame.add(popupMenu);
         frame.setLayout(new BorderLayout());
 
@@ -124,6 +127,10 @@ public class MainFrame{
 
     public void setWaterTF(String text) {
         panel.setWaterTF(text);
+    }
+
+    public void setProfile(String name) {
+        menuBar.setProfile(name);
     }
 
     public void setNicknameTF(String text) {

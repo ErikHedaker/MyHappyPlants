@@ -95,6 +95,7 @@ public class Controller {
                     }
                     new Thread(new ReminderTask(this)).start();
                 }
+                view.setProfile(" - " + activeProfile.getName() + " - ");
                 view.showSearch(true);
                 view.showSearchField();
                 break;
@@ -185,7 +186,7 @@ public class Controller {
     public void sendReminderMessage() {
         ArrayList<Plant> plants = activeProfile.getPlants();
         for (Plant plant : plants) {
-            if (plant.getTimeRemaining() <= 10 && plant.getImageIcon() != null && !isUserReminded) {
+            if (plant.getTimeRemaining() <= 7 && plant.getImageIcon() != null && !isUserReminded) {
                 new Notification(plant.getImageIcon(), plant.getNameAlias() + " (" + plant.getNameWiki() + ")",
                         "Needs to be watered soon (" + plant.getTimeRemaining() + " days left)").display();
                 isUserReminded = true;
