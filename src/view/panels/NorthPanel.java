@@ -95,6 +95,25 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchPanel.add(searchBtn, BorderLayout.EAST);
 
         add(searchPanel, BorderLayout.EAST);
+
+        searchField.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if( e.getKeyCode() >= 65 &&
+                    e.getKeyCode() <= 90 &&
+                    !e.isControlDown()) {
+                    new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    new Thread(() -> controller.buttonPushed("search")).start();
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) { }
+            @Override
+            public void keyPressed(KeyEvent e) { }
+        });
     }
 
     public JButton getSearchBtn() {
@@ -114,7 +133,13 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
     }
 
     public void updateSearchResults(ArrayList<String> values) {
-        searchField.setModel(new DefaultComboBoxModel(values.toArray()));
+        String current = getSearchField();
+        searchField.removeAllItems();
+        for (String value : values) {
+            searchField.addItem(value);
+        }
+        searchField.getEditor().setItem(current);
+        ((JTextComponent) searchField.getEditor().getEditorComponent()).setCaretPosition(current.length());
     }
 
     @Override
@@ -139,11 +164,11 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource().equals(searchBtn)) {
             if (!searchField.getBackground().equals(Color.WHITE)) {
                 searchField.setBackground(Color.WHITE);
-            } else {
-                new Thread(() -> controller.buttonPushed("search")).start();
             }
+            new Thread(() -> controller.buttonPushed("search")).start();
         }
     }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
