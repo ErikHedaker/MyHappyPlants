@@ -14,33 +14,38 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     private JButton waterBtn;
     private JButton editBtn;
     private Controller controller;
+    private JButton deleteBtn;
 
     public PlantSelectionPanel(Controller controller) {
         this.controller = controller;
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(360, 360));
-        setBorder(BorderFactory.createEmptyBorder(150, 0, 150, 0));
+        setBorder(BorderFactory.createEmptyBorder(140, 0, 150, 0));
 
         JPanel borderPanel = new JPanel(new BorderLayout());
 
-        borderPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        borderPanel.setBorder(BorderFactory.createEmptyBorder(40, 50, 50, 50));
         borderPanel.setBackground(Color.white);
 
-        JPanel selectionPanel = new JPanel(new BorderLayout());
-
+        JPanel selectionPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0,3,6,3);
         selectionPanel.setBackground(Color.white);
-        selectionPanel.setPreferredSize(new Dimension(270, 270));
+        selectionPanel.setPreferredSize(new Dimension(270, 300));
 
         title = new JLabel("", JLabel.CENTER);
         title.setFont(new Font("Times New Roman", Font.PLAIN, 25));
         title.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
         title.setVisible(false);
-        selectionPanel.add(title, BorderLayout.PAGE_START);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        selectionPanel.add(title, gbc);
 
         image = new JLabel("", JLabel.CENTER);
         image.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-
-        selectionPanel.add(image, BorderLayout.CENTER);
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        selectionPanel.add(image, gbc);
         JPanel buttons = new JPanel(new GridLayout(0, 2, 0, 0));
         buttons.setBackground(Color.white);
         buttons.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
@@ -76,8 +81,24 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
 
         editBtn.setVisible(false);
         buttons.add(editBtn);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.weightx = 1;
+        gbc.ipadx = 200;
+        selectionPanel.add(buttons, gbc);
 
-        selectionPanel.add(buttons, BorderLayout.SOUTH);
+        deleteBtn = new JButton("remove");
+        deleteBtn.setBackground(new Color(212, 79, 63, 255));
+        deleteBtn.setForeground(Color.WHITE);
+        deleteBtn.setBorder(null);
+        deleteBtn.addActionListener(this);
+        deleteBtn.setVisible(false);
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.ipadx = 30;
+        gbc.weighty = 1;
+        gbc.ipady = 10;
+        selectionPanel.add(deleteBtn, gbc);
 
         borderPanel.add(selectionPanel);
 
@@ -90,6 +111,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         waterBtn.setVisible(true);
         editBtn.setVisible(true);
         title.setVisible(true);
+        deleteBtn.setVisible(true);
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
@@ -105,6 +127,8 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
             controller.buttonPushed("show plant creation page");
         } else if (e.getSource() == waterBtn) {
             controller.buttonPushed("water plant");
+        } else  if (e.getSource() == deleteBtn) {
+            controller.buttonPushed("remove plant");
         }
     }
 }

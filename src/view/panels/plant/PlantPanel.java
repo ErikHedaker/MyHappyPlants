@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * The PlantPanel class handles the visual elements of plants, this class is made to be multiplied into multiple instances in a list for each plant.
@@ -78,10 +80,11 @@ public class PlantPanel extends JPanel {
 
         graphics2D.setColor(Color.darkGray);
         graphics2D.drawRoundRect(140, 50, 330, 20, 15, 15);
-        graphics2D.setColor(new Color(16, 219 - startPosX / 5, 219));
+        graphics2D.setColor(new Color(16, startPosX/2, 219));
 
-        if (startPosX > 1)
-            graphics2D.drawRoundRect(140, 50, startPosX, 20, 15, 15);
+        if (startPosX > 1) {
+            graphics2D.drawRoundRect(140, 50, new BigDecimal(startPosX).intValue(), 20, 15, 15);
+        }
         ImageIcon icon = plant.getImageIcon();
         if (icon == null) {
             icon = new ImageIcon("./images/plant.jpg");
@@ -94,9 +97,16 @@ public class PlantPanel extends JPanel {
         @Override
         public void run() {
             while (true) {
-                int daysLeft = plant.getTimeRemaining();
-                if (startPosX > ((daysLeft) / (plant.getHoursBetweenWatering() == 0 ? 5 : plant.getHoursBetweenWatering()) * daysLeft))
+
+                int daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
+                int maxDays = plant.getHoursBetweenWatering() == 0 ? 1 : plant.getHoursBetweenWatering();
+                double scale = (330/maxDays) * daysLeft;
+
+                if (daysLeft == maxDays && startPosX <= 330) {
+                    startPosX++;
+                } else if (scale >= 140 && startPosX >= scale) {
                     startPosX--;
+                }
 
                 repaint();
                 propertyChangeSupport.firePropertyChange("update", null, null);

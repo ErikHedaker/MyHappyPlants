@@ -126,8 +126,7 @@ public class Controller {
                 view.setCreationMode(true);
                 view.setCardLayout("plant creation page");
                 break;
-            case "Remove Plant":
-                System.out.println("Remove Plant");
+            case "remove plant":
                 if(validPlantIndex(selectedPlantIndex)) {
                     removePlant(activeProfile.getPlants().get(selectedPlantIndex));
                     refreshPlantListGUI();
@@ -248,9 +247,12 @@ public class Controller {
         {
             Iterator<Plant> it = activeProfile.getPlants().iterator();
             while (it.hasNext()) {
-                Plant plant = it.next();
-                byte[] image = database.getPlantImage(plant.getDatabaseID());
-                plant.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
+                try {
+                    Plant plant = it.next();
+                    byte[] image = database.getPlantImage(plant.getDatabaseID());
+                    plant.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
+                } catch (ConcurrentModificationException e) {
+                }
             }
         }
 

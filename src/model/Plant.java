@@ -85,7 +85,8 @@ public class Plant
     }
 
     public int getTimeRemaining() {
-        return hoursBetweenWatering - getLastTimeWateredInterval();
+        int timeRemaining = hoursBetweenWatering - getLastTimeWateredInterval();
+        return timeRemaining;
     }
 
     public LocalDateTime getLastTimeWatered() {
