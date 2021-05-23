@@ -129,10 +129,6 @@ public class MainPanel extends JPanel {
         repaint();
     }
 
-    public void updateSearchResults(ArrayList<String> values) {
-        northPanel.updateSearchResults(values);
-    }
-
     public void setImageLabel(ImageIcon imageIcon) {
         plantSearchPanel.setImageLabel(imageIcon);
     }

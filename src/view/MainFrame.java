@@ -103,10 +103,6 @@ public class MainFrame{
         panel.setSelectedPlantName(plantName);
     }
 
-    public void updateSearchResults(ArrayList<String> values) {
-        panel.updateSearchResults(values);
-    }
-
     public void showConnectivityError() {
         JOptionPane.showMessageDialog(null, "API Down. Please try again later.");
     }
