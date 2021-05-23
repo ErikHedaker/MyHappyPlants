@@ -78,9 +78,15 @@ public class PlantSearchPanel extends JPanel {
         plantPanel.add(description, gbc);
 
         addPlantBtn = new JButton("ADD PLANT");
+        addPlantBtn.setBackground(new Color(220, 229, 185));
+        addPlantBtn.setBorderPainted(false);
+        addPlantBtn.setFocusPainted(false);
+        addPlantBtn.setFont(new Font("Arial", Font.BOLD, 10));
         addPlantBtn.addActionListener(new Action());
         gbc.gridx = 3;
         gbc.gridy = 6;
+        gbc.gridy = 3;
+
         gbc.ipadx = 50;
         gbc.ipady = 15;
         gbc.anchor = GridBagConstraints.CENTER;
