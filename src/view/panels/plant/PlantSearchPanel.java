@@ -34,6 +34,8 @@ public class PlantSearchPanel extends JPanel {
         setLayout(new BorderLayout());
         plantPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(3, 3, 6, 3);
+
         Border border = BorderFactory.createLineBorder(Color.lightGray, 1, true);
         plantPanel.setBorder(border);
         Border margin1 = new EmptyBorder(50,50,50,50);
@@ -72,6 +74,7 @@ public class PlantSearchPanel extends JPanel {
         gbc.weighty = 1;
         gbc.ipadx = 250;
         gbc.anchor = GridBagConstraints.CENTER;
+
         plantPanel.add(description, gbc);
 
         addPlantBtn = new JButton("ADD PLANT");
