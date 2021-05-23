@@ -123,7 +123,7 @@ public class Controller {
                             view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
                         }
                         view.showButton(true);
-                        view.setTitle(plant.get("common_name") != null ? plant.get("common_name") + " (" + wiki.getDisplayTitle() + ")" : wiki.getDisplayTitle());
+                        view.setTitle(plant.get("common_name") != null ? plant.get("common_name") + " (" + plant.get("scientific_name") + ")" : plant.get("scientific_name"));
                         view.setDescription(wiki.getText());
                         plantSearchInputName = wiki.getDisplayTitle().toLowerCase();
                     } else {
@@ -166,16 +166,15 @@ public class Controller {
     }
 
     public ArrayList<String> getResultsArray() {
+        ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%", 20);
         ArrayList<String> results = new ArrayList<>();
-        results.add(view.getSearchInput());
-
-        ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
-        if (!searchResult.isEmpty()) {
-            String plant = searchResult.get(0).get("common_name");
-            results.add(plant);
+        for (HashMap<String, String> plant : searchResult) {
+            if (plant.get("common_name") != null) {
+                results.add(plant.get("common_name"));
+            } else {
+                results.add(plant.get("scientific_name"));
+            }
         }
-
-        results.add("example2");
         return results;
     }
 

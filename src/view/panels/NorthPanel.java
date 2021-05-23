@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class NorthPanel extends JPanel implements ActionListener, KeyListener {
+public class NorthPanel extends JPanel implements ActionListener {
 
     private JButton searchBtn;
     private JComboBox searchField;
@@ -53,7 +53,7 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
         //searchField = new JTextField("tomato");
 
-        searchField = new JComboBox(new String[] { "Husk Tomato" });
+        searchField = new JComboBox(new String[] { "" });
         /*JTextComponent editor = (JTextComponent) searchField.getEditor().getEditorComponent();
         editor.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent evt) {
@@ -70,7 +70,6 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchField.setBorder(BorderFactory.createMatteBorder(1,1,3,1, new Color(93, 118, 77)));
         searchField.setFont(new Font("Arial", Font.BOLD, 20));
         searchField.setForeground(new Color(93, 118, 77));
-        searchField.addKeyListener(this);
         searchField.setPreferredSize(new Dimension(200, 40));
         searchField.setBackground(new Color(173, 193, 124));
 
@@ -94,6 +93,25 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchPanel.add(searchBtn, BorderLayout.EAST);
 
         add(searchPanel, BorderLayout.EAST);
+
+        searchField.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if( e.getKeyCode() >= 65 &&
+                    e.getKeyCode() <= 90 &&
+                    !e.isControlDown()) {
+                    new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    new Thread(() -> controller.buttonPushed("search")).start();
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) { }
+            @Override
+            public void keyPressed(KeyEvent e) { }
+        });
     }
 
     public JButton getSearchBtn() {
@@ -113,7 +131,13 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
     }
 
     public void updateSearchResults(ArrayList<String> values) {
-        searchField.setModel(new DefaultComboBoxModel(values.toArray()));
+        String current = getSearchField();
+        searchField.removeAllItems();
+        for (String value : values) {
+            searchField.addItem(value);
+        }
+        searchField.getEditor().setItem(current);
+        ((JTextComponent) searchField.getEditor().getEditorComponent()).setCaretPosition(current.length());
     }
 
     @Override
@@ -138,28 +162,8 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource().equals(searchBtn)) {
             if (!searchField.getBackground().equals(Color.WHITE)) {
                 searchField.setBackground(Color.WHITE);
-            } else {
-                new Thread(() -> controller.buttonPushed("search")).start();
             }
-        }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        updateSearchResults(controller.getResultsArray());
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             new Thread(() -> controller.buttonPushed("search")).start();
-        } else {
-            //new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
         }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 }
