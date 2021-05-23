@@ -60,8 +60,9 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
                 new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
             }
         });*/
+        Component editComponent = searchField.getEditor().getEditorComponent();
         searchField.setEditable(true);
-
+        editComponent.addKeyListener(this);
         //searchField.setHorizontalAlignment(SwingConstants.HORIZONTAL);
 
         search = new JPanel();
@@ -74,13 +75,13 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
         searchField.setPreferredSize(new Dimension(200, 40));
         searchField.setBackground(new Color(173, 193, 124));
 
-        searchField.addMouseListener(new MouseAdapter() {
+        editComponent.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
                 searchField.setBackground(Color.WHITE);
                 controller.buttonPushed("plantList");
-                //searchField.setText("");
+                searchField.getEditor().setItem("");
             }
         });
         search.setVisible(false);
@@ -146,15 +147,13 @@ public class NorthPanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        updateSearchResults(controller.getResultsArray());
+        //updateSearchResults(controller.getResultsArray());
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             new Thread(() -> controller.buttonPushed("search")).start();
-        } else {
-            //new Thread(() -> updateSearchResults(controller.getResultsArray())).start();
         }
     }
 

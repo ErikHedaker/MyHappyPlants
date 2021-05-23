@@ -35,6 +35,8 @@ public class MainFrame{
         panel = new MainPanel(controllerRef);
         popupMenu = new PopupMenu();
 
+        frame.setIconImage(new ImageIcon("images/logo-happy.png").getImage());
+
         menuBar = new MenuBar();
         frame.setJMenuBar(menuBar);
 

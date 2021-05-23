@@ -9,6 +9,7 @@ import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -195,17 +196,11 @@ public class Controller {
     }
 
     public void createPlant(String name, String hoursBetweenWatering) {
-        int timeBetweenWatering = Utility.getStringToInt(hoursBetweenWatering);
-        if (timeBetweenWatering == 0) {
-            new MessageDialog("Enter valid watering interval days.\nThis is needed to remind you whenever \nyour plants needs to be watered.");
-            view.setCardLayout("plant creation page");
-            return;
-        }
         Plant plant = new Plant();
         plant.setNameAlias(name);
         plant.setNameWiki(plantSearchInputName);
 
-        plant.setHoursBetweenWatering(timeBetweenWatering);
+        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         activeProfile.addPlant(plant);
         refreshPlantListGUI();
 
