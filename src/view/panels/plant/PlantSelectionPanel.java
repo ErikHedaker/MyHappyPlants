@@ -19,6 +19,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
     private Controller controller;
     private JButton deleteBtn;
     private ConfirmationDialog confirmationDialog;
+    private JButton changeImageBtn;
 
     public PlantSelectionPanel(Controller controller) {
         confirmationDialog = new ConfirmationDialog(controller);
@@ -90,6 +91,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         gbc.gridy = 3;
         gbc.weightx = 1;
         gbc.ipadx = 200;
+
         selectionPanel.add(buttons, gbc);
 
         deleteBtn = new JButton("remove");
@@ -107,8 +109,23 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         gbc.ipady = 10;
         selectionPanel.add(deleteBtn, gbc);
 
-        borderPanel.add(selectionPanel);
 
+        //Erik borde inte rör GUI, ändra gärna
+        changeImageBtn = new JButton("change image");
+        changeImageBtn.setBackground(Color.black);
+        changeImageBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        changeImageBtn.setForeground(Color.white);
+        changeImageBtn.addActionListener(this);
+        changeImageBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        changeImageBtn.setBorder(null);
+        changeImageBtn.setVisible(false);
+        JPanel stuff = new JPanel();
+        stuff.setBackground(Color.white);
+        stuff.add(changeImageBtn);
+        borderPanel.add(stuff, BorderLayout.SOUTH);
+
+
+        borderPanel.add(selectionPanel);
         add(borderPanel);
     }
 
@@ -118,6 +135,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         editBtn.setVisible(true);
         title.setVisible(true);
         deleteBtn.setVisible(true);
+        changeImageBtn.setVisible(true);
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
@@ -138,9 +156,11 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == waterBtn) {
             confirmationDialog.setConfirmationMessage("Are you sure you want to water: " + title.getText() + "?");
             confirmationDialog.showConfirmationDialog(DialogType.WATER_CONFIRMATION_DIALOG);
-        } else  if (e.getSource() == deleteBtn) {
+        } else if (e.getSource() == deleteBtn) {
             confirmationDialog.setConfirmationMessage("Are you sure you want to remove: " + title.getText() + "?");
             confirmationDialog.showConfirmationDialog(DialogType.REMOVE_CONFIRMATION_DIALOG);
+        } else if (e.getSource() == changeImageBtn) {
+            controller.buttonPushed("change plant image");
         }
     }
 }

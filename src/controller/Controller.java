@@ -33,6 +33,7 @@ public class Controller {
     private byte[] imageDefault;
     public int selectedPlantIndex;
     private String plantSearchInputName;
+    private byte[] plantSearchImage;
     private boolean isUserReminded;
 
     public Controller() {
@@ -106,25 +107,23 @@ public class Controller {
                     ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%");
                     if (!searchResult.isEmpty()) {
                         HashMap<String, String> plant = searchResult.get(0);
-
-                        String[] individualScientificName = plant.get("scientific_name").split(" ");
+                        String[] scientificNameWords = plant.get("scientific_name").split(" ");
                         JWiki wiki = new JWiki(plant.get("common_name"));
                         wiki = wiki.valid() ? wiki : new JWiki(plant.get("scientific_name"));
-                        wiki = wiki.valid() ? wiki : new JWiki(individualScientificName[0] + individualScientificName[1]);
-                        wiki = wiki.valid() ? wiki : new JWiki(individualScientificName[0]);
+                        wiki = wiki.valid() ? wiki : new JWiki(scientificNameWords[0] + " " + scientificNameWords[1]);
+                        wiki = wiki.valid() ? wiki : new JWiki(scientificNameWords[0]);
                         wiki = wiki.valid() ? wiki : new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
-                        try {
-                            ImageIcon imageIcon = new ImageIcon(new URL(plant.get("image_url")));
-                            if (imageIcon.getIconHeight() == -1 ||
-                                imageIcon.getIconWidth()  == -1 ) {
-                                throw new Exception();
-                            }
-                            view.setImageLabel(imageIcon);
-                        } catch (Exception e) {
-                            view.setImageLabel(new ImageIcon(fetchImageFromURL(wiki.getImageURL())));
+                        plantSearchImage = fetchImageFromURL(plant.get("image_url"));
+                        if (plantSearchImage == imageDefault ) {
+                            plantSearchImage = fetchImageFromURL(wiki.getImageURL());
                         }
+                        view.setImageLabel(new ImageIcon(plantSearchImage));
                         view.showButton(true);
-                        view.setTitle(plant.get("common_name") != null ? plant.get("common_name") + " (" + plant.get("scientific_name") + ")" : plant.get("scientific_name"));
+                        if (plant.get("common_name") != null) {
+                            view.setTitle(plant.get("common_name") + " (" + plant.get("scientific_name") + ")");
+                        } else {
+                            view.setTitle(plant.get("scientific_name"));
+                        }
                         view.setDescription(wiki.getText());
                         plantSearchInputName = wiki.getDisplayTitle().toLowerCase();
                     } else {
@@ -163,6 +162,17 @@ public class Controller {
                 waterPlant(getPlantFromIndex(selectedPlantIndex));
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
+            case "change plant image":
+                File file = Utility.OpenFileChooser();
+                System.out.println(file.getAbsolutePath());
+                byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
+                if( image != imageDefault )
+                {
+                    Plant plant = getPlantFromIndex(selectedPlantIndex);
+                    plant.setImageIcon(new ImageIcon(image));
+                    database.upsertPlantImage(plant.getDatabaseID(), image);
+                }
+                break;
         }
     }
 
@@ -198,16 +208,11 @@ public class Controller {
         Plant plant = new Plant();
         plant.setNameAlias(name);
         plant.setNameWiki(plantSearchInputName);
-
         plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        plant.setImageIcon(new ImageIcon(plantSearchImage));
         activeProfile.addPlant(plant);
         refreshPlantListGUI();
-
-        JWiki wiki = new JWiki(plantSearchInputName);
-        byte[] icon = fetchImageFromURL(wiki.getImageURL());
-        plant.setImageIcon(new ImageIcon(icon));
-
-        new Thread(() -> upsertPlantDetails(plant, icon)).start();
+        new Thread(() -> upsertPlantDetails(plant, plantSearchImage)).start();
         view.setCreationMode(false);
     }
 
@@ -215,7 +220,6 @@ public class Controller {
         plant.setImageIcon(new ImageIcon(icon));
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
-        waterPlant(plant);
         database.upsertPlantImage(plant.getDatabaseID(), icon);
     }
 
@@ -259,26 +263,11 @@ public class Controller {
      * Queries for images in the database, creates ImageIcons and sets them in the list of plants in the active profile
      */
     public synchronized void loadPlantImagesFromDatabase() {
-        //FUNKAR INTE >:(
-        synchronized (activeProfile.getPlants())
-        {
-            Iterator<Plant> it = activeProfile.getPlants().iterator();
-            while (it.hasNext()) {
-                try {
-                    Plant plant = it.next();
-                    byte[] image = database.getPlantImage(plant.getDatabaseID());
-                    plant.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
-                } catch (ConcurrentModificationException e) {
-                }
-            }
-        }
-
-        /*
         for (Plant plant : activeProfile.getPlants()) {
             byte[] image = database.getPlantImage(plant.getDatabaseID());
             plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
         }
-        */
+
     }
 
     /**

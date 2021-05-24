@@ -4,6 +4,8 @@ import model.Plant;
 import org.apache.commons.codec.binary.Base64;
 import view.dialog.MessageDialog;
 
+import javax.swing.*;
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -40,6 +42,18 @@ public class Utility {
         } catch (NumberFormatException e) {
         }
         return number;
+    }
+
+    public static File OpenFileChooser( )
+    {
+        JFileChooser fileChooser = new JFileChooser( );
+        fileChooser.setCurrentDirectory( new File( System.getProperty( "user.home" ) ) );
+        int result = fileChooser.showOpenDialog( new JDialog( ) );
+        if( result == JFileChooser.APPROVE_OPTION )
+        {
+            return fileChooser.getSelectedFile( );
+        }
+        return null;
     }
 
     public static HashMap<String, String> getShortestValue(ArrayList<HashMap<String, String>> values, String key){

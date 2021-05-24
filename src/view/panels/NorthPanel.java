@@ -126,14 +126,18 @@ public class NorthPanel extends JPanel implements ActionListener {
     }
 
     public void updateSearchResults(ArrayList<String> values) {
-        String current = getSearchField();
-        searchField.removeAllItems();
-        for (String value : values) {
-            searchField.addItem(value);
+        try {
+            String current = getSearchField();
+            searchField.removeAllItems();
+            for (String value : values) {
+                searchField.addItem(value);
+            }
+            searchField.getEditor().setItem(current);
+            ((JTextComponent) searchField.getEditor().getEditorComponent()).setCaretPosition(current.length());
+            searchField.setPopupVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        searchField.getEditor().setItem(current);
-        ((JTextComponent) searchField.getEditor().getEditorComponent()).setCaretPosition(current.length());
-        searchField.setPopupVisible(true);
     }
 
     @Override
