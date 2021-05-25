@@ -49,7 +49,7 @@ public class PlantSearchPanel extends JPanel implements ActionListener {
         backButton.setIcon(new ImageIcon(scaledEditImg));
         backButton.setFont(new Font("Arial", Font.BOLD, 10));
         backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        backButton.setBackground(Color.white);
+        backButton.setBackground(new Color(220, 229, 185));;
         backButton.setFocusPainted(false);
         backButton.addActionListener(this);
 

@@ -19,6 +19,7 @@ public class MainPanel extends JPanel {
     private SouthPanel southPanel;
     private PlantSelectionPanel plantSelectionPanel;
     private PlantCreationPanel plantCreationPanel;
+    private PlantRankPanel rankPanel;
 
     public MainPanel(Controller controller) {
         this.controller = controller;
@@ -38,6 +39,8 @@ public class MainPanel extends JPanel {
         panelCenter.add(plantSearchPanel, "plant page");
         plantCreationPanel = new PlantCreationPanel(controller);
         panelCenter.add(plantCreationPanel, "plant creation page");
+        rankPanel = new PlantRankPanel(controller);
+        panelCenter.add(rankPanel, "rank page");
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);

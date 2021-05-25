@@ -28,18 +28,20 @@ import java.net.URL;
 
 public class PlantCreationPanel extends JPanel implements ActionListener {
     private Controller controller;
-    private JButton backButton;
-    private JButton saveButton;
-    private JTextField nicknameTF;
-    private JTextField waterTF;
+    private JButton backButton, saveButton, changeImageBtn;
+    private JTextField nicknameTF, waterTF;
     boolean creationMode = true;
 
     public PlantCreationPanel(Controller controller) {
         this.controller = controller;
         createPanelEdit();
     }
-    /** This model is for creating the edit panel
-     * @author Fanny Rosdahl Rosenglim **/
+
+    /**
+     * This model is for creating the edit panel
+     *
+     * @author Fanny Rosdahl Rosenglim
+     **/
     public void createPanelEdit() {
         setBackground(new Color(245, 245, 245));
         setBorder(BorderFactory.createEmptyBorder(0, 300, 0, 300));
@@ -80,31 +82,61 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         contentPanel.add(backButton, gbc);
 
         saveButton = new JButton();
-        saveButton.setPreferredSize(new Dimension(120, 45));
+
+        saveButton.setPreferredSize(new Dimension(275,30));
+        ImageIcon img = new ImageIcon("./images/map.png");
+        Image scaledImg = img.getImage().getScaledInstance(90, 60,
+                Image.SCALE_AREA_AVERAGING);
+        saveButton.setIcon(new ImageIcon(scaledImg));
+        saveButton.setBackground(null);
         saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        saveButton.setToolTipText("Save your plant details");
+        saveButton.setBorder(BorderFactory.createLineBorder(Color.white));
+        //saveButton.setPreferredSize(new Dimension(, 45));
+        /*saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         ImageIcon saveImg = new ImageIcon("./images/save-icon.png");
-        Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 25,
+        Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 15,
                 Image.SCALE_AREA_AVERAGING);
 
-        saveButton.setLayout(new FlowLayout(FlowLayout.LEFT));
+        saveButton.setLayout(new FlowLayout(FlowLayout.LEADING));
         JLabel iconLabel = new JLabel(new ImageIcon(scaledEditImage));
         iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         JLabel textLabel = new JLabel("SAVE");
         saveButton.add(iconLabel);
         saveButton.add(textLabel);
-        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));*/
 
         saveButton.setBackground(Color.white);
         saveButton.addActionListener(this);
-        saveButton.setFont(new Font("Arial", Font.BOLD, 10));
         gbc.gridx = 3;
-        gbc.gridy = 40;
+        gbc.gridy = 44;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.PAGE_END;
+        gbc.anchor = GridBagConstraints.WEST;
         contentPanel.add(saveButton, gbc);
+
+        changeImageBtn = new JButton();
+        ImageIcon changeImg = new ImageIcon("./images/jpg.png");
+        Image scaledChangeImg = changeImg.getImage().getScaledInstance(45, 50,
+                Image.SCALE_AREA_AVERAGING);
+        changeImageBtn.setIcon(new ImageIcon(scaledChangeImg));
+        changeImageBtn.setBackground(null);
+        changeImageBtn.setBorder(BorderFactory.createLineBorder(null));
+        changeImageBtn.addActionListener(this);
+        changeImageBtn.setToolTipText("Update the picture of the plant");
+        changeImageBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        changeImageBtn.setBorder(BorderFactory.createLineBorder(Color.white));
+        gbc.gridx = 3;
+        gbc.gridy = 44;
+        gbc.weighty = 12;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+
+        contentPanel.add(changeImageBtn, gbc);
+
 
         JLabel title = new JLabel("ENTER PLANT DETAILS");
         title.setFont(new Font("Calibri light", Font.BOLD, 25));
@@ -141,6 +173,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.EAST;
         contentPanel.add(nicknameTF, gbc);
+
 
         JLabel climateLabel = new JLabel("Climate: ");
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
@@ -208,9 +241,9 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         DefaultListModel model = new DefaultListModel();
 
-        Image img1 = new ImageIcon("images/flower_small.png").getImage().getScaledInstance(70,110, Image.SCALE_SMOOTH);
-        Image img2 = new ImageIcon("images/flower_medium.png").getImage().getScaledInstance(80,120, Image.SCALE_SMOOTH);
-        Image img3 = new ImageIcon("images/flower_big.png").getImage().getScaledInstance(90,130, Image.SCALE_SMOOTH);
+        Image img1 = new ImageIcon("images/flower_small.png").getImage().getScaledInstance(70, 110, Image.SCALE_SMOOTH);
+        Image img2 = new ImageIcon("images/flower_medium.png").getImage().getScaledInstance(80, 120, Image.SCALE_SMOOTH);
+        Image img3 = new ImageIcon("images/flower_big.png").getImage().getScaledInstance(90, 130, Image.SCALE_SMOOTH);
 
         model.addElement(new ImageIcon(img1));
         model.addElement(new ImageIcon(img2));
@@ -267,7 +300,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         linkBtn.setForeground(new Color(26, 122, 169));
         contentPanel.add(linkBtn, gbc);
 
-        contentPanel.setPreferredSize(new Dimension(750,450));
+        contentPanel.setPreferredSize(new Dimension(750, 450));
         g.fill = GridBagConstraints.HORIZONTAL;
         editPanel.add(contentPanel, g);
 
@@ -281,7 +314,6 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     }
 
     /**
-     *
      * @author Viktor Johansson
      */
 
@@ -296,10 +328,14 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
                 new MessageDialog("Enter valid watering interval days.\nThis is needed to remind you whenever \nyour plants needs to be watered.");
                 controller.setCardLayout("plant creation page");
                 return;
+
             }
-            new Thread(() -> upsertPlantDetails()).start();
+        } else if (e.getSource() == changeImageBtn) {
+            controller.buttonPushed("change plant image");
         }
+        new Thread(() -> upsertPlantDetails()).start();
     }
+
 
     public void setWaterTF(String text) {
         waterTF.setText(text);

@@ -12,8 +12,8 @@ public class PopupMenu extends JPopupMenu {
 
     public PopupMenu(){
         puMenu = this;
-        settings = new JMenuItem("Inställningar");
-        profil = new JMenuItem("Gå till profil");
+        settings = new JMenuItem("Settings");
+        profil = new JMenuItem("Access profile");
 
         puMenu.add(profil);
         puMenu.add(settings);

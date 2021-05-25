@@ -173,6 +173,9 @@ public class Controller {
                     database.upsertPlantImage(plant.getDatabaseID(), image);
                 }
                 break;
+            case "rank page":
+                view.setCardLayout("rank page");
+                break;
         }
     }
 

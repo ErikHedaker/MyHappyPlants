@@ -110,8 +110,9 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         selectionPanel.add(deleteBtn, gbc);
 
 
-        //Erik borde inte rör GUI, ändra gärna
-        changeImageBtn = new JButton("change image");
+        //Erik borde inte rör GUI, ändra gärna,
+        // lol, grymt jobb! men ändrade lite
+        /*changeImageBtn = new JButton("change image");
         changeImageBtn.setBackground(Color.black);
         changeImageBtn.setFont(new Font("Arial", Font.BOLD, 16));
         changeImageBtn.setForeground(Color.white);
@@ -122,7 +123,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         JPanel stuff = new JPanel();
         stuff.setBackground(Color.white);
         stuff.add(changeImageBtn);
-        borderPanel.add(stuff, BorderLayout.SOUTH);
+        borderPanel.add(stuff, BorderLayout.SOUTH);*/
 
 
         borderPanel.add(selectionPanel);
@@ -135,7 +136,7 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         editBtn.setVisible(true);
         title.setVisible(true);
         deleteBtn.setVisible(true);
-        changeImageBtn.setVisible(true);
+        //changeImageBtn.setVisible(true);
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
@@ -159,8 +160,8 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == deleteBtn) {
             confirmationDialog.setConfirmationMessage("Are you sure you want to remove: " + title.getText() + "?");
             confirmationDialog.showConfirmationDialog(DialogType.REMOVE_CONFIRMATION_DIALOG);
-        } else if (e.getSource() == changeImageBtn) {
+        } /*else if (e.getSource() == changeImageBtn) {
             controller.buttonPushed("change plant image");
-        }
+        }*/
     }
 }
