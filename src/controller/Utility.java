@@ -2,7 +2,6 @@ package controller;
 
 import model.Plant;
 import org.apache.commons.codec.binary.Base64;
-import view.dialog.MessageDialog;
 
 import javax.swing.*;
 import java.io.File;
@@ -130,7 +129,7 @@ public class Utility {
      */
     public static LocalDateTime getNextWateringDate(Plant plant) {
         try {
-            return plant.getLastTimeWatered().plusDays(plant.getHoursBetweenWatering());
+            return plant.getLastTimeWatered().plusDays(plant.getDaysBetweenWatering());
         } catch (NullPointerException e) {
             return null;
         }

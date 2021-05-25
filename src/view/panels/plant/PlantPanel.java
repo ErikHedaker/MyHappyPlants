@@ -1,14 +1,11 @@
 package view.panels.plant;
 
-import controller.Utility;
 import model.Plant;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * The PlantPanel class handles the visual elements of plants, this class is made to be multiplied into multiple instances in a list for each plant.
@@ -99,7 +96,7 @@ public class PlantPanel extends JPanel {
             while (!Thread.interrupted()) {
 
                 int daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
-                int maxDays = plant.getHoursBetweenWatering() == 0 ? 1 : plant.getHoursBetweenWatering();
+                int maxDays = plant.getDaysBetweenWatering() == 0 ? 1 : plant.getDaysBetweenWatering();
                 double scale = (365/maxDays) * daysLeft;
 
                 boolean increasePos = daysLeft == maxDays && startPosX <= 365;

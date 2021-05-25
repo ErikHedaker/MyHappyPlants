@@ -3,13 +3,11 @@ package controller;
 import model.*;
 import model.api.JWiki;
 import view.MainFrame;
-import view.dialog.ConfirmationDialog;
 import view.dialog.MessageDialog;
 import view.panels.plant.PlantPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -143,7 +141,7 @@ public class Controller {
                 if (!view.isCreationMode()) {
                     Plant plant = getPlantFromIndex(selectedPlantIndex);
                     view.setNicknameTF(plant.getNameAlias());
-                    view.setWaterTF(String.valueOf(plant.getHoursBetweenWatering()));
+                    view.setWaterTF(String.valueOf(plant.getDaysBetweenWatering()));
                 }
 
                 view.setCardLayout("plant creation page");
@@ -164,7 +162,6 @@ public class Controller {
                 break;
             case "change plant image":
                 File file = Utility.OpenFileChooser();
-                System.out.println(file.getAbsolutePath());
                 byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
                 if( image != imageDefault )
                 {
@@ -211,7 +208,7 @@ public class Controller {
         Plant plant = new Plant();
         plant.setNameAlias(name);
         plant.setNameWiki(plantSearchInputName);
-        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         plant.setImageIcon(new ImageIcon(plantSearchImage));
         activeProfile.addPlant(plant);
         refreshPlantListGUI();
@@ -233,7 +230,7 @@ public class Controller {
         }
         Plant plant = getPlantFromIndex(selectedPlantIndex);
         plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
-        plant.setHoursBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
+        plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         database.updatePlant(plant);
         refreshPlantListGUI();
     }

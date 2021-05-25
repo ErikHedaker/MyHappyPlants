@@ -78,7 +78,7 @@ public class Database {
      */
     public ArrayList<Plant> getPlants(int profileID) {
         final String SQL =
-            "SELECT id, name_alias, name_wiki, hours_between_watering, last_time_watered " +
+            "SELECT id, name_alias, name_wiki, days_between_watering, current_size, last_time_watered " +
             "FROM plant " +
             "LEFT JOIN RecentWatering() AS recent_watering " +
             "ON plant.id = recent_watering.plant_id " +
@@ -94,7 +94,8 @@ public class Database {
                             .setDatabaseID(resultSet.getInt("id"))
                             .setNameAlias(resultSet.getString("name_alias"))
                             .setNameWiki(resultSet.getString("name_wiki"))
-                            .setHoursBetweenWatering(resultSet.getInt("hours_between_watering"))
+                            .setDaysBetweenWatering(resultSet.getInt("days_between_watering"))
+                            .setCurrentSize(resultSet.getString("current_size"))
                             .setLastTimeWatered(resultSet.getObject("last_time_watered", LocalDateTime.class))
                     );
                 }
@@ -145,14 +146,15 @@ public class Database {
      */
     public int insertPlant(int profileID, Plant plant) {
         final String SQL =
-            "INSERT INTO plant (name_alias, name_wiki, profile_id, hours_between_watering)" +
-            "VALUES (?, ?, ?, ?)";
+            "INSERT INTO plant (name_alias, name_wiki, profile_id, days_between_watering, current_size)" +
+            "VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(connectionURL);
              PreparedStatement preparedStatement = connection.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, plant.getNameAlias());
             preparedStatement.setString(2, plant.getNameWiki());
             preparedStatement.setInt(3, profileID);
-            preparedStatement.setInt(4, plant.getHoursBetweenWatering());
+            preparedStatement.setInt(4, plant.getDaysBetweenWatering());
+            preparedStatement.setString(5, plant.getCurrentSize());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -204,14 +206,15 @@ public class Database {
     public void updatePlant(Plant plant) {
         final String SQL =
             "UPDATE plant " +
-            "SET name_alias = ?, name_wiki = ?, hours_between_watering = ? " +
+            "SET name_alias = ?, name_wiki = ?, days_between_watering = ?, current_size = ? " +
             "WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(connectionURL);
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
             preparedStatement.setString(1, plant.getNameAlias());
             preparedStatement.setString(2, plant.getNameWiki());
-            preparedStatement.setInt(3, plant.getHoursBetweenWatering());
-            preparedStatement.setInt(4, plant.getDatabaseID());
+            preparedStatement.setInt(3, plant.getDaysBetweenWatering());
+            preparedStatement.setString(4, plant.getCurrentSize());
+            preparedStatement.setInt(5, plant.getDatabaseID());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -370,7 +373,7 @@ public class Database {
 
     public int getAverageWatering(String nameWiki) {
         final String SQL =
-            "SELECT name_wiki, AVG(hours_between_watering) FROM plant " +
+            "SELECT name_wiki, AVG(days_between_watering) FROM plant " +
             "WHERE name_wiki = ? " +
             "GROUP BY name_wiki";
         ArrayList<HashMap<String,String>> plants = new ArrayList<>();
@@ -394,12 +397,9 @@ public class Database {
         Database database = new Database(new SimpleEncryption().readFile());
         Profile profileAdmin = database.getProfile("Admin");
         System.out.println(profileAdmin);
-        /*
         for( HashMap<String,String> plant : database.searchPlant("%rose%"))
         {
             System.out.println(plant.get("scientific_name"));
         }
-        */
-        System.out.println(database.getAverageWatering("Carex sylvatica"));
     }
 }

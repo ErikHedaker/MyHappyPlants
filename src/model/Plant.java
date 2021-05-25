@@ -1,14 +1,8 @@
 package model;
 
-import controller.Utility;
-
 import javax.swing.*;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * The Plant class represents a plant that the profile has and tracks
@@ -19,10 +13,10 @@ public class Plant {
     private int databaseID;
     private String nameAlias;
     private String nameWiki;
-    private int hoursBetweenWatering;
+    private int daysBetweenWatering;
     private LocalDateTime lastTimeWatered;
     private ImageIcon imageIcon;
-    private String description;
+    private String currentSize;
 
     /**
      * All Setter methods
@@ -45,9 +39,9 @@ public class Plant {
         this.nameWiki = nameWiki;
         return this;
     }
-    public Plant setHoursBetweenWatering(int hoursBetweenWatering)
+    public Plant setDaysBetweenWatering(int daysBetweenWatering)
     {
-        this.hoursBetweenWatering = hoursBetweenWatering;
+        this.daysBetweenWatering = daysBetweenWatering;
         return this;
     }
     public Plant setLastTimeWatered(LocalDateTime wateringHappenedLast)
@@ -55,12 +49,12 @@ public class Plant {
         this.lastTimeWatered = wateringHappenedLast;
         return this;
     }
-    public Plant setDescription(String description) {
-        this.description = description;
-        return this;
-    }
     public Plant setImageIcon(ImageIcon imageIcon) {
         this.imageIcon = imageIcon;
+        return this;
+    }
+    public Plant setCurrentSize(String currentSize) {
+        this.currentSize = currentSize;
         return this;
     }
 
@@ -79,12 +73,15 @@ public class Plant {
     public String getNameWiki() {
         return nameWiki;
     }
-    public int getHoursBetweenWatering() {
-        return hoursBetweenWatering;
+    public int getDaysBetweenWatering() {
+        return daysBetweenWatering;
+    }
+    public String getCurrentSize() {
+        return currentSize;
     }
 
     public int getTimeRemaining() {
-        int timeRemaining = hoursBetweenWatering - getLastTimeWateredInterval();
+        int timeRemaining = daysBetweenWatering - getLastTimeWateredInterval();
         return timeRemaining;
     }
 
@@ -102,10 +99,6 @@ public class Plant {
 
         return daysBetween;
     }
-
-    public String getDescription() {
-        return description;
-    }
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
@@ -117,7 +110,8 @@ public class Plant {
             "Plant\t{ databaseID = " + databaseID +
             ", nameAlias = '" + nameAlias +
             "', nameWiki = '" + nameWiki +
-            "', hoursBetweenWatering = " + hoursBetweenWatering +
+            "', hoursBetweenWatering = " + daysBetweenWatering +
+            "', currentSize = " + currentSize +
             ", lastTimeWatered = " + lastTimeWatered + " }";
     }
 }
