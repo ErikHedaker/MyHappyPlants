@@ -84,58 +84,31 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         saveButton = new JButton();
 
         saveButton.setPreferredSize(new Dimension(275,30));
-        ImageIcon img = new ImageIcon("./images/map.png");
-        Image scaledImg = img.getImage().getScaledInstance(90, 60,
-                Image.SCALE_AREA_AVERAGING);
-        saveButton.setIcon(new ImageIcon(scaledImg));
-        saveButton.setBackground(null);
+        saveButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        saveButton.setPreferredSize(new Dimension(70, 25));
         saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        saveButton.setToolTipText("Save your plant details");
-        saveButton.setBorder(BorderFactory.createLineBorder(Color.white));
-        //saveButton.setPreferredSize(new Dimension(, 45));
-        /*saveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         ImageIcon saveImg = new ImageIcon("./images/save-icon.png");
-        Image scaledEditImage = saveImg.getImage().getScaledInstance(26, 15,
+        Image scaledEditImage = saveImg.getImage().getScaledInstance(25, 20,
                 Image.SCALE_AREA_AVERAGING);
 
         saveButton.setLayout(new FlowLayout(FlowLayout.LEADING));
         JLabel iconLabel = new JLabel(new ImageIcon(scaledEditImage));
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JLabel textLabel = new JLabel("SAVE");
         saveButton.add(iconLabel);
         saveButton.add(textLabel);
-        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));*/
+        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         saveButton.setBackground(Color.white);
         saveButton.addActionListener(this);
         gbc.gridx = 3;
-        gbc.gridy = 44;
+        gbc.gridy = 40;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         contentPanel.add(saveButton, gbc);
-
-        changeImageBtn = new JButton();
-        ImageIcon changeImg = new ImageIcon("./images/jpg.png");
-        Image scaledChangeImg = changeImg.getImage().getScaledInstance(45, 50,
-                Image.SCALE_AREA_AVERAGING);
-        changeImageBtn.setIcon(new ImageIcon(scaledChangeImg));
-        changeImageBtn.setBackground(null);
-        changeImageBtn.setBorder(BorderFactory.createLineBorder(null));
-        changeImageBtn.addActionListener(this);
-        changeImageBtn.setToolTipText("Update the picture of the plant");
-        changeImageBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        changeImageBtn.setBorder(BorderFactory.createLineBorder(Color.white));
-        gbc.gridx = 3;
-        gbc.gridy = 44;
-        gbc.weighty = 12;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-
-        contentPanel.add(changeImageBtn, gbc);
 
 
         JLabel title = new JLabel("ENTER PLANT DETAILS");
@@ -175,10 +148,42 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         contentPanel.add(nicknameTF, gbc);
 
 
+        JLabel picLabel = new JLabel("Change picture (optional): ");
+        picLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 14;
+        gbc.weighty = 15;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        contentPanel.add(picLabel, gbc);
+
+        changeImageBtn = new JButton();
+        ImageIcon changeImg = new ImageIcon("./images/jpg.png");
+        Image scaledChangeImg = changeImg.getImage().getScaledInstance(45, 50,
+                Image.SCALE_AREA_AVERAGING);
+        changeImageBtn.setIcon(new ImageIcon(scaledChangeImg));
+        changeImageBtn.setBackground(null);
+        changeImageBtn.setBorder(BorderFactory.createLineBorder(null));
+        changeImageBtn.addActionListener(this);
+        changeImageBtn.setToolTipText("Update the picture of the plant");
+        changeImageBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        changeImageBtn.setBorder(BorderFactory.createLineBorder(Color.white));
+        gbc.gridx = 4;
+        gbc.gridy = 14;
+        gbc.weighty = 12;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+
+        contentPanel.add(changeImageBtn, gbc);
+
+
         JLabel climateLabel = new JLabel("Climate: ");
         climateLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 14;
+        gbc.gridy = 15;
         gbc.weighty = 15;
         gbc.weightx = 2;
         gbc.gridwidth = 1;
@@ -191,7 +196,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         climateMenu.setBackground(Color.white);
         climateMenu.setPreferredSize(new Dimension(275, 30));
         gbc.gridx = 4;
-        gbc.gridy = 14;
+        gbc.gridy = 15;
         gbc.weighty = 5;
         gbc.weightx = 2;
         gbc.weighty = 15;
@@ -203,7 +208,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         JLabel waterLabel = new JLabel("Interval Between Watering: ");
         waterLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 15;
+        gbc.gridy = 16;
         gbc.weighty = 15;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -219,7 +224,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             }
         });
         gbc.gridx = 4;
-        gbc.gridy = 15;
+        gbc.gridy = 16;
         gbc.weighty = 15;
         gbc.weightx = 2;
         gbc.gridwidth = 1;
@@ -231,7 +236,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         sizeLabel.setToolTipText("This is used for our remaining days between watering estimation.");
         sizeLabel.setFont(new Font("Calibri light", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 16;
+        gbc.gridy = 17;
         gbc.weighty = 15;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -259,7 +264,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 
         gbc.gridx = 4;
-        gbc.gridy = 16;
+        gbc.gridy = 17;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
@@ -268,7 +273,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         contentPanel.add(list, gbc);
 
         gbc.gridx = 4;
-        gbc.gridy = 17;
+        gbc.gridy = 18;
         gbc.weighty = 0;
         gbc.weightx = 0;
         gbc.gridwidth = 1;
@@ -292,7 +297,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
             }
         });
         gbc.gridx = 4;
-        gbc.gridy = 18;
+        gbc.gridy = 19;
         gbc.weighty = 0;
         gbc.weightx = 0;
         linkBtn.setBackground(null);
