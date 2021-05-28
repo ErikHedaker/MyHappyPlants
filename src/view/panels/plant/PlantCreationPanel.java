@@ -93,11 +93,10 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         saveButton.setLayout(new FlowLayout(FlowLayout.LEADING));
         JLabel iconLabel = new JLabel(new ImageIcon(scaledEditImage));
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JLabel textLabel = new JLabel("SAVE");
         saveButton.add(iconLabel);
         saveButton.add(textLabel);
-        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
         saveButton.setBackground(Color.white);
         saveButton.addActionListener(this);
@@ -161,7 +160,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         changeImageBtn = new JButton();
         ImageIcon changeImg = new ImageIcon("./images/jpg.png");
-        Image scaledChangeImg = changeImg.getImage().getScaledInstance(45, 50,
+        Image scaledChangeImg = changeImg.getImage().getScaledInstance(50, 50,
                 Image.SCALE_AREA_AVERAGING);
         changeImageBtn.setIcon(new ImageIcon(scaledChangeImg));
         changeImageBtn.setBackground(null);
@@ -256,7 +255,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
 
         JList list = new JList(model);
         list.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        list.setToolTipText("This is used for our remaining days between watering estimation.");
+        list.setToolTipText("Select an image that represents the plant size best.");
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -279,7 +278,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.gridwidth = 1;
 
         JTextPane tPane = new JTextPane();
-        tPane.setText("Plants in smaller pots have less soil and will \ndry out faster than plants with bigger pots.");
+        tPane.setText("This is used for our remaining days between watering estimation. Plants in smaller pots have less soil and will dry out faster than plants with larger pots.");
         tPane.setEditable(false);
         StyledDocument styledDocument = tPane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -305,7 +304,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         linkBtn.setForeground(new Color(26, 122, 169));
         contentPanel.add(linkBtn, gbc);
 
-        contentPanel.setPreferredSize(new Dimension(750, 450));
+        contentPanel.setPreferredSize(new Dimension(750, 500));
         g.fill = GridBagConstraints.HORIZONTAL;
         editPanel.add(contentPanel, g);
 

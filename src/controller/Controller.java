@@ -86,18 +86,19 @@ public class Controller {
                 if (view.getPlantList().getPlantPanels().size() < 1) {
                     view.setCardLayout("welcome info");
                 } else {
-                    view.setCardLayout("plantList");
                     new Thread(() -> loadPlantImagesFromDatabase()).start();
                     for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                         if (!panel.getLoadingThread().isAlive()) {
                             panel.getLoadingThread().start();
                         }
                     }
-                    new Thread(new ReminderTask(this)).start();
+                    view.setCardLayout("plantList");
+
                 }
-                view.setProfile(" - " + activeProfile.getName() + " - ");
+                view.setProfile("       " + activeProfile.getName() + "       ");
                 view.showSearch(true);
                 view.showSearchField();
+                sendReminderMessage();
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
@@ -193,7 +194,7 @@ public class Controller {
         view.setCreationMode(enabled);
     }
 
-    public void sendReminderMessage() {
+    public synchronized void sendReminderMessage() {
         ArrayList<Plant> plants = activeProfile.getPlants();
         for (Plant plant : plants) {
             if (plant.getTimeRemaining() <= 7 && plant.getImageIcon() != null && !isUserReminded) {

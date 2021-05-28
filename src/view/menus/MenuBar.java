@@ -83,7 +83,7 @@ public class MenuBar extends JMenuBar {
 
         add(Box.createHorizontalGlue());
 
-        profileMenu = new JMenu("Not signed in      ");
+        profileMenu = new JMenu("       Not signed in       ");
         profileMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         profileMenu.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0,
                 new Color(173,193,124)));
