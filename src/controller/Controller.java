@@ -162,13 +162,15 @@ public class Controller {
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
             case "change plant image":
-                File file = Utility.OpenFileChooser();
-                byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
-                if( image != imageDefault )
-                {
-                    Plant plant = getPlantFromIndex(selectedPlantIndex);
-                    plant.setImageIcon(new ImageIcon(image));
-                    database.upsertPlantImage(plant.getDatabaseID(), image);
+                if (Utility.OpenFileChooser() != null) {
+                    File file = Utility.OpenFileChooser();
+                    byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
+                    if (image != imageDefault) {
+                        Plant plant = getPlantFromIndex(selectedPlantIndex);
+                        plant.setImageIcon(new ImageIcon(image));
+                        database.upsertPlantImage(plant.getDatabaseID(), image);
+                        refreshPlantListGUI();
+                    }
                 }
                 break;
             case "rank page":

@@ -128,9 +128,13 @@ public class NorthPanel extends JPanel implements ActionListener {
     public void updateSearchResults(ArrayList<String> values) {
         try {
             String current = getSearchField();
+            int i = 0;
             searchField.removeAllItems();
             for (String value : values) {
-                searchField.addItem(value);
+                if (i < 16) {
+                    searchField.addItem(value);
+                    i++;
+                }
             }
             searchField.getEditor().setItem(current);
             ((JTextComponent) searchField.getEditor().getEditorComponent()).setCaretPosition(current.length());
