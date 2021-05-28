@@ -333,11 +333,12 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
                 controller.setCardLayout("plant creation page");
                 return;
 
+            } else {
+                new Thread(() -> upsertPlantDetails()).start();
             }
         } else if (e.getSource() == changeImageBtn) {
             controller.buttonPushed("change plant image");
         }
-        //new Thread(() -> upsertPlantDetails()).start();
     }
 
 
