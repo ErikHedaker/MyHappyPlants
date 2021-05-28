@@ -337,7 +337,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == changeImageBtn) {
             controller.buttonPushed("change plant image");
         }
-        new Thread(() -> upsertPlantDetails()).start();
+        //new Thread(() -> upsertPlantDetails()).start();
     }
 
 
