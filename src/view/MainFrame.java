@@ -95,6 +95,10 @@ public class MainFrame{
         panel.createPlantList();
     }
 
+    public void createUserProfile(){
+        panel.createUserProfile();
+    }
+
     public void setImageLabel(ImageIcon imageIcon) {
         panel.setImageLabel(imageIcon);
     }
