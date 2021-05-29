@@ -86,7 +86,6 @@ public class Controller {
                 if (view.getPlantList().getPlantPanels().size() < 1) {
                     view.setCardLayout("welcome info");
                 } else {
-                    new Thread(() -> loadPlantImagesFromDatabase()).start();
                     for (PlantPanel panel : view.getPlantList().getPlantPanels()) {
                         if (!panel.getLoadingThread().isAlive()) {
                             panel.getLoadingThread().start();
@@ -112,10 +111,12 @@ public class Controller {
                         wiki = wiki.valid() ? wiki : new JWiki(scientificNameWords[0] + " " + scientificNameWords[1]);
                         wiki = wiki.valid() ? wiki : new JWiki(scientificNameWords[0]);
                         wiki = wiki.valid() ? wiki : new JWiki(plant.get("url_wikipedia_en").substring(plant.get("url_wikipedia_en").lastIndexOf("/") + 1));
-                        plantSearchImage = fetchImageFromURL(plant.get("image_url"));
+                        plantSearchImage = fetchImageFromURL(wiki.getImageURL());
+                        /*
                         if (plantSearchImage == imageDefault ) {
-                            plantSearchImage = fetchImageFromURL(wiki.getImageURL());
+                            plantSearchImage = fetchImageFromURL(plant.get("image_url"));
                         }
+                        */
                         view.setImageLabel(new ImageIcon(plantSearchImage));
                         view.showButton(true);
                         if (plant.get("common_name") != null) {
@@ -162,16 +163,18 @@ public class Controller {
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
             case "change plant image":
-                if (Utility.OpenFileChooser() != null) {
-                    File file = Utility.OpenFileChooser();
-                    byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
-                    if (image != imageDefault) {
-                        Plant plant = getPlantFromIndex(selectedPlantIndex);
-                        plant.setImageIcon(new ImageIcon(image));
-                        database.upsertPlantImage(plant.getDatabaseID(), image);
-                        refreshPlantListGUI();
-                    }
+                File file = Utility.OpenFileChooser();
+                if( file == null ) {
+                    break;
                 }
+                byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
+                if (image == imageDefault) {
+                    break;
+                }
+                Plant plant = getPlantFromIndex(selectedPlantIndex);
+                plant.setImageIcon(new ImageIcon(image));
+                database.upsertPlantImage(plant.getDatabaseID(), image);
+                refreshPlantListGUI();
                 break;
             case "rank page":
                 view.setCardLayout("rank page");
@@ -179,8 +182,8 @@ public class Controller {
         }
     }
 
-    public ArrayList<String> getResultsArray() {
-        ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%", 20);
+    public synchronized ArrayList<String> getResultsArray() {
+        ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%", 15);
         ArrayList<String> results = new ArrayList<>();
         for (HashMap<String, String> plant : searchResult) {
             if (plant.get("common_name") != null) {
@@ -220,7 +223,6 @@ public class Controller {
     }
 
     private void upsertPlantDetails(Plant plant, byte[] icon) {
-        plant.setImageIcon(new ImageIcon(icon));
         int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
         plant.setDatabaseID(id);
         database.upsertPlantImage(plant.getDatabaseID(), icon);
@@ -379,6 +381,7 @@ public class Controller {
         view.showLoginError(false);
         createPlantList();
         buttonPushed("plantList");
+        new Thread(() -> loadPlantImagesFromDatabase()).start();
     }
 
     public boolean validPassword(String password, String passwordRepeat) {
