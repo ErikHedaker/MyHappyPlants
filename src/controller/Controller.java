@@ -42,6 +42,7 @@ public class Controller {
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
         createPlantList();
+        createUserProfile();
     }
 
     public Plant getPlantFromIndex(int index) {
@@ -77,6 +78,10 @@ public class Controller {
 
     public void createPlantList() {
         view.createPlantList();
+    }
+
+    public void createUserProfile(){
+        view.createUserProfile();
     }
 
     public void buttonPushed(String button) {

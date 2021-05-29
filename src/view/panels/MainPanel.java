@@ -3,6 +3,7 @@ package view.panels;
 import controller.Controller;
 import view.panels.plant.*;
 import view.panels.login.LoginPanel;
+import view.panels.profile.UserProfile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ public class MainPanel extends JPanel {
     private PlantList plantList;
     private LoginPanel loginPanel;
     private PlantSearchPanel plantSearchPanel;
+    private UserProfile userProfile;
     private CardLayout cardLayout;
     private JPanel panelCenter;
     private NorthPanel northPanel;
@@ -70,6 +72,15 @@ public class MainPanel extends JPanel {
 
     public void setSelectedImageIcon(ImageIcon imageIcon) {
         new Thread(() -> plantSelectionPanel.setImageIcon(imageIcon)).start();
+    }
+
+    public void createUserProfile(){
+        JPanel userProfile = new JPanel(new BorderLayout());
+
+        userProfile = new UserProfile(controller);
+        panelCenter.add(userProfile, "user profile");
+        userProfile.revalidate();
+        userProfile.repaint();
     }
 
     public boolean isCreationMode() {
