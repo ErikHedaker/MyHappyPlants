@@ -329,6 +329,46 @@ public class Database {
         }
     }
 
+    public byte[] getProfileImage(int profileID) {
+        final String SQL =
+            "SELECT raw_data " +
+            "FROM profile_image " +
+            "WHERE profile_id = ?";
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setInt(1, profileID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBytes("raw_data");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void upsertProfileImage(int profileID, byte[] image) {
+        final String SQL =
+            "INSERT INTO profile_image (profile_id, raw_data) " +
+            "VALUES (?, ?) " +
+            "ON CONFLICT (profile_id) DO UPDATE " +
+            "SET raw_data = ? " +
+            "WHERE excluded.profile_id = ?";
+        try (Connection connection = DriverManager.getConnection(connectionURL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setInt(1, profileID);
+            preparedStatement.setBytes(2, image);
+            preparedStatement.setBytes(3, image);
+            preparedStatement.setInt(4, profileID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<HashMap<String,String>> searchPlant(String name, int limit) {
         final String SQL =
             "SELECT * FROM plant_trefle_data " +

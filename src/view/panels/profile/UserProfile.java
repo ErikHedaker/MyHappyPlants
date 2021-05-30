@@ -134,6 +134,7 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
         pictureBtn = new JButton("pic");
         pictureBtn.setPreferredSize(new Dimension(100,20));
         pictureBtn.setBackground(Color.white);
+        pictureBtn.addActionListener(this);
 
         gbc.gridx = 8;
         gbc.gridy = 4;
@@ -250,11 +251,16 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
                     .setConfirmationMessage("Are you sure you want to exit, you edits will not be saved?")
                     .showConfirmationDialog(DialogType.PROCEED_BACK_CONFIRMATION_DIALOG);
         } else if (e.getSource() == btnSave) {
-        if(e.getSource() == pictureBtn){
-            controller.buttonPushed("");
+            /*
+            if (e.getSource() == pictureBtn) {
+                controller.buttonPushed("");
+            }
+            */
         }
+        if (e.getSource() == pictureBtn) {
+            System.out.println("clicky");
+            controller.buttonPushed("change profile image");
         }
-
     }
 
     public void setProfile(String name) {usernameTF.setText(name);

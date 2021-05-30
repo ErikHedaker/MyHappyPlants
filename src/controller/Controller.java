@@ -38,7 +38,10 @@ public class Controller {
         this.database = new Database(new SimpleEncryption().readFile());
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
-        this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
+        this.activeProfile = new Profile()
+            .setName("Guest")
+            .setPlants(new ArrayList<>())
+            .setImageIcon(new ImageIcon(imageDefault));
         //createPlantList();
         //createUserProfile();
     }
@@ -168,18 +171,30 @@ public class Controller {
                 playSound(new File("sounds/WaterSound.wav"));
                 break;
             case "change plant image":
-                File file = Utility.OpenFileChooser();
-                if( file == null ) {
+                File filePlantImage = Utility.OpenFileChooser();
+                if( filePlantImage == null ) {
                     break;
                 }
-                byte[] image = fetchImageFromURL("file:" + file.getAbsolutePath());
-                if (image == imageDefault) {
+                byte[] imagePlant = fetchImageFromURL("file:" + filePlantImage.getAbsolutePath());
+                if (imagePlant == imageDefault) {
                     break;
                 }
                 Plant plant = getPlantFromIndex(selectedPlantIndex);
-                plant.setImageIcon(new ImageIcon(image));
-                database.upsertPlantImage(plant.getDatabaseID(), image);
+                plant.setImageIcon(new ImageIcon(imagePlant));
+                database.upsertPlantImage(plant.getDatabaseID(), imagePlant);
                 refreshPlantListGUI();
+                break;
+            case "change profile image":
+                File fileProfileImage = Utility.OpenFileChooser();
+                if( fileProfileImage == null ) {
+                    break;
+                }
+                byte[] imageProfile = fetchImageFromURL("file:" + fileProfileImage.getAbsolutePath());
+                if (imageProfile == imageDefault) {
+                    break;
+                }
+                activeProfile.setImageIcon(new ImageIcon(imageProfile));
+                database.upsertProfileImage(activeProfile.getDatabaseID(), imageProfile);
                 break;
             case "rank page":
                 view.setCardLayout("rank page");
@@ -360,9 +375,9 @@ public class Controller {
     public Profile createProfile(String name, String password) {
         byte[] salt = generateRandomSalt(20);
         Profile profile = new Profile()
-                .setName(name)
-                .setPasswordHash(generatePasswordHash(password, salt))
-                .setPasswordSalt(salt);
+            .setName(name)
+            .setPasswordHash(generatePasswordHash(password, salt))
+            .setPasswordSalt(salt);
         int id = database.insertProfile(profile);
         profile.setDatabaseID(id);
         return id != -1 ? profile : null;
@@ -387,6 +402,8 @@ public class Controller {
             return;
         }
 
+        byte[] image = database.getProfileImage(activeProfile.getDatabaseID());
+        activeProfile.setImageIcon(new ImageIcon(image != null ? image : imageDefault));
         view.showLoginError(false);
         createPlantList();
         buttonPushed("plantList");

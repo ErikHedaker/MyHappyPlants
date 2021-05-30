@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,7 @@ public class Profile
     private String name;
     private byte[] passwordHash;
     private byte[] passwordSalt;
+    private ImageIcon imageIcon;
 
     /**
      * Adds a plant to the private ArrayList plants
@@ -56,6 +58,10 @@ public class Profile
         this.passwordSalt = passwordSalt;
         return this;
     }
+    public Profile setImageIcon(ImageIcon imageIcon) {
+        this.imageIcon = imageIcon;
+        return this;
+    }
 
     /**
      * All Getter methods
@@ -75,6 +81,9 @@ public class Profile
     }
     public byte[] getPasswordHash(){ return passwordHash;}
     public byte[] getPasswordSalt(){ return passwordSalt;}
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 
     @Override
     public String toString( )
