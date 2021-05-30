@@ -39,8 +39,8 @@ public class Controller {
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
         this.activeProfile = new Profile().setName("Guest").setPlants(new ArrayList<>());
-        createPlantList();
-        createUserProfile();
+        //createPlantList();
+        //createUserProfile();
     }
 
     public Plant getPlantFromIndex(int index) {
@@ -78,9 +78,9 @@ public class Controller {
         view.createPlantList();
     }
 
-    public void createUserProfile(){
+    /*public void createUserProfile(){
         view.createUserProfile();
-    }
+    }*/
 
     public void buttonPushed(String button) {
         switch (button) {
@@ -183,6 +183,10 @@ public class Controller {
                 break;
             case "rank page":
                 view.setCardLayout("rank page");
+                break;
+            case "profile page":
+                view.setCardLayout("profile page");
+                view.setUserNameTF(activeProfile.getName());
                 break;
         }
     }

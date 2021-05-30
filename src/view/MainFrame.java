@@ -95,9 +95,9 @@ public class MainFrame{
         panel.createPlantList();
     }
 
-    public void createUserProfile(){
+    /*public void createUserProfile(){
         panel.createUserProfile();
-    }
+    }*/
 
     public void setImageLabel(ImageIcon imageIcon) {
         panel.setImageLabel(imageIcon);
@@ -137,6 +137,10 @@ public class MainFrame{
 
     public void setNicknameTF(String text) {
         panel.setNicknameTF(text);
+    }
+
+    public void setUserNameTF(String text){
+        panel.setUserNameTF(text);
     }
 
     public boolean isCreationMode() {

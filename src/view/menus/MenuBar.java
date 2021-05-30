@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenu fileMenu, editMenu, helpMenu, subMenu, profileMenu, rankMenu;
-    private JMenuItem loadItem, settingsItem, exitItem, aboutItem, manualItem, rankItem;
+    private JMenu fileMenu, editMenu, helpMenu, subMenu, profileMenu, rankMenu, yourProfileMenu;
+    private JMenuItem loadItem, settingsItem, exitItem, aboutItem, manualItem, profileItem, rankItem;
     private JRadioButtonMenuItem themeOne, themeTwo;
 
     private Controller controller;
@@ -29,6 +29,7 @@ public class MenuBar extends JMenuBar {
         editMenu = new JMenu(" Edit ");
         helpMenu = new JMenu(" Help ");
         rankMenu = new JMenu(" Rank ");
+        yourProfileMenu = new JMenu(" Profile ");
 
         //File Menu
         loadItem = new JMenuItem("Open file");
@@ -53,9 +54,14 @@ public class MenuBar extends JMenuBar {
         subMenu.add(themeTwo);
         editMenu.add(subMenu);
 
+        //Profile Menu
+        profileItem = new JMenuItem("Your Profile");
+        yourProfileMenu.add(profileItem);
+
         //Rank Menu
-        rankItem = new JMenuItem("Your rank");
+        rankItem = new JMenuItem("INFO");
         rankMenu.add(rankItem);
+
 
 
         Listener listener = new Listener();
@@ -64,7 +70,8 @@ public class MenuBar extends JMenuBar {
         helpMenu.addActionListener(listener);
         aboutItem.addActionListener(listener);
         manualItem.addActionListener(listener);
-        rankItem.addActionListener(listener);
+        profileItem.addActionListener(listener);
+        rankMenu.addActionListener(listener);
 
         /*fileMenu.setFont(new Font("Arial", Font.PLAIN, 16));
         editMenu.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -77,6 +84,7 @@ public class MenuBar extends JMenuBar {
         //helpMenu.setBorder(BorderFactory.createMatteBorder(0,0,0,1, Color.BLACK));
         helpMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         rankMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        yourProfileMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         /*add(fileMenu);
         add(editMenu);
         add(helpMenu);*/
@@ -92,6 +100,7 @@ public class MenuBar extends JMenuBar {
         profileMenu.add(fileMenu);
         profileMenu.add(helpMenu);
         profileMenu.add(rankMenu);
+        profileMenu.add(yourProfileMenu);
 
         add(profileMenu);
 
@@ -134,9 +143,11 @@ public class MenuBar extends JMenuBar {
             }
             if(e.getSource() == rankItem){
                 controller.buttonPushed("rank page");
-
+            }
+            if(e.getSource() == profileItem) {
+                controller.buttonPushed("profile page");
             }
 
-        }
+            }
     }
 }

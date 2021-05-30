@@ -43,6 +43,8 @@ public class MainPanel extends JPanel {
         panelCenter.add(plantCreationPanel, "plant creation page");
         rankPanel = new PlantRankPanel(controller);
         panelCenter.add(rankPanel, "rank page");
+        userProfile = new UserProfile(controller);
+        panelCenter.add(userProfile, "profile page");
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
@@ -77,14 +79,14 @@ public class MainPanel extends JPanel {
         new Thread(() -> plantSelectionPanel.setImageIcon(imageIcon)).start();
     }
 
-    public void createUserProfile(){
+   /* public void createUserProfile(){
         JPanel userProfile = new JPanel(new BorderLayout());
 
         userProfile = new UserProfile(controller);
         panelCenter.add(userProfile, "user profile");
         userProfile.revalidate();
         userProfile.repaint();
-    }
+    }*/
 
     public boolean isCreationMode() {
         return plantCreationPanel.isCreationMode();
@@ -96,6 +98,10 @@ public class MainPanel extends JPanel {
 
     public void setNicknameTF(String text) {
         plantCreationPanel.setNicknameTF(text);
+    }
+
+    public void setUserNameTF(String text){
+        userProfile.setUsernameTF(text);
     }
 
     public PlantList getPlantList() {

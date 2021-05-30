@@ -176,6 +176,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.EAST;
 
+
         contentPanel.add(changeImageBtn, gbc);
 
 
