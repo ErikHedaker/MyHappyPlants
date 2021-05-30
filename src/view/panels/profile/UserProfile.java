@@ -131,14 +131,14 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
         gbc.anchor = GridBagConstraints.WEST;
         profilePanel.add(lblpic, gbc);
 
-        pictureBtn = new JButton();
+        pictureBtn = new JButton("pic");
         pictureBtn.setPreferredSize(new Dimension(100,20));
         pictureBtn.setBackground(Color.white);
 
         gbc.gridx = 8;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.EAST;
-        profilePanel.add(passwordTF, gbc);
+        profilePanel.add(pictureBtn, gbc);
 
 
         add(profilePanel);
