@@ -42,10 +42,7 @@ public class Controller {
         this.database = new Database(new SimpleEncryption().readFile());
         this.view = new MainFrame(this);
         this.imageDefault = fetchImageFromURL("file:images/plant.jpg");
-        this.activeProfile = new Profile()
-            .setName("Guest")
-            .setPlants(new ArrayList<>())
-            .setImageIcon(new ImageIcon(imageDefault));
+        activeUserDefault();
         //createPlantList();
         //createUserProfile();
     }
@@ -62,6 +59,13 @@ public class Controller {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    public void activeUserDefault() {
+        this.activeProfile = new Profile()
+                .setName("Guest")
+                .setPlants(new ArrayList<>())
+                .setImageIcon(new ImageIcon(imageDefault));
     }
 
     public void setSelectedPlantFromIndex(int plantIndex) {
@@ -106,6 +110,7 @@ public class Controller {
         switch (button) {
             case "signIn":
                 view.setCardLayout("signIn");
+                view.resetInputFields();
                 break;
             case "plantList":
                 if (view.getPlantList().getPlantPanels().size() < 1) {

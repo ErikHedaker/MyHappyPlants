@@ -82,6 +82,7 @@ public class Plant {
 
     public int getTimeRemaining() {
         int timeRemaining = daysBetweenWatering - getLastTimeWateredInterval();
+
         return timeRemaining;
     }
 

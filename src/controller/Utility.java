@@ -55,6 +55,17 @@ public class Utility {
         return null;
     }
 
+    public static String getPlantMoodStr(int dayValue) {
+        String plantVibe = "Water me in: " + dayValue + " day(s)";
+        if (dayValue <= 0) {
+            plantVibe = Utility.centerText("I'm thirsty! :'c", 50);
+            if (dayValue <= 5) {
+                plantVibe = Utility.centerText("I'm dying, farewell..", 40);
+            }
+        }
+        return plantVibe;
+    }
+
     public static HashMap<String, String> getShortestValue(ArrayList<HashMap<String, String>> values, String key){
         HashMap<String, String> shortest = values.get(0);
         for (HashMap<String, String> value : values) {

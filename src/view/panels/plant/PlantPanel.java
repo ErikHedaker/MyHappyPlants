@@ -1,5 +1,6 @@
 package view.panels.plant;
 
+import controller.Utility;
 import model.Plant;
 
 import javax.swing.*;
@@ -33,8 +34,8 @@ public class PlantPanel extends JPanel {
         waterStatusPanel.setOpaque(false);
         previousWaterLabel = new JLabel("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
         previousWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
-
-        nextWaterLabel = new JLabel("Water me in: " + plant.getTimeRemaining() + " day(s)");
+        
+        nextWaterLabel = new JLabel(Utility.getPlantMoodStr(plant.getTimeRemaining()));
         nextWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
 
         nextWaterLabel.setBorder(BorderFactory.createEmptyBorder(0,205,15,0));

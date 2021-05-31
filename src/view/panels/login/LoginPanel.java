@@ -192,6 +192,12 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+    public void resetInputFields() {
+        usernameTF.setText("");
+        passwordTF.setText("");
+        passwordTF1.setText("");
+    }
+
     public void signInOrRegister() {
         if (getStatus() == LoginStatus.REGISTER_PAGE) {
             if (!controller.registerProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {

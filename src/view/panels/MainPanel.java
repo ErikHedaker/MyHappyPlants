@@ -109,6 +109,10 @@ public class MainPanel extends JPanel {
         editProfile.setUsernameTF(text);
     }
 
+    public void resetInputFields() {
+        loginPanel.resetInputFields();
+    }
+
     public PlantList getPlantList() {
         return plantList;
     }

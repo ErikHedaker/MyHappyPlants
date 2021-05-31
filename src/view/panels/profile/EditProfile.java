@@ -171,7 +171,7 @@ public class EditProfile extends JPanel implements ActionListener{
         if (e.getSource() == editBackButton) {
             new ConfirmationDialog(controller)
                     .setConfirmationMessage("Are you sure you want to exit (your edits will not be saved)?")
-                    .showConfirmationDialog(DialogType.PROCEED_BACK_CONFIRMATION_DIALOG);
+                    .showConfirmationDialog(DialogType.PROCEED_BACK_PROFILE_CONFIRMATION_DIALOG);
         } else if (e.getSource() == btnSave) {
             //controller.updateProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()),
                     //(ImageIcon) pictureBtn.getIcon());{

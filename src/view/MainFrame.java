@@ -79,6 +79,10 @@ public class MainFrame{
 
     }
 
+    public void resetInputFields() {
+        panel.resetInputFields();
+    }
+
     public void setCardLayout(String cardLayout) {
         panel.setCardLayout(cardLayout);
     }

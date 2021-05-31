@@ -13,7 +13,7 @@ import java.io.IOException;
 public class MenuBar extends JMenuBar {
 
     private JMenu fileMenu, editMenu, helpMenu, subMenu, profileMenu, rankMenu, yourProfileMenu;
-    private JMenuItem loadItem, settingsItem, exitItem, aboutItem, manualItem, profileItem, rankItem;
+    private JMenuItem loadItem, settingsItem, exitItem, aboutItem, manualItem, profileItem, signOutItem;
     private JRadioButtonMenuItem themeOne, themeTwo;
 
     private Controller controller;
@@ -40,7 +40,7 @@ public class MenuBar extends JMenuBar {
         fileMenu.add(exitItem);
 
         //Help Menu
-        manualItem = new JMenuItem("Manual");
+        manualItem = new JMenuItem("Help ");
         aboutItem = new JMenuItem("About");
         helpMenu.add(manualItem);
         helpMenu.add(aboutItem);
@@ -57,10 +57,6 @@ public class MenuBar extends JMenuBar {
         //Profile Menu
         profileItem = new JMenuItem("Your Profile");
         yourProfileMenu.add(profileItem);
-
-        //Rank Menu
-        rankItem = new JMenuItem("INFO");
-        rankMenu.add(rankItem);
 
 
 
@@ -97,12 +93,16 @@ public class MenuBar extends JMenuBar {
                 new Color(173,193,124)));
         profileMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         Image img = new ImageIcon("./images/defpic.jpg").getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH);
+
+        signOutItem = new JMenuItem("Sign Out");
+        signOutItem.addActionListener(new Listener());
+
         profileMenu.setIcon(new ImageIcon(img));
-        profileMenu.add(editMenu);
-        profileMenu.add(fileMenu);
-        profileMenu.add(helpMenu);
-        profileMenu.add(rankMenu);
-        profileMenu.add(yourProfileMenu);
+        //profileMenu.add(editMenu);
+        //profileMenu.add(fileMenu);
+        profileMenu.add(profileItem);
+        profileMenu.add(manualItem);
+        profileMenu.add(signOutItem);
 
         add(profileMenu);
 
@@ -143,8 +143,10 @@ public class MenuBar extends JMenuBar {
                     }
                 }
             }
-            if(e.getSource() == rankItem){
-                controller.buttonPushed("rank page");
+            if(e.getSource() == signOutItem){
+                profileMenu.setText(" Not signed in     ");
+                controller.buttonPushed("signIn");
+                controller.activeUserDefault();
             }
             if(e.getSource() == profileItem) {
                 controller.buttonPushed("profile page");
