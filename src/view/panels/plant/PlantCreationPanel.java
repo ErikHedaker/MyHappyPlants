@@ -16,10 +16,8 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * The class is to be used as a graphical user interface for editing your plant.
@@ -335,7 +333,7 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
                 return;
 
             } else {
-                new Thread(() -> upsertPlantDetails()).start();
+                new Thread(() -> createPlant()).start();
             }
         } else if (e.getSource() == changeImageBtn) {
             controller.buttonPushed("change plant image");
@@ -355,10 +353,14 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
         return creationMode;
     }
 
-    public void upsertPlantDetails() {
+    public void createPlant() {
         controller.setCardLayout("loading-screen");
         if (creationMode) {
-            controller.createPlant(nicknameTF.getText(), waterTF.getText());
+            if (waterTF.getText() == "0") {
+                new MessageDialog("Enter a valid watering interval 0 days is too little.");
+            } else {
+                controller.createPlant(nicknameTF.getText(), waterTF.getText());
+            }
         } else {
             controller.editSelectedPlant(nicknameTF.getText(), waterTF.getText());
         }

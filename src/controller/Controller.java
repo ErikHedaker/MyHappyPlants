@@ -34,6 +34,10 @@ public class Controller {
     private byte[] plantSearchImage;
     private boolean isUserReminded;
 
+    /**
+     * Constructor which initializes the database with the included encrypted file, initializes the Java Swing GUI,
+     * loads the included default image, and creates a new guest account with default values
+     */
     public Controller() {
         this.database = new Database(new SimpleEncryption().readFile());
         this.view = new MainFrame(this);
@@ -46,13 +50,18 @@ public class Controller {
         //createUserProfile();
     }
 
+    /**
+     * Returns the plant which the user has clicked and selected
+     *
+     * @param index Index of the selected plant
+     * @return The selected plant, or null if no plants exists
+     */
     public Plant getPlantFromIndex(int index) {
-        Plant plant = null;
         try {
-            plant = getPlantList().get(index);
-        }catch (IndexOutOfBoundsException e) {
+            return getPlantList().get(index);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
         }
-        return plant;
     }
 
     public void setSelectedPlantFromIndex(int plantIndex) {
@@ -77,6 +86,9 @@ public class Controller {
         return activeProfile.getPlants();
     }
 
+    /**
+     * Creates a list of GUI elements for the existing plants
+     */
     public void createPlantList() {
         view.createPlantList();
     }
@@ -85,6 +97,11 @@ public class Controller {
         view.createUserProfile();
     }*/
 
+    /**
+     * Executes one of the available codeblocks for the assigned button
+     *
+     * @param button The codename of the corresponding button functionality
+     */
     public void buttonPushed(String button) {
         switch (button) {
             case "signIn":
@@ -206,6 +223,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Searches and creates available search terms in the trefle-api data, to be shown in the dropdown search bar
+     *
+     * @return A list of existing search terms
+     */
     public synchronized ArrayList<String> getResultsArray() {
         ArrayList<HashMap<String, String>> searchResult = database.searchPlant("%" + view.getSearchInput() + "%", 15);
         ArrayList<String> results = new ArrayList<>();
@@ -234,6 +256,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Creates plant with inputted parameters, adds it into the database, and refreshes the GUI
+     *
+     * @param name Optional name of plant
+     * @param hoursBetweenWatering Time between watering
+     */
     public void createPlant(String name, String hoursBetweenWatering) {
         Plant plant = new Plant();
         plant.setNameAlias(name);
@@ -241,22 +269,22 @@ public class Controller {
         plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         plant.setImageIcon(new ImageIcon(plantSearchImage));
         activeProfile.addPlant(plant);
-        refreshPlantListGUI();
-        new Thread(() -> upsertPlantDetails(plant, plantSearchImage)).start();
         view.setCreationMode(false);
+        refreshPlantListGUI();
+        new Thread(() -> {
+            int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
+            plant.setDatabaseID(id);
+            database.upsertPlantImage(plant.getDatabaseID(), plantSearchImage);
+        }).start();
     }
 
-    private void upsertPlantDetails(Plant plant, byte[] icon) {
-        int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
-        plant.setDatabaseID(id);
-        database.upsertPlantImage(plant.getDatabaseID(), icon);
-    }
-
+    /**
+     * Edits the selected plant with inputted parameters, updates the plant in the database, and refreshes the GUI
+     *
+     * @param name Optional name of plant
+     * @param hoursBetweenWatering Time between watering
+     */
     public void editSelectedPlant(String name, String hoursBetweenWatering) {
-        if (hoursBetweenWatering.equals("0")) {
-            new MessageDialog("Enter a valid watering interval 0 days is too little.");
-            return;
-        }
         Plant plant = getPlantFromIndex(selectedPlantIndex);
         plant.setNameAlias(name.length() < 1 ? plant.getNameAlias() : name);
         plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
@@ -264,20 +292,39 @@ public class Controller {
         refreshPlantListGUI();
     }
 
+    /**
+     * Sets the Java Swing Card Layout
+     *
+     * @param layout The Swing layout
+     */
     public void setCardLayout(String layout) {
         view.setCardLayout(layout);
     }
 
+    /**
+     * Refreshes the plant list by recreating it and doing some stuff
+     */
     public void refreshPlantListGUI()
     {
         createPlantList();
         buttonPushed("plantList");
     }
 
+    /**
+     * Checks if index exists of selected plant
+     *
+     * @param index Index of selected plant
+     * @return Boolean if index exists or not
+     */
     public boolean validPlantIndex(int index) {
         return index >= 0 && index < activeProfile.getPlants().size();
     }
 
+    /**
+     * Waters the plant in the database and the program
+     *
+     * @param plant The specific plant
+     */
     public void waterPlant(Plant plant) {
         LocalDateTime date = database.waterPlant(plant.getDatabaseID());
         plant.setLastTimeWatered(date);
@@ -317,6 +364,11 @@ public class Controller {
         return imageDefault;
     }
 
+    /**
+     * Plays an audio file as sound effect
+     *
+     * @param file The selected audio file
+     */
     public void playSound(File file){
         AudioInputStream as = null;
         try {
@@ -383,19 +435,36 @@ public class Controller {
         return id != -1 ? profile : null;
     }
 
-    public boolean registerProfile(String username, String password, String passwordRepeat) {
-        if (validPassword(password, passwordRepeat)) {
-            activeProfile = createProfile(username, password);
-            System.out.println("User " + activeProfile.getName() + " was created.");
-            createPlantList();
-            buttonPushed("plantList");
-            return true;
+    /**
+     * Attempt to register profile, and fails if rules are not met
+     *
+     * @param name A string representing the profile name that the user want to use
+     * @param password A string representing the password that the user want to use
+     * @param passwordRepeat A string representing the repeated password the user inputted
+     * @return Boolean representing success or failure to register a profile
+     */
+    public boolean registerProfile(String name, String password, String passwordRepeat) {
+        if (!validPassword(password, passwordRepeat)) {
+            return false;
         }
-        return false;
+        activeProfile = createProfile(name, password);
+        if (activeProfile == null) {
+            return false;
+        }
+        System.out.println("User " + activeProfile.getName() + " was created.");
+        createPlantList();
+        buttonPushed("plantList");
+        return true;
     }
 
-    public void attemptLogin(String username, String password) {
-        activeProfile = loginProfile(username, password);
+    /**
+     * Attempt to login profile, and fails if inputs are wrong
+     *
+     * @param name The profile name
+     * @param password The profile password
+     */
+    public void attemptLogin(String name, String password) {
+        activeProfile = loginProfile(name, password);
         if (activeProfile == null) {
             view.showLoginError(true);
             setCardLayout("signIn");
@@ -410,6 +479,13 @@ public class Controller {
         new Thread(() -> loadPlantImagesFromDatabase()).start();
     }
 
+    /**
+     * Checks if password is valid according to minimum length and if the repeated input is the same
+     *
+     * @param password The intended password for a new profile
+     * @param passwordRepeat The repeated password to ensure the password is as the user intended
+     * @return Boolean representing if password is valid
+     */
     public boolean validPassword(String password, String passwordRepeat) {
         return password.length() > 4 && password.equals(passwordRepeat);
     }
