@@ -203,6 +203,10 @@ public class Controller {
                 view.setCardLayout("profile page");
                 view.setUserNameTF(activeProfile.getName());
                 break;
+            case "edit profile page":
+                view.setCardLayout("edit profile page");
+                view.setUserNameTF(activeProfile.getName());
+                break;
         }
     }
 
@@ -393,6 +397,18 @@ public class Controller {
         }
         return false;
     }
+
+    /* hjälp mig någon!!!! public Profile updateProfile(String username, String password, ImageIcon image) {
+        byte[] salt = generateRandomSalt(20);
+        Profile profile = new Profile()
+                .setName(username)
+                .setPasswordHash(generatePasswordHash(password, salt))
+                .setPasswordSalt(salt);
+                profile.setImageIcon(image);
+        int id = database.insertProfile(profile);
+        profile.setDatabaseID(id);
+        return id != -1 ? profile : null;
+    }*/
 
     public void attemptLogin(String username, String password) {
         activeProfile = loginProfile(username, password);

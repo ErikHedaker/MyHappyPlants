@@ -96,6 +96,8 @@ public class MenuBar extends JMenuBar {
         profileMenu.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0,
                 new Color(173,193,124)));
         profileMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        Image img = new ImageIcon("./images/defpic.jpg").getImage().getScaledInstance(45, 25, Image.SCALE_SMOOTH);
+        profileMenu.setIcon(new ImageIcon(img));
         profileMenu.add(editMenu);
         profileMenu.add(fileMenu);
         profileMenu.add(helpMenu);

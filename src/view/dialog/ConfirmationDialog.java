@@ -136,9 +136,9 @@ public class ConfirmationDialog implements ActionListener {
             }
         } else if (type == DialogType.PROCEED_BACK_CONFIRMATION_DIALOG) {
             if (e.getSource() == yesBtn) {
-                controller.buttonPushed("plantList");
+                controller.buttonPushed("profile page");
             } else if (e.getSource() == noBtn) {
-                controller.buttonPushed("show plant creation page");
+                controller.buttonPushed("edit profile page");
             }
         }
         dialog.setVisible(false);

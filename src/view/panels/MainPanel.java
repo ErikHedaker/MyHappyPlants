@@ -3,6 +3,7 @@ package view.panels;
 import controller.Controller;
 import view.panels.plant.*;
 import view.panels.login.LoginPanel;
+import view.panels.profile.EditProfile;
 import view.panels.profile.UserProfile;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class MainPanel extends JPanel {
     private LoginPanel loginPanel;
     private PlantSearchPanel plantSearchPanel;
     private UserProfile userProfile;
+    private EditProfile editProfile;
     private CardLayout cardLayout;
     private JPanel panelCenter;
     private NorthPanel northPanel;
@@ -45,6 +47,8 @@ public class MainPanel extends JPanel {
         panelCenter.add(rankPanel, "rank page");
         userProfile = new UserProfile(controller);
         panelCenter.add(userProfile, "profile page");
+        editProfile = new EditProfile(controller);
+        panelCenter.add(editProfile, "edit profile page");
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.white);
@@ -102,6 +106,7 @@ public class MainPanel extends JPanel {
 
     public void setUserNameTF(String text){
         userProfile.setUsernameTF(text);
+        editProfile.setUsernameTF(text);
     }
 
     public PlantList getPlantList() {
