@@ -119,7 +119,7 @@ public class Controller {
                     view.setCardLayout("plantList");
 
                 }
-                view.setProfile("       " + activeProfile.getName() + "       ");
+                view.setProfile(" " + activeProfile.getName() + "     ");
                 view.showSearch(true);
                 view.showSearchField();
                 new Thread(() -> sendReminderMessage()).start();
