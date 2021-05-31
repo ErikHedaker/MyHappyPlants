@@ -473,8 +473,7 @@ public class Controller {
         return id != -1 ? profile : null;
     }*/
 
-    public void attemptLogin(String username, String password) {
-        activeProfile = loginProfile(username, password);
+
     /**
      * Attempt to login profile, and fails if inputs are wrong
      *
