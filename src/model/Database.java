@@ -113,6 +113,7 @@ public class Database {
      *
      * @param plantID  The id of the plant that gets watered
      * @param happened A date of when the user watered their plant
+     * @return A date of the time the plant was watered, to be used to set the date in the program
      */
     public LocalDateTime waterPlant(int plantID, LocalDateTime happened) {
         final String SQL =
@@ -130,9 +131,10 @@ public class Database {
     }
 
     /**
-     * Calls the waterPlant and passes the current date as the second argument
+     * Calls waterPlant and passes the current date as the second argument
      *
      * @param plantID The id of the plant that gets watered
+     * @return A date of the time the plant was watered, to be used to set the date in the program
      */
     public LocalDateTime waterPlant(int plantID) {
         return waterPlant(plantID, LocalDateTime.now());
@@ -283,6 +285,7 @@ public class Database {
      * Gets the image for a plant from the database
      *
      * @param plantID The id of the plant
+     * @return The raw data of an image, including the extension
      */
     public byte[] getPlantImage(int plantID) {
         final String SQL =
@@ -309,6 +312,7 @@ public class Database {
      * Adds or updates the image for a plant in the database
      *
      * @param plantID The id of the plant
+     * @param image The raw data of an image, including the extension
      */
     public void upsertPlantImage(int plantID, byte[] image) {
         final String SQL =
@@ -329,6 +333,12 @@ public class Database {
         }
     }
 
+    /**
+     * Gets the image for a profile from the database
+     *
+     * @param profileID The id of the profile
+     * @return The raw data of an image, including the extension
+     */
     public byte[] getProfileImage(int profileID) {
         final String SQL =
             "SELECT raw_data " +
@@ -350,6 +360,12 @@ public class Database {
         return null;
     }
 
+    /**
+     * Adds or updates the image for a profile in the database
+     *
+     * @param profileID The id of the plant
+     * @param image The raw data of an image, including the extension
+     */
     public void upsertProfileImage(int profileID, byte[] image) {
         final String SQL =
             "INSERT INTO profile_image (profile_id, raw_data) " +
@@ -369,6 +385,13 @@ public class Database {
         }
     }
 
+    /**
+     * Searches, by string matching, for a common name (can be null) or otherwise a scientific name (cannot be null)
+     *
+     * @param name Search input by user
+     * @param limit The maximum amount of matching results from database
+     * @return A list of hashmaps, which contain all the columns from the database, all which are string types, for each plant returned
+     */
     public ArrayList<HashMap<String,String>> searchPlant(String name, int limit) {
         final String SQL =
             "SELECT * FROM plant_trefle_data " +
@@ -407,10 +430,22 @@ public class Database {
         return plants;
     }
 
+    /**
+     * Calls searchPlant and passes -1 as the second argument, which is coded to be unlimited amount of return results
+     *
+     * @param name Search input by user
+     * @return A list of hashmaps, which contain all the columns from the database, all which are string types, for each plant returned
+     */
     public ArrayList<HashMap<String,String>> searchPlant(String name) {
         return searchPlant(name, -1);
     }
 
+    /**
+     * Returns the average inputted watering length for all profiles, intended to be used as a statistic
+     *
+     * @param nameWiki The closest name of the plant which also has an existing wikipedia page
+     * @return An integer of the average time in days
+     */
     public int getAverageWatering(String nameWiki) {
         final String SQL =
             "SELECT name_wiki, AVG(days_between_watering) FROM plant " +
