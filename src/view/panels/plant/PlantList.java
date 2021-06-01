@@ -31,7 +31,7 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
         this.container = container;
         container.setPreferredSize(new Dimension(200, 200));
 
-        Comparator<Plant> orderByTime = Comparator.comparingInt(Plant::getTimeRemaining);
+        Comparator<Plant> orderByTime = Comparator.comparingLong(Plant::getTimeRemaining);
         Collections.sort(plants, orderByTime);
 
         for (Plant plant : plants) {

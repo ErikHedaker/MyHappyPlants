@@ -55,7 +55,7 @@ public class Utility {
         return null;
     }
 
-    public static String getPlantMoodStr(int dayValue) {
+    public static String getPlantMoodStr(long dayValue) {
         String plantVibe = "Water me in: " + dayValue + " day(s)";
         if (dayValue <= 0) {
             plantVibe = Utility.centerText("I'm thirsty! :'c", 50);
@@ -126,7 +126,7 @@ public class Utility {
      */
     public static long getNextWateringCountdown(Plant plant) {
         try {
-            return ChronoUnit.DAYS.between(LocalDateTime.now(), getNextWateringDate(plant));
+            return ChronoUnit.DAYS.between(LocalDateTime.now(), getNextWateringDate(plant)) + 1;
         } catch (NullPointerException e) {
             return 0;
         }

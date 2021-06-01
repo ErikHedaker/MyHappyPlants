@@ -466,19 +466,6 @@ public class Controller {
         return true;
     }
 
-    /* hjälp mig någon!!!! public Profile updateProfile(String username, String password, ImageIcon image) {
-        byte[] salt = generateRandomSalt(20);
-        Profile profile = new Profile()
-                .setName(username)
-                .setPasswordHash(generatePasswordHash(password, salt))
-                .setPasswordSalt(salt);
-                profile.setImageIcon(image);
-        int id = database.insertProfile(profile);
-        profile.setDatabaseID(id);
-        return id != -1 ? profile : null;
-    }*/
-
-
     /**
      * Attempt to login profile, and fails if inputs are wrong
      *

@@ -34,7 +34,7 @@ public class PlantPanel extends JPanel {
         waterStatusPanel.setOpaque(false);
         previousWaterLabel = new JLabel("Last time was: " + plant.getLastTimeWateredInterval() + " day(s) ago");
         previousWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
-        
+
         nextWaterLabel = new JLabel(Utility.getPlantMoodStr(plant.getTimeRemaining()));
         nextWaterLabel.setFont(new Font("Calibri Light", Font.PLAIN, 18));
 
@@ -96,7 +96,7 @@ public class PlantPanel extends JPanel {
         public void run() {
             while (!Thread.interrupted()) {
 
-                int daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
+                long daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
                 int maxDays = plant.getDaysBetweenWatering() == 0 ? 1 : plant.getDaysBetweenWatering();
                 double scale = (365/maxDays) * daysLeft;
 

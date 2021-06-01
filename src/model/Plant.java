@@ -1,5 +1,7 @@
 package model;
 
+import controller.Utility;
+
 import javax.swing.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -80,26 +82,23 @@ public class Plant {
         return currentSize;
     }
 
-    public int getTimeRemaining() {
-        int timeRemaining = daysBetweenWatering - getLastTimeWateredInterval();
-
-        return timeRemaining;
+    public long getTimeRemaining() {
+        return Utility.getNextWateringCountdown(this);
     }
+
 
     public LocalDateTime getLastTimeWatered() {
         return lastTimeWatered;
     }
 
     public int getLastTimeWateredInterval() {
-        if (lastTimeWatered == null) {
-            return 0;
-        }
-        LocalDateTime date1 = lastTimeWatered;
         LocalDateTime date2 = LocalDateTime.now();
-        int daysBetween = (int) Duration.between(date1, date2).toDays();
+        System.out.println(lastTimeWatered);
+        int daysBetween = (int) Duration.between(lastTimeWatered, date2).toDays();
 
         return daysBetween;
     }
+
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
