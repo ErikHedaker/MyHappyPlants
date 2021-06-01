@@ -277,6 +277,7 @@ public class Controller {
         plant.setNameWiki(plantSearchInputName);
         plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         plant.setImageIcon(new ImageIcon(plantSearchImage));
+        plant.setLastTimeWatered(LocalDateTime.now());
         activeProfile.addPlant(plant);
         view.setCreationMode(false);
         refreshPlantListGUI();
