@@ -15,7 +15,7 @@ public class MenuBar extends JMenuBar {
     private JMenu fileMenu, editMenu, helpMenu, subMenu, profileMenu, rankMenu, yourProfileMenu;
     private JMenuItem loadItem, settingsItem, exitItem, aboutItem, manualItem, profileItem, signOutItem;
     private JRadioButtonMenuItem themeOne, themeTwo;
-
+    private JLabel image;
     private Controller controller;
 
 
@@ -92,12 +92,14 @@ public class MenuBar extends JMenuBar {
         profileMenu.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0,
                 new Color(173,193,124)));
         profileMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        Image img = new ImageIcon("./images/defpic.jpg").getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH);
+
 
         signOutItem = new JMenuItem("Sign Out");
         signOutItem.addActionListener(new Listener());
+        image = new JLabel();
+        setImage(new ImageIcon("./images/defpic.jpg"));
 
-        profileMenu.setIcon(new ImageIcon(img));
+        profileMenu.add(image);
         //profileMenu.add(editMenu);
         //profileMenu.add(fileMenu);
         profileMenu.add(profileItem);
@@ -114,6 +116,16 @@ public class MenuBar extends JMenuBar {
 
     public void setProfile(String name) {
         profileMenu.setText(name);
+    }
+
+    public void setImage(ImageIcon imageIcon) {
+        if (imageIcon == null) {
+            imageIcon = new ImageIcon("./images/defpic.jpg");
+        }
+        Image img = imageIcon.getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH);
+
+
+        image.setIcon(new ImageIcon(img));
     }
 
     class Listener implements ActionListener {

@@ -61,6 +61,7 @@ public class Controller {
         }
     }
 
+
     public void activeUserDefault() {
         this.activeProfile = new Profile()
                 .setName("Guest")
@@ -76,6 +77,12 @@ public class Controller {
 
         view.setSelectedImageIcon(imageIcon);
     }
+
+    /*public void setSelectedPic() {
+        ImageIcon imageIcon = activeProfile.getImageIcon();
+
+        view.setImage(imageIcon);
+    }*/
 
     public void showConnectivityError() {
         view.showConnectivityError();
@@ -465,18 +472,6 @@ public class Controller {
         buttonPushed("plantList");
         return true;
     }
-
-    /* hjälp mig någon!!!! public Profile updateProfile(String username, String password, ImageIcon image) {
-        byte[] salt = generateRandomSalt(20);
-        Profile profile = new Profile()
-                .setName(username)
-                .setPasswordHash(generatePasswordHash(password, salt))
-                .setPasswordSalt(salt);
-                profile.setImageIcon(image);
-        int id = database.insertProfile(profile);
-        profile.setDatabaseID(id);
-        return id != -1 ? profile : null;
-    }*/
 
 
     /**

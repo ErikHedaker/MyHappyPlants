@@ -12,7 +12,7 @@ import java.awt.event.KeyListener;
 
 public class UserProfile extends JPanel implements ActionListener, KeyListener {
     private Controller controller;
-    private JLabel title;
+    private JLabel title, pic;
     private JButton btnEdit, backButton;
     private JPasswordField passwordTF;
     private JTextField usernameTF;
@@ -65,7 +65,7 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
         profilePanel.add(title, gbc);
 
         JLabel lblName = new JLabel("Name: ");
-        lblName.setFont(new Font("Calibri", Font.PLAIN, 22));
+        lblName.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
@@ -81,7 +81,7 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
         profilePanel.add(usernameTF, gbc);
 
         JLabel lblPassword = new JLabel("Password: ");
-        lblPassword.setFont(new Font("Calibri", Font.PLAIN, 22));
+        lblPassword.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.weighty = 250;
@@ -113,14 +113,16 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
         gbc.anchor = GridBagConstraints.PAGE_END;
         profilePanel.add(btnEdit, gbc);
 
-        JLabel lblpic = new JLabel("Profile Picture: ");
-        lblName.setFont(new Font("Calibri light", Font.PLAIN, 22));
+        JLabel lblPic = new JLabel("Profile Picture: ");
+        lblPic.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        profilePanel.add(lblpic, gbc);
+        profilePanel.add(lblPic, gbc);
 
-        JLabel pic = new JLabel();
+        pic = new JLabel();
+        setPic(new ImageIcon("./images/defpic.jpg"));
+
 
 
         gbc.gridx = 8;
@@ -134,7 +136,15 @@ public class UserProfile extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    public void setPic(ImageIcon imageIcon) {
+        if (imageIcon == null) {
+            imageIcon = new ImageIcon("./images/defpic.jpg");
+        }
+        Image img = imageIcon.getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH);
 
+
+        pic.setIcon(new ImageIcon(img));
+    }
 
     public void setUsernameTF(String text) {
         this.usernameTF.setText(text);
