@@ -94,9 +94,11 @@ public class Plant {
     public int getLastTimeWateredInterval() {
         LocalDateTime date2 = LocalDateTime.now();
         System.out.println(lastTimeWatered);
-        int daysBetween = (int) Duration.between(lastTimeWatered, date2).toDays();
-
-        return daysBetween;
+        try {
+            return (int) Duration.between(lastTimeWatered, date2).toDays();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public ImageIcon getImageIcon() {
