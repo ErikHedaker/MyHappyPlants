@@ -96,20 +96,24 @@ public class PlantPanel extends JPanel {
         public void run() {
             while (!Thread.interrupted()) {
 
-                long daysLeft = plant.getTimeRemaining() == 0 ? 1 : plant.getTimeRemaining();
-                int maxDays = plant.getDaysBetweenWatering() == 0 ? 1 : plant.getDaysBetweenWatering();
-                double scale = (365/maxDays) * daysLeft;
+                long daysLeft = plant.getTimeRemaining() < 0 ? 0 : plant.getTimeRemaining();
+                int maxDays = plant.getDaysBetweenWatering() < 0 ? 0 : plant.getDaysBetweenWatering();
 
-                boolean increasePos = daysLeft == maxDays && startPosX <= 365;
-                boolean decreasePos = scale >= 140 && startPosX >= scale;
+                double scale = (365 / maxDays) * daysLeft;
 
-                if (!(increasePos && decreasePos)) {
-                    if (increasePos) {
+                boolean increasePos = startPosX <= scale;
+                boolean decreasePos = scale + 140 >= 140 && startPosX != scale;
+
+                //if (!(increasePos && decreasePos)) {
+                if (daysLeft == maxDays) {
+                    startPosX = 365;
+                } else if (increasePos) {
                         startPosX++;
                     } else if (decreasePos) {
                         startPosX--;
                     }
-                }
+                   // startPosX = (int) scale;
+                //}
                 repaint();
                 propertyChangeSupport.firePropertyChange("update", null, null);
                 try {

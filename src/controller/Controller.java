@@ -127,7 +127,7 @@ public class Controller {
                 view.setProfile(" " + activeProfile.getName() + "     ");
                 view.showSearch(true);
                 view.showSearchField();
-                new Thread(() -> sendReminderMessage()).start();
+                sendReminderMessage();
                 break;
             case "search":
                 if (view.getSearchInput().length() > 0) {
