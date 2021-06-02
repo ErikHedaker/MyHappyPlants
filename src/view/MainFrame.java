@@ -111,6 +111,10 @@ public class MainFrame{
         panel.setSelectedPlantName(plantName);
     }
 
+    public void setImage(ImageIcon icon){
+        menuBar.setImage(icon);
+    }
+
     public void showConnectivityError() {
         JOptionPane.showMessageDialog(null, "API Down. Please try again later.");
     }

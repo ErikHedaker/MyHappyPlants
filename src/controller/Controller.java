@@ -61,6 +61,7 @@ public class Controller {
         }
     }
 
+
     public void activeUserDefault() {
         this.activeProfile = new Profile()
                 .setName("Guest")
@@ -76,6 +77,12 @@ public class Controller {
 
         view.setSelectedImageIcon(imageIcon);
     }
+
+    /*public void setSelectedPic() {
+        ImageIcon imageIcon = activeProfile.getImageIcon();
+
+        view.setImage(imageIcon);
+    }*/
 
     public void showConnectivityError() {
         view.showConnectivityError();
@@ -277,7 +284,6 @@ public class Controller {
         plant.setNameWiki(plantSearchInputName);
         plant.setDaysBetweenWatering(Utility.getStringToInt(hoursBetweenWatering));
         plant.setImageIcon(new ImageIcon(plantSearchImage));
-        plant.setLastTimeWatered(LocalDateTime.now());
         activeProfile.addPlant(plant);
         view.setCreationMode(false);
         refreshPlantListGUI();

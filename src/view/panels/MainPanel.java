@@ -24,6 +24,7 @@ public class MainPanel extends JPanel {
     private PlantSelectionPanel plantSelectionPanel;
     private PlantCreationPanel plantCreationPanel;
     private PlantRankPanel rankPanel;
+    private MenuBar menuBar;
 
     public MainPanel(Controller controller) {
         this.controller = controller;
@@ -31,6 +32,7 @@ public class MainPanel extends JPanel {
         createCenterPanel();
         northPanel = new NorthPanel(controller);
         southPanel = new SouthPanel();
+        menuBar = new MenuBar();
     }
 
     public void createCenterPanel() {

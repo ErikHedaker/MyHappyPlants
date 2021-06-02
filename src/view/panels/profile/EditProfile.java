@@ -14,11 +14,10 @@ public class EditProfile extends JPanel implements ActionListener{
     private Profile profile;
     private Controller controller;
     private JLabel title;
-    private JButton btnSave, editBackButton, backButton, pictureBtn;
-    private JPasswordField passwordTF, passwordTF1;
+    private JButton btnSave, editBackButton, pictureBtn;
+    private JPasswordField passwordTF;
     private JTextField usernameTF;
     private JPanel editProfilePanel;
-    private ImageIcon image;
 
     public EditProfile(Controller controller) {
         this.controller = controller;
@@ -67,7 +66,7 @@ public class EditProfile extends JPanel implements ActionListener{
         editProfilePanel.add(title, gbc);
 
         JLabel lblName = new JLabel("New Name: ");
-        lblName.setFont(new Font("Calibri", Font.PLAIN, 22));
+        lblName.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
@@ -82,7 +81,7 @@ public class EditProfile extends JPanel implements ActionListener{
         editProfilePanel.add(usernameTF, gbc);
 
         JLabel lblPassword = new JLabel("New Password: ");
-        lblPassword.setFont(new Font("Calibri", Font.PLAIN, 22));
+        lblPassword.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.weighty = 250;
@@ -98,37 +97,22 @@ public class EditProfile extends JPanel implements ActionListener{
         gbc.anchor = GridBagConstraints.EAST;
         editProfilePanel.add(passwordTF, gbc);
 
-        JLabel lblRepeatPassword = new JLabel("New Password: ");
-        lblPassword.setFont(new Font("Calibri", Font.PLAIN, 22));
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.weighty = 250;
-        gbc.anchor = GridBagConstraints.WEST;
-        editProfilePanel.add(lblPassword, gbc);
 
-        passwordTF1 = new JPasswordField();
-        passwordTF1.setPreferredSize(new Dimension(100,20));
-        passwordTF1.setBackground(Color.white);
-        passwordTF1.setEchoChar('*');
-        gbc.gridx = 8;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.EAST;
-        editProfilePanel.add(passwordTF, gbc);
-
-        JLabel lblPic = new JLabel("Profile Picture: ");
-        lblName.setFont(new Font("Calibri", Font.PLAIN, 22));
+        JLabel lblPic = new JLabel("New Picture: ");
+        lblPic.setFont(new Font("Calibri light", Font.PLAIN, 22));
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.WEST;
         editProfilePanel.add(lblPic, gbc);
 
-        image = new ImageIcon();
         pictureBtn = new JButton();
-        pictureBtn.setPreferredSize(new Dimension(100,20));
+        pictureBtn.setPreferredSize(new Dimension(30,60));
         pictureBtn.setBackground(Color.white);
-        pictureBtn.setIcon(profile.getImageIcon());
+        pictureBtn.setIcon(new ImageIcon("./images/defpic.jpg"));
         gbc.gridx = 8;
         gbc.gridy = 5;
+        gbc.ipady = 70;
+        gbc.ipadx = 60;
         gbc.anchor = GridBagConstraints.EAST;
         editProfilePanel.add(pictureBtn, gbc);
 
@@ -160,6 +144,16 @@ public class EditProfile extends JPanel implements ActionListener{
 
         add(editProfilePanel);
 
+    }
+
+    public void setImage(ImageIcon imageIcon) {
+        if (imageIcon == null) {
+            imageIcon = new ImageIcon("./images/defpic.jpg");
+        }
+        Image img = imageIcon.getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH);
+
+
+        pictureBtn.setIcon(new ImageIcon(img));
     }
 
     public void setUsernameTF(String text) {
