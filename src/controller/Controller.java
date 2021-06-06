@@ -291,6 +291,7 @@ public class Controller {
             int id = database.insertPlant(activeProfile.getDatabaseID(), plant);
             plant.setDatabaseID(id);
             database.upsertPlantImage(plant.getDatabaseID(), plantSearchImage);
+            waterPlant(plant);
         }).start();
     }
 
