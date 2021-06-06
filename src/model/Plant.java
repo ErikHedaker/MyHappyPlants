@@ -93,7 +93,6 @@ public class Plant {
 
     public int getLastTimeWateredInterval() {
         LocalDateTime date2 = LocalDateTime.now();
-        System.out.println(lastTimeWatered);
         try {
             return (int) Duration.between(lastTimeWatered, date2).toDays();
         } catch (Exception e) {

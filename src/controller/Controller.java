@@ -359,7 +359,6 @@ public class Controller {
             byte[] image = database.getPlantImage(plant.getDatabaseID());
             plant.setImageIcon( new ImageIcon( image != null ? image : imageDefault ) );
         }
-
     }
 
     /**
