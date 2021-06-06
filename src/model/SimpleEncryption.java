@@ -11,6 +11,12 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+/**
+ * Class is made for encryption.
+ *
+ * @author Erik Hedåker
+ */
+
 public class SimpleEncryption {
     private String fileName;
     private Cipher cipher;

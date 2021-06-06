@@ -3,6 +3,11 @@ package view.panels;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class is made for the purpose of visualizing the GUI on the lower part of the window.
+ * @Author Viktor Johansson
+ */
+
 public class SouthPanel extends JPanel {
 
     public SouthPanel() {

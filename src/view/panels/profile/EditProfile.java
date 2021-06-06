@@ -9,6 +9,11 @@ import java.awt.event.ActionEvent;
 import controller.Controller;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is made for the purpose of visualize the users Profile with their set information.
+ * Needs further development V. 1.0
+ * @Author Aida Muratagic, Fanny Rosdahl Rosenglim
+ */
 
 public class EditProfile extends JPanel implements ActionListener{
     private Profile profile;

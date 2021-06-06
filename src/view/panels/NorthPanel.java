@@ -13,6 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+/**
+ * This class is made for the purpose of visualizing the GUI on the upper part of the window.
+ * @Author Viktor Johansson
+ */
+
 public class NorthPanel extends JPanel implements ActionListener {
 
     private JButton searchBtn;

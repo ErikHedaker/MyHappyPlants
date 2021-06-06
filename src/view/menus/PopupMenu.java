@@ -5,6 +5,11 @@ import view.MainFrame;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * This class is accounted for popupmenu.
+ * @Author Hatem Ali Hussein
+ */
+
 public class PopupMenu extends JPopupMenu {
     JPopupMenu puMenu;
     JMenuItem settings, profil, något;

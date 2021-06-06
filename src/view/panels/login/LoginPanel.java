@@ -12,6 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * This class is made for showing the user the sign in page.
+ * @Author Viktor Johansson, Aida Muratagic
+ */
+
 public class LoginPanel extends JPanel implements ActionListener, KeyListener {
 
     private JButton signInBtn;
@@ -198,6 +203,10 @@ public class LoginPanel extends JPanel implements ActionListener, KeyListener {
         passwordTF1.setText("");
     }
 
+    /**
+    * This method is used to avoid redundancy in the code.
+    * @Author Viktor Johansson
+    */
     public void signInOrRegister() {
         if (getStatus() == LoginStatus.REGISTER_PAGE) {
             if (!controller.registerProfile(usernameTF.getText(), String.valueOf(passwordTF.getPassword()), String.valueOf(passwordTF1.getPassword()))) {

@@ -9,6 +9,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author Viktor Johansson
+ * This class has purpose of showing information for the users which are new to the program
+ */
 public class PlantInfoPanel extends JPanel implements ActionListener {
 
     private JPanel panelInfo;

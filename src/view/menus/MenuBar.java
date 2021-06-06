@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This class is made for showing the user a drop down menu with different features.
+ * @Author Hatem Ali Hussein, Fanny Rosdahl Rosenglim, Viktor Johansson
+ */
+
+
 public class MenuBar extends JMenuBar {
 
     private JMenu fileMenu, editMenu, helpMenu, subMenu, profileMenu, rankMenu, yourProfileMenu;

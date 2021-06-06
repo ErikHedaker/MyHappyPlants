@@ -16,6 +16,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * @author Viktor Johansson
+ * This class is for showing and interacting with your plants.
+ */
 public class PlantList implements PropertyChangeListener, ListSelectionListener {
 
     private ArrayList<JPanel> panels = new ArrayList<>();
@@ -80,6 +84,7 @@ public class PlantList implements PropertyChangeListener, ListSelectionListener 
 
         container.add(scroll1);
     }
+
 
     public int getSelectedIndex() {
         return list.getSelectedIndex();

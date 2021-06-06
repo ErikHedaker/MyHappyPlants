@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * This class is made for the purpose of informing the user of a term that needs to be fulfilled.
+ * @Author Viktor Johansson
+ */
+
+
 public class MessageDialog {
 
     private JDialog dialog;

@@ -9,6 +9,10 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+Class not used but kept due to the possibility of further development.
+ * @Author Viktor Johansson
+ */
 
 public class Weather extends MyLocation {
 

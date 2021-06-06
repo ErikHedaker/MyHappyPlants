@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @API https://trefle.io/api/v1/plants/search?q=aloe%20vera&token=G0dYZMd8_VZu3_3XLF9iLympM5EUoB7tVePMK_i5dPk
+ * Is not used because API taken down. But is kept for the possibility of further development if the API returns.
+ * @Author Viktor Johansson
  */
 
 public class PlantAPI {

@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * This class is made for the purpose of visualizing the GUI on the center of the window.
+ * @Author Viktor Johansson
+ */
+
 public class MainPanel extends JPanel {
     private Controller controller;
     private PlantList plantList;

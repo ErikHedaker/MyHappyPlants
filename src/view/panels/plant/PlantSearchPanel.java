@@ -17,6 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+/**
+ * Class made for the purpose of showing information after user searched for plant. And to be able to add plant
+ * to plantList.
+ * @Author Viktor-Emanuel Johansson, Fanny Rosdahl Rosenglim
+ */
 public class PlantSearchPanel extends JPanel implements ActionListener {
 
     private JPanel plantPanel;

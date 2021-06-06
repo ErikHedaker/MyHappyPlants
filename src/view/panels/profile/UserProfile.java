@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * This class is made for the purpose of letting the user edit their personal information.
+ * Needs further development V. 1.0
+ * @Author Aida Muratagic, Fanny Rosdahl Rosenglim
+ */
+
 public class UserProfile extends JPanel implements ActionListener, KeyListener {
     private Controller controller;
     private JLabel title, pic;

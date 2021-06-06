@@ -22,7 +22,7 @@ import static controller.Utility.*;
  * The Controller class handles the relation between the view (Swing frame) and the model (Database and other classes),
  * and does necessary calculations that fall outside of a specific model's area of expertise.
  *
- * @author Viktor Johansson, Erik Hedåker
+ * @author Viktor Johansson, Erik Hedåker, Fanny Rosdahl Rosenglim (written in method ButtonPushed)
  */
 public class Controller {
     private Database database;

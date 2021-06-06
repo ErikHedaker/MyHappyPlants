@@ -317,7 +317,8 @@ public class PlantCreationPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * @author Viktor Johansson
+     * @author Viktor Johansson, Fanny Rosdahl Rosenglim
+     * this is to be used for confirmation dialogs.
      */
 
     @Override

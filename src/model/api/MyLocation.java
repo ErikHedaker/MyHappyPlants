@@ -12,6 +12,8 @@ import java.net.URLConnection;
 
 /**
  * @API https://www.geoplugin.com/webservices/json
+ * Class not used but kept due to the possibility of further development.
+ * @Author Viktor Johansson
  */
 
 public class MyLocation {

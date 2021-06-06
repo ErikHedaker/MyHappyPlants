@@ -10,6 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is made for the purpose of visualize watering, editing and deleting plant.
+ * @Author Viktor Johansson
+ */
+
 public class PlantSelectionPanel extends JPanel implements ActionListener {
 
     private JLabel title;
@@ -118,7 +123,6 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         editBtn.setVisible(true);
         title.setVisible(true);
         deleteBtn.setVisible(true);
-        //changeImageBtn.setVisible(true);
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
@@ -142,8 +146,6 @@ public class PlantSelectionPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == deleteBtn) {
             confirmationDialog.setConfirmationMessage("Are you sure you want to remove: " + title.getText() + "?");
             confirmationDialog.showConfirmationDialog(DialogType.REMOVE_CONFIRMATION_DIALOG);
-        } /*else if (e.getSource() == changeImageBtn) {
-            controller.buttonPushed("change plant image");
-        }*/
+        }
     }
 }

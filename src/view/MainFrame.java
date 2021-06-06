@@ -17,6 +17,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * This class is made for the purpose of visualizing the GUI and connecting to controller.
+ * @Author Viktor Johansson
+ */
+
 public class MainFrame{
     private Controller controllerRef;
     private MainPanel panel;

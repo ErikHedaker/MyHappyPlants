@@ -6,6 +6,10 @@ import java.awt.event.*;
 
 import controller.Controller;
 
+/**
+ * Class made for the purpose of sending confirmation messages.
+ * @Author Fanny Rosdahl Rosenglim and Viktor Johansson
+ */
 
 public class ConfirmationDialog implements ActionListener {
 
@@ -93,6 +97,12 @@ public class ConfirmationDialog implements ActionListener {
         dialog.add(buttons, gbc);
 
     }
+
+    /**
+     *
+     * @param dialogType
+     * @return different confirmation messages due to different situations
+     */
 
     public ConfirmationDialog showConfirmationDialog(DialogType dialogType) {
         dialog.setVisible(true);

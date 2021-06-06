@@ -2,7 +2,10 @@ package view.panels.plant;
 
 import controller.Controller;
 
-//Use for ranks as an about panel...
+/**
+ * Class not used but kept due to possibility for further development.
+ * @Author Fanny Rosdahl Rosenglim
+ */
 
 import javax.swing.*;
 import java.awt.*;
